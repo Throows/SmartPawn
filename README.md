@@ -3,7 +3,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <br />
 <p align="center">
@@ -140,7 +139,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@@throows](https://twitter.com/@throows) - throowsdev@gmail.com
+Throows - [@@throows](https://twitter.com/@throows) - throowsdev@gmail.com
 
 Project Link: [https://github.com/Throows/SmartPawn](https://github.com/Throows/SmartPawn)
 
@@ -168,6 +167,4 @@ Project Link: [https://github.com/Throows/SmartPawn](https://github.com/Throows/
 [issues-shield]: https://img.shields.io/github/issues/Throows/repo.svg?style=for-the-badge
 [issues-url]: https://github.com/Throows/SmartPawn/issues
 [license-shield]: https://img.shields.io/github/license/Throows/repo.svg?style=for-the-badge
-[license-url]: https://github.com/Throows/SmartPawn/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/Throows
+[license-url]: https://github.com/Throows/SmartPawn/blob/master/LICENSE

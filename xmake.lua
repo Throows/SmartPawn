@@ -51,7 +51,14 @@ target("SmartPawnViewer")
     add_headerfiles("src/smartpawnviewer/*.h")
 
     add_packages("spdlog", "sfml") 
-    add_syslinks("opengl32")
+
+    if is_plat("windows") then
+        add_syslinks("opengl32")
+    elseif is_plat("macosx") then
+        add_frameworks("CoreFoundation", "CoreGraphics", "CoreText", "CoreServices")
+    end
+
+    --add_syslinks("opengl32")
 
     set_symbols("debug")
 

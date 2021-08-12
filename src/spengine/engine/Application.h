@@ -5,7 +5,7 @@
 
 namespace SP {
 
-	class SP_API Application
+	class Application
 	{
 	public:
 		Application();

@@ -1,0 +1,5 @@
+.xmake
+build/*
+vsxmake2019/*
+*.bat
+bin/*

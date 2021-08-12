@@ -3,3 +3,4 @@ build/*
 vsxmake2019/*
 *.bat
 bin/*
+.vscode

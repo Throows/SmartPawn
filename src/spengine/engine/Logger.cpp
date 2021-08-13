@@ -18,12 +18,12 @@ namespace SP
 		logSinks[0]->set_pattern("%^[%T] %n: %v%$");
 		logSinks[1]->set_pattern("[%T] [%l] %n: %v");
 
-		s_EngineLogger = std::make_shared<spdlog::logger>("HAZEL", begin(logSinks), end(logSinks));
+		s_EngineLogger = std::make_shared<spdlog::logger>("Engine", begin(logSinks), end(logSinks));
 		spdlog::register_logger(s_EngineLogger);
 		s_EngineLogger->set_level(spdlog::level::trace);
 		s_EngineLogger->flush_on(spdlog::level::trace);
 
-		s_AppLogger = std::make_shared<spdlog::logger>("APP", begin(logSinks), end(logSinks));
+		s_AppLogger = std::make_shared<spdlog::logger>("App", begin(logSinks), end(logSinks));
 		spdlog::register_logger(s_AppLogger);
 		s_AppLogger->set_level(spdlog::level::trace);
 		s_AppLogger->flush_on(spdlog::level::trace);

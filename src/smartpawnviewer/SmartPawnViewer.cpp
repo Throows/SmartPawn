@@ -4,7 +4,8 @@ class SmartPawnViewer : public SP::Application
 {
 public:
 	SmartPawnViewer() {
-
+		SP::Logger::GetAppLogger();
+		SP_INFO("Hello From application !");
 	}
 
 	~SmartPawnViewer() {

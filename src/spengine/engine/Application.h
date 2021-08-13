@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SPpch.h"
-#include "Core.h"
 
 namespace SP {
 

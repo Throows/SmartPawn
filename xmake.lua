@@ -1,6 +1,6 @@
 add_rules("mode.debug", "mode.release")
 
-add_requires("spdlog", "sfml")
+add_requires("spdlog", "glfw", "glad")
 
 set_runtimes("MD")
 set_languages("cxx17")
@@ -11,7 +11,7 @@ set_project("SmartPawn")
 
 target("SPEngine")
     set_version("0.0.1")
-    set_kind("shared")
+    set_kind("static")
 
     add_files("src/spengine/*.cpp")
     add_files("src/spengine/engine/*.cpp")
@@ -20,8 +20,6 @@ target("SPEngine")
     add_headerfiles("src/spengine/*.h")
 
     add_includedirs("src/spengine", {public = true})
-    --add_includedirs("src/spengine/engine", {public = true})
-    --add_includedirs("src", {public = true})
 
     set_pcxxheader("src/spengine/SPpch.h")
 
@@ -43,22 +41,16 @@ target("SmartPawnViewer")
     set_kind("binary")
     add_deps("SPEngine")
 
-    --add_linkdirs("bin/$(os)_$(arch)_$(mode)")
-
-    --add_files("bin/$(os)_$(arch)_$(mode)/*.lib")
-    --add_files("bin/$(os)_$(arch)_$(mode)/*.dll")
     add_files("src/smartpawnviewer/*.cpp")
     add_headerfiles("src/smartpawnviewer/*.h")
 
-    add_packages("spdlog", "sfml") 
+    add_packages("spdlog", "glfw", "glad") 
 
     if is_plat("windows") then
         add_syslinks("opengl32")
     elseif is_plat("macosx") then
         add_frameworks("CoreFoundation", "CoreGraphics", "CoreText", "CoreServices")
     end
-
-    --add_syslinks("opengl32")
 
     set_symbols("debug")
 

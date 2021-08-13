@@ -1,10 +1,6 @@
 #pragma once
 
-extern SP::Application* CreateApplication();
-
 #ifdef SP_PLATFORM_WIN
-	
-extern SP::Application* SP::CreateApplication();
 	
 int main(int argc, char** argv) {
 	

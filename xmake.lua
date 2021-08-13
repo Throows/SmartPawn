@@ -9,7 +9,7 @@ set_targetdir("./bin/$(os)_$(arch)_$(mode)")
 
 set_project("SmartPawn")
 
-target("SPEngine")
+--[[target("SPEngine")
     set_version("0.0.1")
     set_kind("static")
 
@@ -23,7 +23,7 @@ target("SPEngine")
 
     set_pcxxheader("src/spengine/SPpch.h")
 
-    add_packages("spdlog")
+    add_packages("spdlog", "glfw", "glad")
 
     set_symbols("debug")
 
@@ -34,12 +34,12 @@ target("SPEngine")
     end 
     add_defines("SP_EXPORT_DLL")
 
-target_end()
+target_end()]]--
 
 target("SmartPawnViewer")
     set_version("0.0.1")
     set_kind("binary")
-    add_deps("SPEngine")
+    --add_deps("SPEngine")
 
     add_files("src/smartpawnviewer/*.cpp")
     add_headerfiles("src/smartpawnviewer/*.h")

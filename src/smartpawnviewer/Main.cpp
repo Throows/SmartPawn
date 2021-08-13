@@ -7,7 +7,7 @@
 int main(int argc, char** argv) 
 {
 	SP::Logger::Init();
-	SP_ENGINE_INFO("Hi from Engine !");
+	SP_APP_INFO("Logger Initialized successfully !");
 	auto app = new SP::Application();
 	app->Run();
 	delete app;

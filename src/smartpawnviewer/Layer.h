@@ -1,19 +1,21 @@
 #pragma once
 #include "SPpch.h"
-
-class Layer
+namespace SP
 {
-public:
-	Layer(const std::string& name);
-	virtual ~Layer() = default;
+	class Layer
+	{
+	public:
+		Layer(const std::string& name);
+		virtual ~Layer() = default;
 
-	virtual void OnUpdate() {}
-	virtual void OnRender() {}
+		virtual void OnUpdate() {}
+		virtual void OnRender() {}
 
-	virtual bool isExitedState() { return this->isExited; }
-	virtual void SetExitedState() { this->isExited = true; }
+		virtual bool isExitedState() { return this->isExited; }
+		virtual void SetExitedState() { this->isExited = true; }
 
-protected:
-	std::string m_layerName;
-	bool isExited = false;
-};
+	protected:
+		std::string m_layerName;
+		bool isExited = false;
+	};
+}

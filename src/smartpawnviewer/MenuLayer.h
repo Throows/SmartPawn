@@ -1,15 +1,17 @@
 #pragma once
 #include "Layer.h"
-
-class MenuLayer : public Layer
+namespace SP
 {
-public:
-	MenuLayer();
-	~MenuLayer() = default;
+	class MenuLayer : public Layer
+	{
+	public:
+		MenuLayer();
+		~MenuLayer() = default;
 
-	virtual void OnUpdate() override;
-	virtual void OnRender() override;
+		virtual void OnUpdate() override;
+		virtual void OnRender() override;
 
-private:
-	void InitLayer();
-};
+	private:
+		void InitLayer();
+	};
+}

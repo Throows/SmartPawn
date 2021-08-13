@@ -18,12 +18,6 @@ namespace SP
 
 }
 
-#define SP_ENGINE_TRACE(...)    ::SP::Logger::GetEngineLogger()->trace(__VA_ARGS__)
-#define SP_ENGINE_INFO(...)     ::SP::Logger::GetEngineLogger()->info(__VA_ARGS__)
-#define SP_ENGINE_WARN(...)     ::SP::Logger::GetEngineLogger()->warn(__VA_ARGS__)
-#define SP_ENGINE_ERROR(...)    ::SP::Logger::GetEngineLogger()->error(__VA_ARGS__)
-#define SP_ENGINE_CRITICAL(...) ::SP::Logger::GetEngineLogger()->critical(__VA_ARGS__)
-
 #define SP_APP_TRACE(...)         ::SP::Logger::GetAppLogger()->trace(__VA_ARGS__)
 #define SP_APP_INFO(...)          ::SP::Logger::GetAppLogger()->info(__VA_ARGS__)
 #define SP_APP_WARN(...)          ::SP::Logger::GetAppLogger()->warn(__VA_ARGS__)

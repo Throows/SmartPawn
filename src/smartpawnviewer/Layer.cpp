@@ -1,6 +1,8 @@
 #include "Layer.h"
-
-Layer::Layer(const std::string& name)
+namespace SP
 {
-	this->m_layerName = name;
+	Layer::Layer(const std::string& name)
+	{
+		this->m_layerName = name;
+	}
 }

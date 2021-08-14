@@ -28,7 +28,6 @@ namespace SP{
 			if (this->layers.back()->isExitedState()) this->layers.pop_back();
 			if (!this->layers.empty())
 			{
-				if (this->layers.back()->isExitedState()) this->layers.pop_back();
 				this->layers.back()->OnUpdate();
 				this->layers.back()->OnRender();
 			}

@@ -17,5 +17,7 @@ namespace SP
 	protected:
 		std::string m_layerName;
 		bool isExited = false;
+
+		virtual void InitLayer() {}
 	};
 }

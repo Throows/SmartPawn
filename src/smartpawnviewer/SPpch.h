@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include "Logger.h"
 
 #ifdef SP_PLATFORM_WIN
 #endif

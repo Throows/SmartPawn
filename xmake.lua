@@ -1,7 +1,8 @@
 add_rules("mode.debug", "mode.release")
 add_rules("plugin.vsxmake.autoupdate")
 
-add_requires("spdlog", "glfw", "glad")
+--add_requires("spdlog", "glfw", "glad")
+add_requires("spdlog", "sfml")
 
 set_runtimes("MD")
 set_languages("cxx17")
@@ -45,7 +46,8 @@ target("SmartPawnViewer")
     add_files("src/smartpawnviewer/*.cpp")
     add_headerfiles("src/smartpawnviewer/*.h")
 
-    add_packages("spdlog", "glfw", "glad") 
+    --add_packages("spdlog", "glfw", "glad") 
+    add_packages("spdlog", "sfml") 
 
     if is_plat("windows") then
         add_syslinks("opengl32")

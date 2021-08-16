@@ -4,8 +4,6 @@
 #include "SimGameLayer.h"
 #include "MenuLayer.h"
 #include "Logger.h"
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 
 namespace SP {
 
@@ -23,14 +21,11 @@ namespace SP {
 		unsigned int m_width;
 		unsigned int m_height;
 		bool m_running = true;
-		GLFWwindow* window = nullptr;
 
 		std::vector<Layer*> layers;
 
 
 		void Init();
 		void RegisterCallbacks();
-		void FrameBufferSizeCallback(GLFWwindow* window, int width, int height);
-		void InputsCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	};
 }

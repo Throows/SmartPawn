@@ -1,7 +1,5 @@
 #pragma once
 #include "SPpch.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 
 namespace SP
 {
@@ -15,17 +13,14 @@ namespace SP
 		virtual void OnRender() {}
 
 		virtual bool isExitedState() { return this->isExited; }
-		virtual void SetExitedState() {
-			isExited = true;
-			SP_APP_INFO("Exited !");
-		}
+		virtual void SetExitedState() { isExited = true; }
 		
 		virtual std::string GetName() { return this->m_StateName; }
 
 	protected:
 		std::string m_StateName;
 		std::shared_ptr<sf::RenderWindow> window;
-		bool isExited;
+		bool isExited = false;
 
 		virtual void InitState() {}
 	};

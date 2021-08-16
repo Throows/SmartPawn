@@ -1,5 +1,4 @@
 #include "SPpch.h"
-#include "Logger.h"
 #include "Application.h"
 
 #ifdef SP_PLATFORM_WIN

@@ -5,6 +5,5 @@ namespace SP
 	{
 		this->m_StateName = name;
 		this->window = window;
-		isExited = false;
 	}
 }

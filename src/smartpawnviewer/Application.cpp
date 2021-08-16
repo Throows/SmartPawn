@@ -27,10 +27,8 @@ namespace SP{
 			ProcessEvents();
 
 
-			if (this->states.back()->isExitedState()) {
-				SP_APP_INFO("popped !");
-				this->states.pop_back();
-			}
+			if (this->states.back()->isExitedState()) this->states.pop_back();
+			
 
 			if (!this->states.empty())
 			{
@@ -41,17 +39,19 @@ namespace SP{
 			{
 				m_running = false;
 			}
-			this->window.get()->display();
+			this->window->display();
 		}
 
-		this->window.get()->close();
+		this->window->close();
 		
 	}
 
+
+	//TODO process event into the state
 	void Application::ProcessEvents()
 	{
 		sf::Event event;
-		while (window.get()->pollEvent(event))
+		while (this->window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				m_running = false;

@@ -1,10 +1,10 @@
 #pragma once
 #include "SPpch.h"
 
-enum class State : int
+enum class Status : int
 {
-	DISABLED = -1,
-	IDLE,
+	DISABLED = 0,
+	IDLE = 0,
 	HOVERED,
 	CLICKED
 };
@@ -12,19 +12,23 @@ enum class State : int
 class Button
 {
 public:
-	Button(unsigned int xPos, unsigned int yPos, unsigned int width, unsigned int height);
+	Button(sf::Vector2f pos, sf::Vector2f scale, const std::string& value, const sf::Font& font, sf::Texture& texture, sf::IntRect idleBound, sf::IntRect hoverBound, sf::IntRect clickedBound);
 	virtual ~Button() = default;
 
-	State GetState() { return m_state; }
+	Status GetState() { return m_status; }
+
+	void Update();
+	void Render(std::shared_ptr<sf::RenderWindow> window);
+
 
 private:
-	unsigned int m_xPos;
-	unsigned int m_yPos;
-	unsigned int m_width;
-	unsigned int m_height;
+	sf::Vector2f pos;
+	sf::Vector2f scale;
 
-	// TEXT, TEXTURE, other attributes
-	std::string value;
+	sf::Sprite sprite;
+	std::map<int, sf::IntRect> statusBounds;
 
-	State m_state;
+	sf::Text text;
+
+	Status m_status;
 };

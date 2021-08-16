@@ -9,14 +9,16 @@ namespace SP
 
 	void SimGameState::OnUpdate()
 	{
+
 	}
 
 	void SimGameState::OnRender()
 	{
-		this->window.get()->clear(sf::Color::Red);
+		this->window->clear(sf::Color::Red);
 	}
 
 	void SimGameState::InitState()
 	{
+
 	}
 }

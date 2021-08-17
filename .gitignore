@@ -3,4 +3,5 @@ build/*
 vsxmake2019/*
 *.bat
 bin/*
+RawResources/*
 .vscode

@@ -9,8 +9,9 @@ namespace SP{
 
 		this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), "SmartPawn - Le jeux de l'IA", sf::Style::Default);
 
-		AddState(std::make_shared<SimGameState>(window));
-		AddState(std::make_shared<MenuState>(window));
+
+		AddState(std::make_shared<MenuState>());
+		AddState(std::make_shared<SimGameState>());
 
 		this->Init();
 
@@ -29,11 +30,11 @@ namespace SP{
 
 			if (this->states.back()->isExitedState()) this->states.pop_back();
 			
-
+			this->window->clear();
 			if (!this->states.empty())
 			{
-				this->states.back()->OnUpdate();
-				this->states.back()->OnRender();
+				this->states.back()->OnUpdate(*this->window);
+				this->states.back()->OnRender(*this->window);
 			}
 			else
 			{

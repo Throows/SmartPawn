@@ -2,18 +2,18 @@
 
 namespace SP
 {
-	MenuState::MenuState(std::shared_ptr<sf::RenderWindow> window) : State("MenuState", window)
+	MenuState::MenuState() : State("MenuState")
 	{
 	}
 
-	void MenuState::OnUpdate()
+	void MenuState::OnUpdate(sf::RenderWindow& window)
 	{
 
 	}
 
-	void MenuState::OnRender()
+	void MenuState::OnRender(sf::RenderTarget& target)
 	{
-		this->window.get()->clear(sf::Color::Blue);
+		target.clear(sf::Color::Blue);
 	}
 
 	void MenuState::InitState()

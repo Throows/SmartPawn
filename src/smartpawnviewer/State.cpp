@@ -1,9 +1,8 @@
 #include "State.h"
 namespace SP
 {
-	State::State(const std::string& name, std::shared_ptr<sf::RenderWindow> window)
+	State::State(const std::string& name)
 	{
 		this->m_StateName = name;
-		this->window = window;
 	}
 }

@@ -6,11 +6,11 @@ namespace SP
 	class State
 	{
 	public:
-		State(const std::string& name, std::shared_ptr<sf::RenderWindow> window);
+		State(const std::string& name);
 		virtual ~State() = default;
 
-		virtual void OnUpdate() {}
-		virtual void OnRender() {}
+		virtual void OnUpdate(sf::RenderWindow& window) {}
+		virtual void OnRender(sf::RenderTarget& target) {}
 
 		virtual bool isExitedState() { return this->isExited; }
 		virtual void SetExitedState() { isExited = true; }
@@ -19,7 +19,6 @@ namespace SP
 
 	protected:
 		std::string m_StateName;
-		std::shared_ptr<sf::RenderWindow> window;
 		bool isExited = false;
 
 		virtual void InitState() {}

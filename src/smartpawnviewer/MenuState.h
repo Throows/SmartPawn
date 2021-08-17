@@ -6,11 +6,11 @@ namespace SP
 	class MenuState : public State
 	{
 	public:
-		MenuState(std::shared_ptr<sf::RenderWindow> window);
+		MenuState();
 		~MenuState() = default;
 
-		virtual void OnUpdate() override;
-		virtual void OnRender() override;
+		virtual void OnUpdate(sf::RenderWindow& window) override;
+		virtual void OnRender(sf::RenderTarget& target) override;
 
 	private:
 		void InitState();

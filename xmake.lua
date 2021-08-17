@@ -61,5 +61,10 @@ target("SmartPawnViewer")
         add_defines("SP_PLATFORM_WIN")
     elseif is_plat("macos") then
         add_defines("SP_PLATFORM_DARWIN")
-    end 
+    end
+    
+    after_build(function (target) 
+        os.cp("$(projectdir)\\resources\\**", "$(projectdir)\\bin\\$(os)_$(arch)_$(mode)\\resources\\")
+    end)
+    
 target_end()

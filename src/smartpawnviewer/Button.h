@@ -16,6 +16,7 @@ public:
 	virtual ~Button() = default;
 
 	Status GetState() { return m_status; }
+	bool IsClicked() { return m_status == Status::CLICKED; }
 
 	void SetPosition(sf::Vector2f pos);
 

@@ -7,11 +7,11 @@ namespace SP
 	class SimGameState : public State
 	{
 	public:
-		SimGameState();
+		SimGameState(StatesPtr states, WindowPtr window);
 		~SimGameState() = default;
 
-		virtual void OnUpdate(sf::RenderWindow& window) override;
-		virtual void OnRender(sf::RenderTarget& target) override;
+		virtual void OnUpdate() override;
+		virtual void OnRender() override;
 
 	private:
 		void InitState();

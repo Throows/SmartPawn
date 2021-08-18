@@ -15,7 +15,7 @@ namespace SP {
 		void ProcessEvents();
 
 	protected:
-		void AddState(std::shared_ptr<State> State) {states.push_back(State);}
+		void AddState(std::shared_ptr<State> state) {states->push_back(state);}
 
 	private:
 		unsigned int m_width;
@@ -23,7 +23,7 @@ namespace SP {
 		bool m_running = true;
 		std::shared_ptr<sf::RenderWindow> window;
 
-		std::vector<std::shared_ptr<State>> states;
+		std::shared_ptr<std::vector<std::shared_ptr<State>>> states;
 
 
 		void Init();

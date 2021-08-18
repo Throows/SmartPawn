@@ -8,10 +8,8 @@ namespace SP{
 		this->m_height = height;
 
 		this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), "SmartPawn - Le jeux de l'IA", sf::Style::Default);
-
-
-		AddState(std::make_shared<MenuState>());
-		AddState(std::make_shared<SimGameState>());
+		this->states = std::make_shared<std::vector<std::shared_ptr<State>>>();
+		AddState(std::make_shared<MenuState>(this->states, this->window));
 
 		this->Init();
 
@@ -27,14 +25,13 @@ namespace SP{
 
 			ProcessEvents();
 
-
-			if (this->states.back()->isExitedState()) this->states.pop_back();
+			if (this->states->back()->isExitedState()) this->states->pop_back();
 			
 			this->window->clear();
-			if (!this->states.empty())
+			if (!this->states->empty())
 			{
-				this->states.back()->OnUpdate(*this->window);
-				this->states.back()->OnRender(*this->window);
+				this->states->back()->OnUpdate();
+				this->states->back()->OnRender();
 			}
 			else
 			{
@@ -58,13 +55,14 @@ namespace SP{
 				m_running = false;
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-				this->states.back()->SetExitedState();
+				this->states->back()->SetExitedState();
 
 		}
 	}
 
 	void Application::Init()
 	{
+		this->window->setFramerateLimit(60);
 	}
 
 	void Application::RegisterCallbacks()

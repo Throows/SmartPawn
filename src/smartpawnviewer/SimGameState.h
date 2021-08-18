@@ -1,6 +1,6 @@
 #pragma once
 #include "State.h"
-#include "Button.h"
+#include "ProgressBar.h"
 
 namespace SP
 {
@@ -16,8 +16,11 @@ namespace SP
 	private:
 		void InitState();
 
-		std::vector<Button> buttons;
+		std::shared_ptr<SP::ProgressBar> progressBar;
 
+		sf::Clock clock;
+
+		//TODO mutltiple text during game simulation
 		sf::Text title;
 		std::unique_ptr<sf::Sprite> background;
 		std::map<std::string, std::shared_ptr<sf::Texture>> textures;

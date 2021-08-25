@@ -9,7 +9,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include "Logger.h"
+#include <Core/Logger.h>
 
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>
@@ -17,7 +17,3 @@
 #include <SFML\Audio.hpp>
 #include <SFML\Network.hpp>
 
-#ifdef SP_PLATFORM_WIN
-#endif
-#ifdef SP_PLATFORM_DARWIN
-#endif

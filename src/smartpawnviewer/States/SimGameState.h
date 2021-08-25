@@ -1,6 +1,8 @@
 #pragma once
+
 #include "State.h"
-#include "ProgressBar.h"
+#include <GUI/ProgressBar.h>
+#include <SPEngine.h>
 
 namespace SP
 {
@@ -20,8 +22,9 @@ namespace SP
 
 		sf::Clock clock;
 
-		//TODO mutltiple text during game simulation
-		sf::Text title;
+		std::shared_ptr<SP::SimEngine> engine;
+
+		std::vector<sf::Text> title;
 		std::unique_ptr<sf::Sprite> background;
 		std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 		std::shared_ptr<sf::Font> font;

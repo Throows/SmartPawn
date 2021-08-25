@@ -11,43 +11,53 @@ set_targetdir("./bin/$(os)_$(arch)_$(mode)")
 
 set_project("SmartPawn")
 
---[[target("SPEngine")
+target("SPEngine")
     set_version("0.0.1")
-    set_kind("static")
+    set_kind("shared")
 
-    add_files("src/spengine/*.cpp")
-    add_files("src/spengine/engine/*.cpp")
+    add_headerfiles("src/SPEngine/**.h")
+    add_includedirs("src/SPEngine", {public = true})
+    add_files("src/SPEngine/**.cpp")
 
-    add_headerfiles("src/spengine/engine/*.h")
-    add_headerfiles("src/spengine/*.h")
+    --add_packages("spdlog", "glfw", "glad") 
+    add_packages("spdlog", "sfml") 
 
-    add_includedirs("src/spengine", {public = true})
+    if is_plat("windows") then
+        add_syslinks("opengl32")
+    elseif is_plat("macosx") then
+        add_frameworks("CoreFoundation", "CoreGraphics", "CoreText", "CoreServices")
+    end
 
-    set_pcxxheader("src/spengine/SPpch.h")
-
-    add_packages("spdlog", "glfw", "glad")
-
-    set_symbols("debug")
+    set_symbols("debug", "hidden")
+    set_runtimes(is_mode("debug") and "MDd" or "MD")
 
     if is_plat("windows") then
         add_defines("SP_PLATFORM_WIN")
     elseif is_plat("macos") then
         add_defines("SP_PLATFORM_DARWIN")
-    end 
-    add_defines("SP_EXPORT_DLL")
+    end
+    
+    after_build(function (target) 
+        os.cp("$(projectdir)\\resources\\**", "$(projectdir)\\bin\\$(os)_$(arch)_$(mode)\\resources\\")
+    end)
 
-target_end()]]--
+    add_defines("DLL_EXPORT")
+    
+target_end()
 
-target("SmartPawnViewer")
+target("SPIntelligence")
     set_version("0.0.1")
-    set_kind("binary")
-    --add_deps("SPEngine")
+    set_kind("shared")
+    add_deps("SPEngine")
 
-    add_files("src/smartpawnviewer/*.cpp")
-    add_headerfiles("src/smartpawnviewer/*.h")
+    add_headerfiles("src/SPIntelligence/**.h")
+    add_includedirs("src/SPIntelligence", {public = true})
+    add_files("src/SPIntelligence/**.cpp")
 
     --add_packages("spdlog", "glfw", "glad") 
     add_packages("spdlog", "sfml") 
+    
+    set_runtimes(is_mode("debug") and "MDd" or "MD")
 
     if is_plat("windows") then
         add_syslinks("opengl32")
@@ -67,4 +77,44 @@ target("SmartPawnViewer")
         os.cp("$(projectdir)\\resources\\**", "$(projectdir)\\bin\\$(os)_$(arch)_$(mode)\\resources\\")
     end)
     
+    add_defines("DLL_EXPORT")
+
+target_end()
+
+target("SmartPawnViewer")
+    set_version("0.0.1")
+    set_kind("binary")
+    add_deps("SPEngine")
+
+    add_headerfiles("src/SmartPawnViewer/**.h")
+    add_includedirs("src/SmartPawnViewer")
+    add_includedirs("src/SPIntelligence")
+    add_files("src/SmartPawnViewer/**.cpp")
+
+    add_files("bin/windows_x64_debug/SPEngine.lib")
+
+
+    set_pcxxheader("src/SmartPawnViewer/Core/pch.h");
+
+    --add_packages("spdlog", "glfw", "glad") 
+    add_packages("spdlog", "sfml") 
+
+    if is_plat("windows") then
+        add_syslinks("opengl32")
+    elseif is_plat("macosx") then
+        add_frameworks("CoreFoundation", "CoreGraphics", "CoreText", "CoreServices")
+    end
+
+    set_symbols("debug", "hidden")
+
+    if is_plat("windows") then
+        add_defines("SP_PLATFORM_WIN")
+    elseif is_plat("macos") then
+        add_defines("SP_PLATFORM_DARWIN")
+    end
+    
+    after_build(function (target) 
+        os.cp("$(projectdir)\\resources\\**", "$(projectdir)\\bin\\$(os)_$(arch)_$(mode)\\resources\\")
+    end)
+
 target_end()

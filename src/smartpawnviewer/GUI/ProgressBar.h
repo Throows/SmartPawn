@@ -1,4 +1,5 @@
-#include "SPpch.h"
+#pragma once
+#include <Core/pch.h>
 
 namespace SP
 {

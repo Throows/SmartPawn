@@ -1,5 +1,5 @@
-#include "SPpch.h"
-#include "Application.h"
+#include <Core/pch.h>
+#include "Core/Application.h"
 
 #ifdef SP_PLATFORM_WIN
 	

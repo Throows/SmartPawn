@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SPpch.h"
-#include "SimGameState.h"
-#include "MenuState.h"
+#include <Core/pch.h>
+#include <States/SimGameState.h>
+#include <States/MenuState.h>
 
 namespace SP {
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+#include <iostream>
 #include <vector>
 
 struct PawnCoordinates
@@ -9,10 +10,10 @@ struct PawnCoordinates
 	unsigned int y;
 };
 
-enum class MOVES
+enum class MOVES : int
 {
-	UP,
-	DOWN, 
+	UP = 0,
+	DOWN,
 	RIGHT,
 	LEFT,
 	LEFT_TOP_CORNER,
@@ -32,12 +33,15 @@ namespace SP
 
 		void SetAction(PawnCoordinates move, MOVES moveType, int pawnIdentifier);
 		PawnCoordinates GetFirstPawn(unsigned int pawnType);
+		PawnCoordinates GetRandomPawn(unsigned int pawnType);
 		std::vector<std::vector<int>>& GetBoard();
 		bool isEmpty(int x, int y);
 		int GetRemainingPawn(int identififer);
+		void SetPawn(int x, int y, int pawn);
+		std::string GetStringMove(MOVES move);
 
 	private:
-		std::vector<std::vector<int>> board;
+		std::vector<std::vector<int>> board;  // Vector of column
 		int pawnType;
 
 		PawnCoordinates GetCoordinatesByMove(PawnCoordinates coord, MOVES moveType);

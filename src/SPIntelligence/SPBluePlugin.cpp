@@ -65,10 +65,11 @@ extern "C" SP_API void InitPlugin(std::shared_ptr<SP::SPData> data)
 
 extern "C" SP_API void RunIntelligenceTurn()
 {
-	PawnCoordinates myTeam = bluePlugin->GetData()->GetFirstPawn(1);
+	PawnCoordinates myTeam = bluePlugin->GetData()->GetRandomPawn(1);
 	PawnCoordinates enemyTeam = bluePlugin->GetData()->GetFirstPawn(2);
+	MOVES move = bluePlugin->FindNearestPawnToMove(myTeam, enemyTeam);
 
-	bluePlugin->GetData()->SetAction(myTeam, bluePlugin->FindNearestPawnToMove(myTeam, enemyTeam), 1);
+	bluePlugin->GetData()->SetAction(myTeam, move, 1);
 }
 
 extern "C" SP_API void shudownPlugin()

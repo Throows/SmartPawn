@@ -14,14 +14,14 @@ namespace SP
 		}
 
 		this->data = std::make_shared<SPData>();
-		for (int x = 0; x < 10; x++)
+		for (int columnCount = 0; columnCount < 10; columnCount++)
 		{
-			std::vector<int> row;
-			for (int y = 0; y < 10; y++)
+			std::vector<int> column;
+			for (int row = 0; row < 10; row++)
 			{
-				row.push_back(0);
+				column.push_back(0);
 			}
-			this->data->GetBoard().push_back(row);
+			this->data->GetBoard().push_back(column);
 		}
     }
 
@@ -85,7 +85,7 @@ namespace SP
 		}
 		else std::cout << "PLUGIN TWO HAS WON" << std::endl;
 
-		/*CalculateEnded();
+		CalculateEnded();
 		if (!isEnded())
 		{
 			pluginTwo.isPlaying = true;
@@ -95,7 +95,7 @@ namespace SP
 			std::cout << "Plugin Two Played !\n";
 			ShowBoard();
 		}
-		else std::cout << "PLUGIN ONE HAS WON" << std::endl;*/
+		else std::cout << "PLUGIN ONE HAS WON" << std::endl;
 	}
 
 	Plugin SimEngine::GetActivePlayer()
@@ -109,25 +109,27 @@ namespace SP
 		float plOneEndingPercent, plTwoEndingPercent;
 		plOneEndingPercent = 1 - (this->data->GetRemainingPawn(1) / 20.0f);
 		plTwoEndingPercent = 1 - (this->data->GetRemainingPawn(2) / 20.0f);
-		return (plOneEndingPercent + plTwoEndingPercent) / 2;
+		return plTwoEndingPercent > plOneEndingPercent ? plTwoEndingPercent : plOneEndingPercent;
 	}
 
 	void SimEngine::ShowBoard()
 	{
 
 		std::cout << "--+---+---+---+---+---+---+---+---+---+---+--" << std::endl;
+		int boardSize = this->data->GetBoard().front().size();
 
-		std::vector < std::vector<int>>::iterator itx;
-		std::vector<int>::iterator ity;
-
-		for (auto& row : this->data->GetBoard()) 
+		for (int i = 0; i < boardSize; i++) 
 		{
-			std::cout << "  |";
-			for (auto& col : row)
-			{
-				std::cout << " " << GetPluginChar(col) << " |";
-			}
-			std::cout << "  " << std::endl;
+			std::cout << "  | " << GetPluginChar(this->data->GetBoard().at(0).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(1).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(2).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(3).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(4).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(5).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(6).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(7).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(8).at(i)) << " | "
+				<< GetPluginChar(this->data->GetBoard().at(9).at(i)) << " | " << std::endl;
 			std::cout << "--+---+---+---+---+---+---+---+---+---+---+--" << std::endl;
 		}
 	}
@@ -156,7 +158,7 @@ namespace SP
 
 	void SimEngine::PlaceRandomPawn()
 	{
-		/*while (pluginOne.pawnRemaining < 20 || pluginTwo.pawnRemaining < 20)
+		while (pluginOne.pawnRemaining < 20 || pluginTwo.pawnRemaining < 20)
 		{
 			int x = GetRandom(0, 9);
 			int y = GetRandom(0, 9);
@@ -172,11 +174,7 @@ namespace SP
 					pluginTwo.pawnRemaining++;
 				}
 			}
-		}*/
-
-		this->data->GetBoard().at(5).at(2) = pluginOne.pawnIdentifier;
-		this->data->GetBoard().at(5).at(8) = pluginTwo.pawnIdentifier;
-
+		}
 	}
 
 	int SimEngine::GetRandom(int min, int max)

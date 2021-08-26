@@ -31,6 +31,7 @@ namespace SP
 
 	void ProgressBar::SetProgress(float progess)
 	{
+		this->progression = progess;
 	}
 
 }

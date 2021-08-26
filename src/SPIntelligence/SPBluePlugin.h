@@ -2,11 +2,15 @@
 
 #include <SPEngine.h>
 
-class SP_API SPBluePlugin : public SP::SPPlugin
+class SP_API SPBluePlugin
 {
 public:
-	SPBluePlugin();
+	SPBluePlugin(std::shared_ptr<SP::SPData> data);
 	~SPBluePlugin() = default;
 
-	int NotVirtualTest();
+	MOVES FindNearestPawnToMove(PawnCoordinates from, PawnCoordinates to);
+	std::shared_ptr<SP::SPData> GetData() { return this->data;  };
+private:
+	std::shared_ptr<SP::SPData> data;
+
 };

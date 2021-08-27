@@ -3,6 +3,7 @@
 #include<ctime>
 #include <iostream>
 #include <stdio.h>
+#include <filesystem>
 
 namespace SP
 {
@@ -40,7 +41,8 @@ namespace SP
 
 	void SimRecorder::SaveRecord()
 	{
-		std::ofstream fileStream = std::ofstream(this->fileName);
+		std::filesystem::create_directories("./Records");
+		std::ofstream fileStream = std::ofstream(std::string("Records/").append(this->fileName));
 	
 		if (fileStream.is_open()) {
 			for (std::vector<std::string>::iterator it = this->lines.begin(); it != this->lines.end(); ++it)

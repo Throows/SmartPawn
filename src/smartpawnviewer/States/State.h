@@ -12,6 +12,8 @@ namespace SP
 		virtual void OnUpdate() {}
 		virtual void OnRender() {}
 
+		virtual void ProcessEvents(sf::Event& event) = 0;
+
 		virtual bool isExitedState() { return this->isExited; }
 		virtual void SetExitedState() { 
 			isExited = true;

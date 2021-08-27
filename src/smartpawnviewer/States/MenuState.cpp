@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include "SimGameState.h"
+#include <filesystem>
 
 namespace SP
 {
@@ -22,6 +23,14 @@ namespace SP
 				this->SetExitedState();
 			}
 		}
+
+		this->recordListView->OnUpdate(*this->window);
+		if (this->recordListView->hasClickedButton)
+		{
+			std::string clickedButton = this->recordListView->GetClickedButton();
+			//this->states->push_back(std::make_shared<ReplayGameState>(states, this->window));
+			this->SetExitedState();
+		}
 	}
 
 	void MenuState::OnRender()
@@ -35,6 +44,13 @@ namespace SP
 		{
 			button.Render(*this->window);
 		}
+
+		this->recordListView->OnRender(*this->window);
+	}
+
+	void MenuState::ProcessEvents(sf::Event& event)
+	{
+		this->recordListView->ProcessEvents(event);
 	}
 
 	void MenuState::InitState()
@@ -62,15 +78,32 @@ namespace SP
 		this->background->setTexture(*this->textures.at("BACKGROUND_TEXTURE"));
 		this->background->setTextureRect(static_cast<sf::IntRect>(this->window->getViewport(this->window->getView())));
 
-		this->title = sf::Text("SmartPawn - Game", *this->font, 50);
-		this->title.setPosition(sf::Vector2f(250.0f, 50.0f));
+		this->title = sf::Text("SmartPawn\n The Game", *this->font, 50);
+		this->title.setPosition(sf::Vector2f(50.0f, 50.0f));
 		this->title.setStyle(sf::Text::Style::Bold);
 		this->title.setColor(sf::Color::Black);
 		this->title.setOutlineColor(sf::Color::White);
 		this->title.setOutlineThickness(2.0f);
 
-		Button startSimButton(sf::Vector2f(60.0f, 300.0f), sf::Vector2i(512, 128), std::string("Lancer la simulation"), *this->font, *this->textures.at("BUTTON_TEXTURE"), sf::Vector2i(0, 0), sf::Vector2i(0, 128), sf::Vector2i(0, 256));
+		Button startSimButton(sf::Vector2f(50.0f, 300.0f), sf::Vector2i(512, 128), std::string("Lancer la simulation"), *this->font, *this->textures.at("BUTTON_TEXTURE"), sf::Vector2i(0, 0), sf::Vector2i(0, 128), sf::Vector2i(0, 256));
 		this->buttons.push_back(startSimButton);
 
+		this->recordListView = std::make_shared<ListView>(sf::Vector2f(600.0f, 50.0f), sf::Vector2f(300.0f, 400.0f));
+
+		try
+		{
+			int buttonOffset = 60.0f;
+			for (const auto& entry : std::filesystem::directory_iterator("Records/"))
+			{
+				std::string buttonName(entry.path().filename().string());
+				std::shared_ptr<ListViewButton> viewButton = std::make_shared<ListViewButton>(sf::Vector2f(610.0f, buttonOffset), sf::Vector2f(260.0f, 50.0f), *this->font, buttonName);
+				this->recordListView->AddButton(viewButton);
+				buttonOffset += 60.0f;
+			}
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
 	}
 }

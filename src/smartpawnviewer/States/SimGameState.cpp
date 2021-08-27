@@ -11,6 +11,10 @@ namespace SP
 		InitState();
 	}
 
+	SimGameState::~SimGameState()
+	{
+	}
+
 	void SimGameState::OnUpdate()
 	{
 		sf::Time time = clock.getElapsedTime();
@@ -30,6 +34,10 @@ namespace SP
 	{
 		this->window->draw(*this->background);
 		progressBar->OnRender(*this->window);
+	}
+
+	void SimGameState::ProcessEvents(sf::Event& event)
+	{
 	}
 
 	void SimGameState::InitState()
@@ -59,6 +67,7 @@ namespace SP
 		this->background = std::make_unique<sf::Sprite>(*this->textures.at("BACKGROUND_TEXTURE"), static_cast<sf::IntRect>(this->window->getViewport(this->window->getView())));
 		this->background->setScale(sf::Vector2f(2.0f, 2.0f));
 
+		
 		this->engine = std::move(CreateEngine());
 		this->engine->InitEngine();
 		

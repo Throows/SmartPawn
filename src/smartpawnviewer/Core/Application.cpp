@@ -23,7 +23,7 @@ namespace SP{
 	{
 		while (m_running) {
 
-			ProcessEvents();
+			ProcessAppEvents();
 
 			if (this->states->back()->isExitedState()) this->states->pop_back();
 			
@@ -44,10 +44,9 @@ namespace SP{
 		
 	}
 
-
-	//TODO process event into the state
-	void Application::ProcessEvents()
+	void Application::ProcessAppEvents()
 	{
+		
 		sf::Event event;
 		while (this->window->pollEvent(event))
 		{
@@ -56,8 +55,12 @@ namespace SP{
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 				this->states->back()->SetExitedState();
-
 		}
+
+		if (!this->states->empty()) {
+			this->states->back()->ProcessEvents(event);
+		}
+		
 	}
 
 	void Application::Init()

@@ -1,8 +1,8 @@
 #pragma once
 
-
-#include <GUI/Button.h>
 #include "State.h"
+#include <GUI/Button.h>
+#include <GUI/ListView.h>
 
 namespace SP
 {
@@ -14,11 +14,14 @@ namespace SP
 
 		virtual void OnUpdate() override;
 		virtual void OnRender() override;
+		void ProcessEvents(sf::Event& event) override;
 
 	private:
 		void InitState();
 
 		std::vector<Button> buttons;
+
+		std::shared_ptr<ListView> recordListView;
 
 		sf::Text title;
 		std::unique_ptr<sf::Sprite> background;

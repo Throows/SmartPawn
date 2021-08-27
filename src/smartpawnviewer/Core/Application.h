@@ -12,7 +12,7 @@ namespace SP {
 		Application(const unsigned int width = 960, const unsigned int height = 480);
 		virtual ~Application();
 		void Run();
-		void ProcessEvents();
+		void ProcessAppEvents();
 
 	protected:
 		void AddState(std::shared_ptr<State> state) {states->push_back(state);}

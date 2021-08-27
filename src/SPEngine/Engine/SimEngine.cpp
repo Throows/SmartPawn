@@ -123,6 +123,7 @@ namespace SP
 		float plOneEndingPercent, plTwoEndingPercent;
 		plOneEndingPercent = 1 - (this->data->GetRemainingPawn(1) / 20.0f);
 		plTwoEndingPercent = 1 - (this->data->GetRemainingPawn(2) / 20.0f);
+		if (this->isEnded()) plOneEndingPercent = 1.0f;
 		return plTwoEndingPercent > plOneEndingPercent ? plTwoEndingPercent : plOneEndingPercent;
 	}
 

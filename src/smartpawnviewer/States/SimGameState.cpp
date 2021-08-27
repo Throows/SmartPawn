@@ -15,7 +15,7 @@ namespace SP
 	{
 		sf::Time time = clock.getElapsedTime();
 
-		if (time.asMilliseconds() >= 0) {
+		if (time.asMilliseconds() >= 60) {
 			if (!this->engine->isEnded()) {
 				this->engine->PlayNextTurn();
 				progressBar->SetProgress(engine->GetPercentageEnded());

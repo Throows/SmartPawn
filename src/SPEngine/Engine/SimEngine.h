@@ -2,8 +2,16 @@
 
 #include <windows.h>
 #include <libloaderapi.h>
-#include <Engine/SPData.h>
 #include "Core.h"
+#include <Engine/SPData.h>
+#include <Engine/SimRecorder.h>
+
+namespace SP
+{
+	class SPData;
+}
+enum class PawnTeam;
+struct PawnCoordinates;
 
 typedef void (*INITPLUGIN)(std::shared_ptr<SP::SPData> simData);
 typedef void (*PLUGIN)();
@@ -29,7 +37,10 @@ namespace SP
 
 		void InitEngine();
 		void PlayNextTurn();
+
 		Plugin GetActivePlayer();
+		Plugin GetWaitingPlayer();
+		Plugin GetTeam(PawnTeam team);
 
 		float GetPercentageEnded();
 
@@ -38,11 +49,16 @@ namespace SP
 		void CalculateEnded();
 		bool isEnded() { return this->ended; };
 
+		void AddActionRecorder(PawnCoordinates coords, PawnCoordinates newCoords);
+
 	private:
 		Plugin pluginOne;
 		Plugin pluginTwo;
 
+		int equalityMove = 0;
+
 		std::shared_ptr<SPData> data;
+		std::shared_ptr<SimRecorder> recorder;
 
 		bool ended = false;
 

@@ -3,8 +3,9 @@
 namespace SP
 {
 
-	SPData::SPData()
+	SPData::SPData(std::shared_ptr<SimEngine> engine)
 	{
+		this->engine = std::move(engine);
 		std::cout << "Data created !\n";
 	}
 
@@ -12,15 +13,21 @@ namespace SP
 	{
 	}
 
-	void SPData::SetAction(PawnCoordinates move, MOVES moveType, int pawnIdentifier)
+	void SPData::SetAction(PawnCoordinates move, MOVES moveType)
 	{
+		if (this->board.at(move.x).at(move.y) != this->engine->GetActivePlayer().pawnIdentifier)
+		{
+			std::cout << "Il est interdi de bouger un pion ennemi ! " << std::endl;
+			return;
+		}
 		this->board.at(move.x).at(move.y) = 0;
 		PawnCoordinates newCoords = GetCoordinatesByMove(move, moveType);
-		this->board.at(newCoords.x).at(newCoords.y) = pawnIdentifier;
-		std::cout << "Move : " << GetStringMove(moveType) << std::endl;
+		this->board.at(newCoords.x).at(newCoords.y) = this->engine->GetActivePlayer().pawnIdentifier;
+		
+		this->engine->AddActionRecorder(move, newCoords);
 	}
 
-	PawnCoordinates SPData::GetFirstPawn(unsigned int pawnType)
+	PawnCoordinates SPData::GetFirstPawn(PawnTeam team)
 	{
 		PawnCoordinates pawnCoordinates;
 		pawnCoordinates.x = 0;
@@ -31,7 +38,7 @@ namespace SP
 			pawnCoordinates.y = 0;
 			for (auto& col : row)
 			{
-				if (col == pawnType) return pawnCoordinates;
+				if (col == engine->GetTeam(team).pawnIdentifier) return pawnCoordinates;
 				pawnCoordinates.y++;
 			}
 			pawnCoordinates.x++;
@@ -44,12 +51,12 @@ namespace SP
 		return this->board;
 	}
 
-	PawnCoordinates SPData::GetRandomPawn(unsigned int pawnType)
+	PawnCoordinates SPData::GetRandomPawn(PawnTeam team)
 	{
 		PawnCoordinates coords;
 		coords.x = 0;
 		coords.y = 0;
-		while (this->board.at(coords.x).at(coords.y) != pawnType)
+		while (this->board.at(coords.x).at(coords.y) != engine->GetTeam(team).pawnIdentifier)
 		{
 			coords.x = rand() % 10;
 			coords.y = rand() % 10;
@@ -72,9 +79,9 @@ namespace SP
 		return remainingPawn;
 	}
 
-	void SPData::SetPawn(int x, int y, int pawn)
+	void SPData::SetPawn(int x, int y)
 	{
-		this->board.at(x).at(y) = pawn;
+		this->board.at(x).at(y) = this->engine->GetActivePlayer().pawnIdentifier;
 	}
 
 	std::string SPData::GetStringMove(MOVES move)
@@ -123,5 +130,4 @@ namespace SP
 		if (moveType == MOVES::LEFT || moveType == MOVES::LEFT_DOWN_CORNER || moveType == MOVES::LEFT_TOP_CORNER) newCoords.x = (coord.x + 9) % 10;
 		return newCoords;
 	}
-
 }

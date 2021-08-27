@@ -12,8 +12,8 @@ namespace SP
 		{
 			throw std::runtime_error("Could not load plugin !");
 		}
-
-		this->data = std::make_shared<SPData>();
+		std::shared_ptr<SimEngine> enginePTR(std::move(this));
+		this->data = std::make_shared<SPData>(enginePTR);
 		for (int columnCount = 0; columnCount < 10; columnCount++)
 		{
 			std::vector<int> column;
@@ -56,7 +56,7 @@ namespace SP
 		if (!initRedPlugin) std::cout << "error : " << GetLastError() << std::endl;
 		else initRedPlugin(this->data);
 
-		pluginOne.name = "Red Plugin";
+		pluginTwo.name = "Red Plugin";
 		pluginTwo.isPlayed = false;
 		pluginTwo.pawnIdentifier = 2;
 		pluginTwo.pawnRemaining = 0;
@@ -66,8 +66,10 @@ namespace SP
 
 		srand((unsigned int)time(NULL));
 		PlaceRandomPawn();
-
 		ShowBoard();
+
+		this->recorder = std::make_shared<SimRecorder>();
+		this->recorder->StartRecoring();
 
 	}
 
@@ -100,8 +102,20 @@ namespace SP
 
 	Plugin SimEngine::GetActivePlayer()
 	{
-		if (pluginOne.isPlaying) return pluginOne;
+		if (pluginOne.isPlaying && !pluginOne.isPlayed) return pluginOne;
 		return pluginTwo;
+	}
+
+	Plugin SimEngine::GetWaitingPlayer()
+	{
+		if (!pluginOne.isPlaying) return pluginOne;
+		return pluginTwo;
+	}
+
+	Plugin SimEngine::GetTeam(PawnTeam team)
+	{
+		if (team == PawnTeam::MY_TEAM) return GetActivePlayer();
+		else return GetWaitingPlayer();
 	}
 
 	float SimEngine::GetPercentageEnded()
@@ -136,10 +150,28 @@ namespace SP
 
 	void SimEngine::CalculateEnded()
 	{
+		int oldPOPawn = pluginOne.pawnRemaining;
+		int oldPTPawn = pluginTwo.pawnRemaining;
 		pluginOne.pawnRemaining = this->data->GetRemainingPawn(pluginOne.pawnIdentifier);
 		pluginTwo.pawnRemaining = this->data->GetRemainingPawn(pluginTwo.pawnIdentifier);
 
-		if (pluginOne.pawnRemaining == 0 || pluginTwo.pawnRemaining == 0) this->ended = true;
+		if (oldPOPawn == pluginOne.pawnRemaining && oldPTPawn == pluginTwo.pawnRemaining) equalityMove++;
+		else equalityMove = 0;
+
+		if (pluginOne.pawnRemaining == 0 || pluginTwo.pawnRemaining == 0 || this->equalityMove >= 100) this->ended = true;
+
+		if (this->ended == true)
+		{
+			if (this->equalityMove >= 50) std::cout << "ended by Equality" << std::endl;
+			this->recorder->SaveRecord();
+		}
+
+	}
+
+	void SimEngine::AddActionRecorder(PawnCoordinates coords, PawnCoordinates newCoords)
+	{
+
+		this->recorder->AddAction(this->GetActivePlayer().name, coords.x, coords.y, newCoords.x, newCoords.y);
 	}
 
 	char SimEngine::GetPluginChar(int teamIdentifier)

@@ -1,8 +1,14 @@
 #pragma once
 
-#include "Core.h"
 #include <iostream>
 #include <vector>
+#include "Core.h"
+#include <Engine/SimEngine.h>
+
+namespace SP
+{
+	class SimEngine;
+}
 
 struct PawnCoordinates
 {
@@ -22,27 +28,33 @@ enum class MOVES : int
 	RIGHT_DOWN_CORNER
 };
 
+enum class PawnTeam
+{
+	MY_TEAM,
+	ENNEMY_TEAM
+};
+
 namespace SP
 {
 
 	class SP_API SPData
 	{
 	public:
-		SPData();
+		SPData(std::shared_ptr<SimEngine> engine);
 		~SPData();
 
-		void SetAction(PawnCoordinates move, MOVES moveType, int pawnIdentifier);
-		PawnCoordinates GetFirstPawn(unsigned int pawnType);
-		PawnCoordinates GetRandomPawn(unsigned int pawnType);
+		void SetAction(PawnCoordinates move, MOVES moveType);
+		PawnCoordinates GetFirstPawn(PawnTeam team);
+		PawnCoordinates GetRandomPawn(PawnTeam team);
 		std::vector<std::vector<int>>& GetBoard();
 		bool isEmpty(int x, int y);
 		int GetRemainingPawn(int identififer);
-		void SetPawn(int x, int y, int pawn);
+		void SetPawn(int x, int y);
 		std::string GetStringMove(MOVES move);
 
 	private:
+		std::shared_ptr<SimEngine> engine;
 		std::vector<std::vector<int>> board;  // Vector of column
-		int pawnType;
 
 		PawnCoordinates GetCoordinatesByMove(PawnCoordinates coord, MOVES moveType);
 	};

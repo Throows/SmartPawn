@@ -1,11 +1,11 @@
 #include <iostream>
 #include <SPBluePlugin.h>
 
-std::unique_ptr<SPBluePlugin> bluePlugin;
+static std::shared_ptr<SPBluePlugin> bluePlugin;
 
-SPBluePlugin::SPBluePlugin(std::shared_ptr<SP::SPData> data)
+SPBluePlugin::SPBluePlugin(std::shared_ptr<SP::SPPlugin> api)
 {
-	this->data = std::move(data);
+	this->api = api;
 }
 
 MOVES SPBluePlugin::FindNearestPawnToMove(PawnCoordinates from, PawnCoordinates to)
@@ -57,15 +57,14 @@ MOVES SPBluePlugin::FindNearestPawnToMove(PawnCoordinates from, PawnCoordinates 
 	}
 }
 
-extern "C" SP_API void InitPlugin(std::shared_ptr<SP::SPData> data)
+extern "C" SP_API void InitPlugin(std::shared_ptr<SP::SPPlugin> api)
 {
-	bluePlugin = std::make_unique<SPBluePlugin>(data);
+	bluePlugin = std::make_shared<SPBluePlugin>(api);
 	std::cout << "plugin initialized !" << std::endl;
 }
 
 extern "C" SP_API void RunIntelligenceTurn()
 {
-
 	PawnCoordinates myTeam = bluePlugin->GetData()->GetRandomPawn(PawnTeam::MY_TEAM);
 	PawnCoordinates enemyTeam = bluePlugin->GetData()->GetFirstPawn(PawnTeam::ENNEMY_TEAM);
 	MOVES move = bluePlugin->FindNearestPawnToMove(myTeam, enemyTeam);

@@ -6,21 +6,22 @@ namespace SP
 {
 	SimGameState::SimGameState(StatesPtr states, WindowPtr window) : State("SimGameState")
 	{
-		this->states = std::move(states);
-		this->window = std::move(window);
+		this->states = states;
+		this->window = window;
 		InitState();
 	}
 
 	SimGameState::~SimGameState()
-	{
+	{	
 	}
 
 	void SimGameState::OnUpdate()
 	{
+		if (this->isExitedState()) return;
 		sf::Time time = clock.getElapsedTime();
 
 		if (time.asMilliseconds() >= 60) {
-			if (!this->engine->isEnded()) {
+			if (!this->engine->GetData()->IsGameEnded()) {
 				this->engine->PlayNextTurn();
 				progressBar->SetProgress(engine->GetPercentageEnded());
 			}
@@ -38,6 +39,12 @@ namespace SP
 
 	void SimGameState::ProcessEvents(sf::Event& event)
 	{
+	}
+
+	void SimGameState::SetExitedState()
+	{
+		this->isExited = true;
+		this->engine->GetData()->SetEnded(true);
 	}
 
 	void SimGameState::InitState()
@@ -67,8 +74,7 @@ namespace SP
 		this->background = std::make_unique<sf::Sprite>(*this->textures.at("BACKGROUND_TEXTURE"), static_cast<sf::IntRect>(this->window->getViewport(this->window->getView())));
 		this->background->setScale(sf::Vector2f(2.0f, 2.0f));
 
-		
-		this->engine = std::move(CreateEngine());
+		this->engine = CreateEngine();
 		this->engine->InitEngine();
 		
 	}

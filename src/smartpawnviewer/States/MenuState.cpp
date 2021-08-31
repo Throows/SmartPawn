@@ -7,8 +7,8 @@ namespace SP
 	MenuState::MenuState(StatesPtr states, WindowPtr window) : State("MenuState")
 	{
 
-		this->states = std::move(states);
-		this->window = std::move(window);
+		this->states = states;
+		this->window = window;
 		InitState();
 	}
 

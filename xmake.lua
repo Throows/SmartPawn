@@ -29,7 +29,7 @@ target("SPEngine")
     end
 
     set_symbols("debug", "hidden")
-    set_runtimes(is_mode("debug") and "MDd" or "MD")
+    set_runtimes("MDd")
 
     if is_plat("windows") then
         add_defines("SP_PLATFORM_WIN")

@@ -23,10 +23,10 @@ namespace SP{
 	{
 		while (m_running) {
 
+			if (this->states->back()->isExitedState()) this->states->pop_back();
+
 			ProcessAppEvents();
 
-			if (this->states->back()->isExitedState()) this->states->pop_back();
-			
 			this->window->clear();
 			if (!this->states->empty())
 			{

@@ -15,6 +15,7 @@ namespace SP
 		virtual void OnUpdate() override;
 		virtual void OnRender() override;
 		void ProcessEvents(sf::Event& event) override;
+		virtual void SetExitedState() override;
 
 	private:
 		void InitState();

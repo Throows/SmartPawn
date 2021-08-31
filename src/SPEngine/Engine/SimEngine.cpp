@@ -22,7 +22,7 @@ namespace SP
 		this->plugins->InitPlugins(api);
 		this->data->PlaceRandomPawn(20, this->plugins->GetActivePlayer().pawnIdentifier, this->plugins->GetWaitingPlayer().pawnIdentifier);
 
-		this->recorder->StartRecoring();
+		this->recorder->StartRecording(this->data->GetBoard());
 		std::cout << "SimEngine initialized !\n";
 
 		std::cout << "Starting with board : " << std::endl;

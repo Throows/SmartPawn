@@ -7,7 +7,7 @@ namespace SP
 	{
 	public:
 		State(const std::string& name);
-		virtual ~State();
+		~State();
 
 		virtual void OnUpdate() {}
 		virtual void OnRender() {}

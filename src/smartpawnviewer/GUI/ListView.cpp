@@ -48,6 +48,8 @@ namespace SP
 		this->scrollBar.move(sf::Vector2f(0.0f, -offset));
 
 		int i = 0;
+		this->hasClickedButton = false;
+		this->clickedButtonOffset = i;
 		for (auto& button : this->buttons)
 		{
 			button->OnUpdate(window, offset*2, this->background.getPosition().y, this->background.getPosition().y + this->background.getSize().y);
@@ -95,6 +97,7 @@ namespace SP
 		if (topPos > this->background.getPosition().y || botPos < (this->background.getPosition().y + this->background.getSize().y)) this->hide = true;
 		else this->hide = false;
 		
+		this->isClicked = false;
 		if (this->background.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window))))
 		{
 			

@@ -23,7 +23,19 @@ namespace SP{
 	{
 		while (m_running) {
 
-			if (this->states->back()->isExitedState()) this->states->pop_back();
+			std::vector<std::shared_ptr<State>>::const_iterator it = this->states->begin();
+
+			while (it != this->states->end())
+			{
+				if ((*it)->isExitedState()) {
+					it = this->states->erase(it);
+				}
+				else
+				{
+					it++;
+				}
+			}
+
 
 			ProcessAppEvents();
 

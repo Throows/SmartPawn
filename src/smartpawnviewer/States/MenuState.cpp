@@ -1,15 +1,20 @@
 #include "MenuState.h"
 #include "SimGameState.h"
+#include "ReplayState.h"
 #include <filesystem>
 
 namespace SP
 {
 	MenuState::MenuState(StatesPtr states, WindowPtr window) : State("MenuState")
 	{
-
 		this->states = states;
 		this->window = window;
 		InitState();
+	}
+
+	MenuState::~MenuState()
+	{
+		this->textures.clear();
 	}
 
 	void MenuState::OnUpdate()
@@ -20,7 +25,7 @@ namespace SP
 			button.Update(mousePos);
 			if (button.IsClicked()) {
 				this->states->push_back(std::make_shared<SimGameState>(states, this->window));
-				this->SetExitedState();
+				//this->SetExitedState();
 			}
 		}
 
@@ -28,8 +33,8 @@ namespace SP
 		if (this->recordListView->hasClickedButton)
 		{
 			std::string clickedButton = this->recordListView->GetClickedButton();
-			//this->states->push_back(std::make_shared<ReplayGameState>(states, this->window));
-			this->SetExitedState();
+			this->states->push_back(std::make_shared<ReplayState>(states, this->window, clickedButton));
+			//this->SetExitedState();
 		}
 	}
 

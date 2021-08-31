@@ -10,7 +10,7 @@ namespace SP
 	{
 	public:
 		MenuState(StatesPtr states, WindowPtr window);
-		~MenuState() = default;
+		~MenuState();
 
 		virtual void OnUpdate() override;
 		virtual void OnRender() override;

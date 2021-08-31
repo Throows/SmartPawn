@@ -13,7 +13,7 @@ namespace SP
 		SimRecorder();
 		~SimRecorder();
 
-		void StartRecoring();
+		void StartRecording(std::vector<std::vector<int>>& board);
 		void AddAction(std::string teamName, int oldXcoord, int oldYCoord, int xCoord, int yCoord);
 		void SaveRecord();
 	private:

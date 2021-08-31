@@ -27,15 +27,30 @@ namespace SP
 	{
 	}
 
-	void SimRecorder::StartRecoring()
+	void SimRecorder::StartRecording(std::vector<std::vector<int>>& board)
 	{
-		this->lines.push_back("[STARTING RECORDING]");
+		this->lines.push_back("## BASE GRID");
+		for (auto& column : board)
+		{
+			std::string line = "{";
+			bool first = true;
+			for (auto& row : column)
+			{
+				if (first) first = false;
+				else line += ",";
+				line += std::to_string(row);
+			}
+			line += "}";
+			this->lines.push_back(line);
+		}
+
+		this->lines.push_back("## STARTING RECORDING");
 	}
 
 	void SimRecorder::AddAction(std::string teamName, int oldXcoord, int oldYCoord, int xCoord, int yCoord)
 	{
 		std::string action = std::string();
-		action.append("[").append(teamName).append("]").append(" -> {").append(std::to_string(oldXcoord)).append(",").append(std::to_string(oldYCoord)).append("} : {").append(std::to_string(oldXcoord)).append(",").append(std::to_string(oldYCoord)).append("}");
+		action.append("[").append(teamName).append("]").append(" -> {").append(std::to_string(oldXcoord)).append(",").append(std::to_string(oldYCoord)).append("} : {").append(std::to_string(xCoord)).append(",").append(std::to_string(yCoord)).append("}");
 		this->lines.push_back(action);
 	}
 

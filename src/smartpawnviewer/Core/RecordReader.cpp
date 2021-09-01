@@ -51,7 +51,7 @@ namespace SP
 					std::cout << "Error line : " << line << std::endl;
 					return;
 				}
-				for (int i = 1; i <= 10; i++) {
+				for (int i = 1; i < result.size(); i++) {
 					row.push_back(std::stoi(result[i]));
 				}
 				this->board.push_back(row);

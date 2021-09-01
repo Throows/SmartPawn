@@ -17,11 +17,19 @@ namespace SP
 	void ReplayState::OnUpdate()
 	{
 		sf::Time time = clock.getElapsedTime();
-		if (time.asSeconds() <= 2)
+		if (time.asMilliseconds() >= 500)
 		{
 			if (this->reader.HasNext()) {
 				Action action = this->reader.NextAction();
-				
+				if (this->reader.ExistPawn(action.fromX, action.fromY))
+				{
+					if (this->reader.ExistPawn(action.toX, action.toY))
+					{
+						RemovePawn(action.toX, action.toY);
+					}
+					Pawn& pawn = GetPawn(action.fromX, action.fromY);
+					pawn.SetCoords(action.toX, action.toY);
+				}
 			}
 			clock.restart();
 		}
@@ -41,6 +49,31 @@ namespace SP
 
 	void ReplayState::ProcessEvents(sf::Event& event)
 	{
+	}
+
+	Pawn& ReplayState::GetPawn(int x, int y)
+	{
+		for (auto& pawn : this->pawns)
+		{
+			if (pawn->IsCoords(x, y)) return *pawn;
+		}
+		return *this->pawns.back();
+	}
+
+	void ReplayState::RemovePawn(int x, int y)
+	{
+		auto it = this->pawns.begin();
+		while (it != this->pawns.end())
+		{
+			if ((*it)->IsCoords(x, y)) {
+				it = this->pawns.erase(it);
+			}
+			else
+			{
+				it++;
+			}
+		}
+		
 	}
 
 	void ReplayState::InitState()
@@ -79,15 +112,16 @@ namespace SP
 		int y = 0;
 		for (auto& column : board)
 		{
+			x = 0;
 			for (auto& row : column)
 			{
 				if (row != 0) {
 					std::unique_ptr<Pawn> pawn = std::make_unique<Pawn>(x, y, this->textures.at("PAWN_TEXTURE"), row == 1 ? 0 : 35);
 					this->pawns.push_back(std::move(pawn));
 				}
-				y++;
+				x++;
 			}
-			x++;
+			y++;
 		}
 	}
 }

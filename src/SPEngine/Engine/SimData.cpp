@@ -50,8 +50,8 @@ namespace SP
 		int pawnA = 0, pawnB = 0;
 		while (pawnA < 20 || pawnB < 20)
 		{
-			int x = GetRandom(0, 9);
-			int y = GetRandom(0, 9);
+			int x = GetRandom(0, 10);
+			int y = GetRandom(0, 10);
 			if (isEmpty(x, y))
 			{
 				if (pawnA < 20) {

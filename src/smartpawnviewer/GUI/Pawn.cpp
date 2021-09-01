@@ -14,6 +14,14 @@ namespace SP
 		SetRotation(rota);
 	}
 
+	Pawn::Pawn() : coordX(-1), coordY(-1)
+	{
+	}
+
+	void Pawn::OnUpdate(sf::RenderWindow& window)
+	{
+	}
+
 	void Pawn::OnRender(sf::RenderWindow& window)
 	{
 		window.draw(*this->pawnTexture);
@@ -46,5 +54,20 @@ namespace SP
 			break;
 		}
 
+	}
+	bool Pawn::IsCoords(int x, int y)
+	{
+		return (this->coordX == x) && (this->coordY == y);
+	}
+
+	void Pawn::SetCoords(int x, int y)
+	{
+		this->coordX = x;
+		this->coordY = y;
+
+		float xcoord = 54 + (4 * coordX + 35 * coordX) + 17.5f;
+		float ycoord = 44 + (4 * coordY + 35 * coordY) + 17.5f;
+
+		this->pawnTexture->setPosition(xcoord, ycoord);
 	}
 }

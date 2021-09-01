@@ -17,6 +17,9 @@ namespace SP
 		virtual void OnRender() override;
 		void ProcessEvents(sf::Event& event) override;
 
+		Pawn& GetPawn(int x, int y);
+		void RemovePawn(int x, int y);
+
 	private:
 		void InitState();
 

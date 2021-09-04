@@ -20,7 +20,8 @@ namespace SP
 		bool HasNext();
 
 		bool Exist(std::string& teamName);
-		bool ExistPawn(int x, int y) { return this->board.at(x).at(y) != 0; };
+		//bool ExistPawn(int x, int y) { return this->board.at(y).at(x) != 0; };
+		void MoveTo(int fromX, int fromY, int toX, int toY);
 		void RegisterTeam(std::string& teamName);
 		int GetTeam(std::string& teamName);
 

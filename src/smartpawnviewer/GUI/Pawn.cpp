@@ -70,4 +70,9 @@ namespace SP
 
 		this->pawnTexture->setPosition(xcoord, ycoord);
 	}
+
+	bool Pawn::operator()(int x, int y)
+	{
+		return IsCoords(x, y);
+	}
 }

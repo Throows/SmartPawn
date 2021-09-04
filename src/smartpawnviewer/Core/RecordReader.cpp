@@ -53,7 +53,9 @@ namespace SP
 				}
 				for (int i = 1; i < result.size(); i++) {
 					row.push_back(std::stoi(result[i]));
+					std::cout << result[i];
 				}
+				std::cout << std::endl;
 				this->board.push_back(row);
 				row.clear();
 			}
@@ -86,7 +88,7 @@ namespace SP
 			}
 			lineCount++;
 		}
-		std::reverse(this->actions.begin(), this->actions.end());
+		//std::reverse(this->actions.begin(), this->actions.end());
 	}
 
 
@@ -111,13 +113,25 @@ namespace SP
 	bool RecordReader::Exist(std::string& teamName)
 	{
 		if(this->teams.empty()) return false;
-		if (this->teams.find(teamName)->first == teamName) return true;
+		std::map<std::string, int>::iterator it = this->teams.begin();
+		while (it != this->teams.end())
+		{
+			if (it->first == teamName) return true;
+			it++;
+		}
 		return false;
+	}
+
+	void RecordReader::MoveTo(int fromX, int fromY, int toX, int toY)
+	{
+		this->board.at(toY).at(toX) = this->board.at(fromY).at(fromX);
+		this->board.at(fromY).at(fromX) = 0;
 	}
 
 	void RecordReader::RegisterTeam(std::string& teamName)
 	{
 		this->lastTeamNumber++;
 		this->teams.emplace(teamName, lastTeamNumber);
-	}
+		std::cout << "Registered team : " << teamName << " number : " << lastTeamNumber << std::endl;
+	} 
 }

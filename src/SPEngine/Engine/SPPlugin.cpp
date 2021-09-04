@@ -12,7 +12,7 @@ namespace SP
 		PawnCoordinates coords;
 		coords.x = 0;
 		coords.y = 0;
-		while (this->engine->GetData()->GetBoard().at(coords.x).at(coords.y) != engine->GetPLManager()->GetTeam(team).pawnIdentifier)
+		while (this->engine->GetData()->GetPawn(coords.x, coords.y) != engine->GetPLManager()->GetTeam(team).pawnIdentifier)
 		{
 			coords.x = rand() % 10;
 			coords.y = rand() % 10;
@@ -38,18 +38,24 @@ namespace SP
 			}
 			pawnCoordinates.x++;
 		}
+		std::cout << "pawn not found \n";
 		return pawnCoordinates;
 	}
-
+	
 	void SPPlugin::SetAction(PawnCoordinates coords, MOVES move)
 	{
-		if (this->engine->GetData()->GetBoard().at(coords.x).at(coords.y) != this->engine->GetPLManager()->GetActivePlayer().pawnIdentifier)
+		if (this->engine->GetData()->GetPawn(coords.x, coords.y) != this->engine->GetPLManager()->GetActivePlayer().pawnIdentifier)
 		{
 			std::cout << "Il est interdi de bouger un pion ennemi ! " << std::endl;
 			return;
 		}
 		this->engine->GetData()->SetPawn(coords.x, coords.y , 0);
 		PawnCoordinates newCoords = GetCoordinatesByMove(coords, move);
+		if (this->engine->GetData()->GetPawn(newCoords.x, newCoords.y) == this->engine->GetPLManager()->GetActivePlayer().pawnIdentifier)
+		{
+			std::cout << "Il est interdi de se deplacer sur son pion! " << std::endl;
+			return;
+		}
 		this->engine->GetData()->SetPawn(newCoords.x, newCoords.y, this->engine->GetPLManager()->GetActivePlayer().pawnIdentifier);
 
 		this->engine->AddActionRecorder(coords, newCoords);

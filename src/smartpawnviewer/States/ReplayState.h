@@ -17,7 +17,8 @@ namespace SP
 		virtual void OnRender() override;
 		void ProcessEvents(sf::Event& event) override;
 
-		Pawn& GetPawn(int x, int y);
+		bool ExistPawn(int x, int y);
+		std::shared_ptr<Pawn> GetPawn(int x, int y);
 		void RemovePawn(int x, int y);
 
 	private:
@@ -29,7 +30,7 @@ namespace SP
 
 		std::unique_ptr<sf::Sprite> background;
 		std::unique_ptr<sf::Sprite> grid;
-		std::vector<std::unique_ptr<Pawn>> pawns;
+		std::vector<std::shared_ptr<Pawn>> pawns;
 		std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
 	};

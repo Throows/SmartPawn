@@ -38,6 +38,7 @@ namespace SP
 		bool isEmpty(int x, int y);
 		int GetRemainingPawn(int identififer);
 		void SetPawn(int x, int y, int identifier);
+		int GetPawn(int x, int y);
 		void PlaceRandomPawn(int pawnNumber, int identifierOne, int identifierTwo);
 		int GetRandom(int min, int max);
 		bool IsPawnDied();
@@ -47,6 +48,7 @@ namespace SP
 		bool CalculateWon(int identifierOne, int identifierTwo);
 		void SetEnded(bool state) { this->ended = state; };
 
+		std::string GetStringMove(MOVES move);
 
 	private:
 		std::vector<std::vector<int>> board;  // Vector of column

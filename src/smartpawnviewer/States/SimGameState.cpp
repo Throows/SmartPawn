@@ -20,7 +20,7 @@ namespace SP
 		if (this->isExitedState()) return;
 		sf::Time time = clock.getElapsedTime();
 
-		if (time.asMilliseconds() >= 60) {
+		if (time.asMilliseconds() >= 10) {
 			if (!this->engine->GetData()->IsGameEnded()) {
 				this->engine->PlayNextTurn();
 				progressBar->SetProgress(engine->GetPercentageEnded());

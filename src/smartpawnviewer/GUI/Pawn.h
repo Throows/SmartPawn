@@ -20,6 +20,7 @@ namespace SP
 
 		bool IsCoords(int x, int y);
 		void SetCoords(int x, int y);
+		bool operator()(int x, int y);
 
 	private:
 		int coordX;

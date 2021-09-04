@@ -26,10 +26,9 @@ namespace SP
 	bool SimData::isEmpty(int x, int y)
 	{
 		if (x > this->board.size() || y > this->board.size()) return false;
-		else return this->board.at(x).at(y) == 0;
+		else return GetPawn(x, y) == 0;
 	}
 
-	//TODO try 
 	int SimData::GetRemainingPawn(int identififer)
 	{
 		int remainingPawn = 0;
@@ -42,7 +41,12 @@ namespace SP
 
 	void SimData::SetPawn(int x, int y, int identifier)
 	{
-		this->board.at(x).at(y) = identifier;
+		this->board.at(y).at(x) = identifier;
+	}
+
+	int SimData::GetPawn(int x, int y)
+	{
+		return this->board.at(y).at(x);
 	}
 
 	void SimData::PlaceRandomPawn(int pawnNumber, int identifierOne, int identifierTwo)
@@ -114,56 +118,49 @@ namespace SP
 	{
 
 		std::cout << "--+---+---+---+---+---+---+---+---+---+---+--" << std::endl;
-		int boardSize = this->board.front().size();
-
-		for (int i = 0; i < boardSize; i++)
+		for (auto& row : this->board)
 		{
-			std::cout << "  | " << GetPluginChar(this->board.at(0).at(i)) << " | "
-				<< GetPluginChar(this->board.at(1).at(i)) << " | "
-				<< GetPluginChar(this->board.at(2).at(i)) << " | "
-				<< GetPluginChar(this->board.at(3).at(i)) << " | "
-				<< GetPluginChar(this->board.at(4).at(i)) << " | "
-				<< GetPluginChar(this->board.at(5).at(i)) << " | "
-				<< GetPluginChar(this->board.at(6).at(i)) << " | "
-				<< GetPluginChar(this->board.at(7).at(i)) << " | "
-				<< GetPluginChar(this->board.at(8).at(i)) << " | "
-				<< GetPluginChar(this->board.at(9).at(i)) << " | " << std::endl;
+			std::cout << "  | ";
+			for (auto& i : row) {
+				std::cout << GetPluginChar(i) << " | ";
+			}
+			std::cout << std::endl;
 			std::cout << "--+---+---+---+---+---+---+---+---+---+---+--" << std::endl;
 		}
 	}
 
 
-// 	std::string SimData::GetStringMove(MOVES move)
-// 	{
-// 		switch (move)
-// 		{
-// 		case MOVES::UP:
-// 			return "UP";
-// 			break;
-// 		case MOVES::DOWN:
-// 			return "DOWN";
-// 			break;
-// 		case MOVES::RIGHT:
-// 			return "RIGHT";
-// 			break;
-// 		case MOVES::LEFT:
-// 			return "LEFT";
-// 			break;
-// 		case MOVES::LEFT_TOP_CORNER:
-// 			return "LEFT_TOP_CORNER";
-// 			break;
-// 		case MOVES::LEFT_DOWN_CORNER:
-// 			return "LEFT_DOWN_CORNER";
-// 			break;
-// 		case MOVES::RIGHT_TOP_CORNER:
-// 			return "RIGHT_TOP_CORNER";
-// 			break;
-// 		case MOVES::RIGHT_DOWN_CORNER:
-// 			return "RIGHT_DOWN_CORNER";
-// 			break;
-// 		default:
-// 			return "NONE";
-// 			break;
-// 		}
-// 	}
+	std::string SimData::GetStringMove(MOVES move)
+	{
+		switch (move)
+		{
+		case MOVES::UP:
+			return "UP";
+			break;
+		case MOVES::DOWN:
+			return "DOWN";
+			break;
+		case MOVES::RIGHT:
+			return "RIGHT";
+			break;
+		case MOVES::LEFT:
+			return "LEFT";
+			break;
+		case MOVES::LEFT_TOP_CORNER:
+			return "LEFT_TOP_CORNER";
+			break;
+		case MOVES::LEFT_DOWN_CORNER:
+			return "LEFT_DOWN_CORNER";
+			break;
+		case MOVES::RIGHT_TOP_CORNER:
+			return "RIGHT_TOP_CORNER";
+			break;
+		case MOVES::RIGHT_DOWN_CORNER:
+			return "RIGHT_DOWN_CORNER";
+			break;
+		default:
+			return "NONE";
+			break;
+		}
+	}
 }

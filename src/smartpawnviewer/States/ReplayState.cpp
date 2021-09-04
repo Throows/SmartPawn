@@ -17,18 +17,24 @@ namespace SP
 	void ReplayState::OnUpdate()
 	{
 		sf::Time time = clock.getElapsedTime();
-		if (time.asMilliseconds() >= 500)
+		if (time.asMilliseconds() >= 100)
 		{
 			if (this->reader.HasNext()) {
 				Action action = this->reader.NextAction();
-				if (this->reader.ExistPawn(action.fromX, action.fromY))
+				if (ExistPawn(action.fromX, action.fromY))
 				{
-					if (this->reader.ExistPawn(action.toX, action.toY))
+					if (ExistPawn(action.toX, action.toY))
 					{
 						RemovePawn(action.toX, action.toY);
 					}
-					Pawn& pawn = GetPawn(action.fromX, action.fromY);
-					pawn.SetCoords(action.toX, action.toY);
+					std::shared_ptr<Pawn> pawn = GetPawn(action.fromX, action.fromY);
+					pawn->SetCoords(action.toX, action.toY);
+					this->reader.MoveTo(action.fromX, action.fromY, action.toX, action.toY);
+					std::cout << "Moved " << action.team << " from : " << action.fromX << ", " << action.fromY << " To : " << action.toX << ", " << action.toY << std::endl;
+				}
+				else
+				{
+					std::cout << "Erreur pas de pion !" << std::endl;
 				}
 			}
 			clock.restart();
@@ -51,13 +57,18 @@ namespace SP
 	{
 	}
 
-	Pawn& ReplayState::GetPawn(int x, int y)
+	bool ReplayState::ExistPawn(int x, int y)
 	{
-		for (auto& pawn : this->pawns)
+		return std::any_of(this->pawns.begin(), this->pawns.end(), [x, y](std::shared_ptr<Pawn> pawn) { if(pawn->IsCoords(x, y)) return true; });
+	}
+
+	std::shared_ptr<Pawn> ReplayState::GetPawn(int x, int y)
+	{
+		for (auto pawn : this->pawns)
 		{
-			if (pawn->IsCoords(x, y)) return *pawn;
+			if (pawn->IsCoords(x, y)) return pawn;
 		}
-		return *this->pawns.back();
+		throw std::runtime_error("No Pawn has been found at these coordinates");
 	}
 
 	void ReplayState::RemovePawn(int x, int y)
@@ -116,7 +127,8 @@ namespace SP
 			for (auto& row : column)
 			{
 				if (row != 0) {
-					std::unique_ptr<Pawn> pawn = std::make_unique<Pawn>(x, y, this->textures.at("PAWN_TEXTURE"), row == 1 ? 0 : 35);
+					std::shared_ptr<Pawn> pawn = std::make_shared<Pawn>(x, y, this->textures.at("PAWN_TEXTURE"), row == 1 ? 0 : 35);
+					std::cout << "coords : " << x << " , " << y << std::endl; 
 					this->pawns.push_back(std::move(pawn));
 				}
 				x++;

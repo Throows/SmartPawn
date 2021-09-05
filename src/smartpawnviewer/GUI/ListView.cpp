@@ -81,8 +81,8 @@ namespace SP
 	ListViewButton::ListViewButton(sf::Vector2f pos, sf::Vector2f size, const sf::Font& font, const std::string title)
 	{
 		this->text = std::make_shared<sf::Text>(title, font);
-		this->text->setCharacterSize(12);
-		this->text->setPosition(pos.x + ((260.0f - text->getLocalBounds().width)/2), pos.y + 10);
+		this->text->setCharacterSize(15);
+		this->text->setPosition(pos.x + ((260.0f - text->getLocalBounds().width)/2), pos.y + 15);
 
 		this->background = sf::RectangleShape(size);
 		this->background.setPosition(pos);

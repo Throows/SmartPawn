@@ -66,6 +66,14 @@ namespace SP
 		else return this->GetWaitingPlayer();
 	}
 
+	std::map<std::string, int> SimPLManager::GetTeams()
+	{
+		std::map<std::string, int> map;
+		map.emplace(activePlayer->name, activePlayer->pawnIdentifier);
+		map.emplace(inactivePlayer->name, inactivePlayer->pawnIdentifier);
+		return map;
+	}
+
 	void SimPLManager::SwapTurn()
 	{
 		activePlayer.swap(inactivePlayer);

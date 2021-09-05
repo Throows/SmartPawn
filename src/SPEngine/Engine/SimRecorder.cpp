@@ -10,65 +10,75 @@ namespace SP
 
 	SimRecorder::SimRecorder()
 	{
+		std::filesystem::create_directories("./Records");
+
 		auto time = std::chrono::system_clock::now();
 		std::time_t date = std::chrono::system_clock::to_time_t(time);
-		std::string year = std::to_string(1900 + std::localtime(&date)->tm_year);
-		std::string month = std::to_string(1 + std::localtime(&date)->tm_mon);
-		std::string day = std::to_string(std::localtime(&date)->tm_mday);
-		std::string hour = std::to_string(std::localtime(&date)->tm_hour);
-		std::string min = std::to_string(std::localtime(&date)->tm_min);
+		int year = 1900 + std::localtime(&date)->tm_year;
+		int month = 1 + std::localtime(&date)->tm_mon;
+		int day = std::localtime(&date)->tm_mday;
+		int hour = std::localtime(&date)->tm_hour;
+		int min = std::localtime(&date)->tm_min;
 
-		this->fileName = std::string("Recording-");
-		this->fileName.append(year).append("_").append(month).append("_").append(day).append("-").append(hour).append("-").append(min);
-		this->fileName.append(".txt");
+		this->filePath = "Records/REC-" + std::to_string(year) + "-" + formatNumber(month) + "-" + formatNumber(day) + "_" + formatNumber(hour) + "_" + formatNumber(min) + ".txt";
+
+		file = std::ofstream(this->filePath, std::ios::app);
+		file.close();
 	}
 
 	SimRecorder::~SimRecorder()
 	{
 	}
 
-	void SimRecorder::StartRecording(std::vector<std::vector<int>>& board)
+	void SimRecorder::StartRecording(std::vector<std::vector<int>>& board, std::map<std::string, int> teams)
 	{
-		this->lines.push_back("## BASE GRID");
-		for (auto& column : board)
+		file.open(filePath, std::ios::app);
+		file << "## TEAMS" << std::endl;
+		for (auto& entry : teams)
 		{
-			std::string line = "{";
-			bool first = true;
-			for (auto& row : column)
-			{
-				if (first) first = false;
-				else line += ",";
-				line += std::to_string(row);
-			}
-			line += "}";
-			this->lines.push_back(line);
+			file << "[" << entry.first << "]{" << entry.second << "}" << std::endl;
 		}
 
-		this->lines.push_back("## STARTING RECORDING");
+		file << "## BOARD" << std::endl;
+		file << "{" << board.at(0).size() << ";" << board.size() << "}" << std::endl;
+
+		file << "## PAWNS" << std::endl;
+		for (int y = 0; y < board.size(); y++)
+		{
+			for (int x = 0; x < board.at(y).size(); x++)
+			{
+				file << "[" << board.at(y).at(x) << "]" << "{" << x << ";" << y << "}" << std::endl;
+			}
+		}
+		
+		file << "## STARTING RECORDING" << std::endl;
+		file.close();
 	}
 
 	void SimRecorder::AddAction(std::string teamName, int oldXcoord, int oldYCoord, int xCoord, int yCoord)
 	{
-		std::string action = std::string();
-		action.append("[").append(teamName).append("]").append(" -> {").append(std::to_string(oldXcoord)).append(",").append(std::to_string(oldYCoord)).append("} : {").append(std::to_string(xCoord)).append(",").append(std::to_string(yCoord)).append("}");
+		std::string action = "[" + teamName + "]" + "{" + std::to_string(oldXcoord) + ";" + std::to_string(oldYCoord) + "}:{" + std::to_string(xCoord) + ";" + std::to_string(yCoord) + "}";
 		this->lines.push_back(action);
 	}
 
 	void SimRecorder::SaveRecord()
 	{
-		std::filesystem::create_directories("./Records");
-		std::ofstream fileStream = std::ofstream(std::string("Records/").append(this->fileName));
-	
-		if (fileStream.is_open()) {
+		file.open(filePath, std::ios::app);
+		if (file.is_open()) {
 			for (std::vector<std::string>::iterator it = this->lines.begin(); it != this->lines.end(); ++it)
 			{
-				fileStream << it->c_str() << std::endl;
+				file << it->c_str() << std::endl;
 			}
 		}
 		else {
-			std::cout << "Error at file " << this->fileName << " : " << strerror(errno) << std::endl;
+			std::cout << "Error at file " << this->filePath << " : " << strerror(errno) << std::endl;
 		}
 		std::cout << "Record saved ! Writed " << this->lines.size() << " lines !!" << std::endl;
-		fileStream.close();
+		this->file.close();
+	}
+
+	std::string SimRecorder::formatNumber(int nb)
+	{
+		return nb < 10 ? "0" + std::to_string(nb) : std::to_string(nb);
 	}
 }

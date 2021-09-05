@@ -22,7 +22,7 @@ namespace SP
 		this->plugins->InitPlugins(api);
 		this->data->PlaceRandomPawn(20, this->plugins->GetActivePlayer().pawnIdentifier, this->plugins->GetWaitingPlayer().pawnIdentifier);
 
-		this->recorder->StartRecording(this->data->GetBoard());
+		this->recorder->StartRecording(this->data->GetBoard(), this->plugins->GetTeams());
 		std::cout << "SimEngine initialized !\n";
 
 		std::cout << "Starting with board : " << std::endl;
@@ -35,8 +35,6 @@ namespace SP
 		this->plugins->SwapTurn();
 		Plugin plugin = this->plugins->GetActivePlayer();
 		plugin.RunInstance();
-		std::cout << "plugin : " << plugin.name << " has played !" << std::endl;
-		this->data->ShowBoard();
 
 		CalculateEnded();
 		if (this->data->IsGameEnded())

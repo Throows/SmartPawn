@@ -20,7 +20,7 @@ namespace SP
 		if (time.asMilliseconds() >= 100)
 		{
 			if (this->reader.HasNext()) {
-				Action action = this->reader.NextAction();
+				Action action = this->reader.GetAction();
 				if (ExistPawn(action.fromX, action.fromY))
 				{
 					if (ExistPawn(action.toX, action.toY))
@@ -29,13 +29,12 @@ namespace SP
 					}
 					std::shared_ptr<Pawn> pawn = GetPawn(action.fromX, action.fromY);
 					pawn->SetCoords(action.toX, action.toY);
-					this->reader.MoveTo(action.fromX, action.fromY, action.toX, action.toY);
-					std::cout << "Moved " << action.team << " from : " << action.fromX << ", " << action.fromY << " To : " << action.toX << ", " << action.toY << std::endl;
 				}
 				else
 				{
-					std::cout << "Erreur pas de pion !" << std::endl;
+					std::cout << "Error pawn not found !" << std::endl;
 				}
+				this->reader.UpdateBoard();
 			}
 			clock.restart();
 		}
@@ -84,7 +83,6 @@ namespace SP
 				it++;
 			}
 		}
-		
 	}
 
 	void ReplayState::InitState()

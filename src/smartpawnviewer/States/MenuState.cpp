@@ -100,7 +100,7 @@ namespace SP
 			int buttonOffset = 60.0f;
 			for (const auto& entry : std::filesystem::directory_iterator("Records/"))
 			{
-				std::string buttonName(entry.path().filename().string());
+				std::string buttonName(entry.path().stem().string());
 				std::shared_ptr<ListViewButton> viewButton = std::make_shared<ListViewButton>(sf::Vector2f(610.0f, buttonOffset), sf::Vector2f(260.0f, 50.0f), *this->font, buttonName);
 				this->recordListView->AddButton(viewButton);
 				buttonOffset += 60.0f;

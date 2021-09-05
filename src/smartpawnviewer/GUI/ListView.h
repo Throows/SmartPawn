@@ -40,7 +40,7 @@ namespace SP
 		
 		bool hasClickedButton = false;
 
-		std::string GetClickedButton() { return this->buttons.at(clickedButtonOffset)->GetValue();  };
+		std::string GetClickedButton() { return this->buttons.at(clickedButtonOffset)->GetValue() + ".txt"; };
 		
 	private:
 		sf::RectangleShape background;

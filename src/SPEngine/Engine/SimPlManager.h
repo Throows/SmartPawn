@@ -5,6 +5,7 @@
 #include "Core.h"
 #include <Engine/SPPlugin.h>
 #include <iostream>
+#include <map>
 
 namespace SP
 {
@@ -37,7 +38,7 @@ struct Plugin
 
 namespace SP
 {
-	class SP_API SimPLManager
+	class SP_API SimPLManager 
 	{
 	public:
 		SimPLManager();
@@ -49,6 +50,7 @@ namespace SP
 		Plugin GetActivePlayer() { return *this->activePlayer; };
 		Plugin GetWaitingPlayer() { return *this->inactivePlayer; };
 		Plugin GetTeam(PawnTeam team);
+		std::map<std::string, int> GetTeams();
 
 		void SwapTurn();
 

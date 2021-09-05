@@ -201,7 +201,6 @@ namespace SP
 		int y = std::stoi(result[3]);
 
 		this->board.at(y).at(x) = team;
-
 	}
 
 	void RecordReader::ReadRecord(std::smatch& result)

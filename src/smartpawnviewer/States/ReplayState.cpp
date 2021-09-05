@@ -125,8 +125,7 @@ namespace SP
 			for (auto& row : column)
 			{
 				if (row != 0) {
-					std::shared_ptr<Pawn> pawn = std::make_shared<Pawn>(x, y, this->textures.at("PAWN_TEXTURE"), row == 1 ? 0 : 35);
-					std::cout << "coords : " << x << " , " << y << std::endl; 
+					std::shared_ptr<Pawn> pawn = std::make_shared<Pawn>(x, y, this->textures.at("PAWN_TEXTURE"), row == 1 ? 35 : 0);
 					this->pawns.push_back(std::move(pawn));
 				}
 				x++;

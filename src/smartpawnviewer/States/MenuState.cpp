@@ -19,12 +19,19 @@ namespace SP
 
 	void MenuState::OnUpdate()
 	{
+
+		if (!isFocused) {
+			UpdateListViewButton();
+			isFocused = true;
+		}
+
 		sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*this->window.get()));
 		for (auto button : this->buttons)
 		{
 			button.Update(mousePos);
 			if (button.IsClicked()) {
 				this->states->push_back(std::make_shared<SimGameState>(states, this->window));
+				this->isFocused = false;
 				//this->SetExitedState();
 			}
 		}
@@ -34,6 +41,7 @@ namespace SP
 		{
 			std::string clickedButton = this->recordListView->GetClickedButton();
 			this->states->push_back(std::make_shared<ReplayState>(states, this->window, clickedButton));
+			this->isFocused = false;
 			//this->SetExitedState();
 		}
 	}
@@ -56,6 +64,27 @@ namespace SP
 	void MenuState::ProcessEvents(sf::Event& event)
 	{
 		this->recordListView->ProcessEvents(event);
+	}
+
+	void MenuState::UpdateListViewButton()
+	{
+		this->recordListView->ResetButtons();
+		try
+		{
+			int buttonOffset = 60.0f;
+			for (const auto& entry : std::filesystem::directory_iterator("Records/"))
+			{
+				std::string buttonName(entry.path().stem().string());
+				std::shared_ptr<ListViewButton> viewButton = std::make_shared<ListViewButton>(sf::Vector2f(610.0f, buttonOffset), sf::Vector2f(260.0f, 50.0f), *this->font, buttonName);
+				this->recordListView->AddButton(viewButton);
+				buttonOffset += 60.0f;
+			}
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+
 	}
 
 	void MenuState::InitState()
@@ -95,20 +124,8 @@ namespace SP
 
 		this->recordListView = std::make_shared<ListView>(sf::Vector2f(600.0f, 50.0f), sf::Vector2f(300.0f, 400.0f));
 
-		try
-		{
-			int buttonOffset = 60.0f;
-			for (const auto& entry : std::filesystem::directory_iterator("Records/"))
-			{
-				std::string buttonName(entry.path().stem().string());
-				std::shared_ptr<ListViewButton> viewButton = std::make_shared<ListViewButton>(sf::Vector2f(610.0f, buttonOffset), sf::Vector2f(260.0f, 50.0f), *this->font, buttonName);
-				this->recordListView->AddButton(viewButton);
-				buttonOffset += 60.0f;
-			}
-		}
-		catch (const std::exception& e)
-		{
-			std::cout << e.what() << std::endl;
-		}
+		UpdateListViewButton();
+	
+		this->isFocused = true;
 	}
 }

@@ -16,6 +16,8 @@ namespace SP
 		virtual void OnRender() override;
 		void ProcessEvents(sf::Event& event) override;
 
+		void UpdateListViewButton();
+
 	private:
 		void InitState();
 
@@ -27,5 +29,6 @@ namespace SP
 		std::unique_ptr<sf::Sprite> background;
 		std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 		std::shared_ptr<sf::Font> font;
+		bool isFocused;
 	};
 }

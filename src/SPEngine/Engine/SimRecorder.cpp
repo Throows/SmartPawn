@@ -47,7 +47,9 @@ namespace SP
 		{
 			for (int x = 0; x < board.at(y).size(); x++)
 			{
-				file << "[" << board.at(y).at(x) << "]" << "{" << x << ";" << y << "}" << std::endl;
+				if (board.at(y).at(x) != 0) {
+					file << "[" << board.at(y).at(x) << "]" << "{" << x << ";" << y << "}" << std::endl;
+				}
 			}
 		}
 		

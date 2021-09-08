@@ -52,13 +52,13 @@ namespace SP
 	void SimData::PlaceRandomPawn(int pawnNumber, int identifierOne, int identifierTwo)
 	{
 		int pawnA = 0, pawnB = 0;
-		while (pawnA < 20 || pawnB < 20)
+		while (pawnA < pawnNumber || pawnB < pawnNumber)
 		{
 			int x = GetRandom(0, 10);
 			int y = GetRandom(0, 10);
 			if (isEmpty(x, y))
 			{
-				if (pawnA < 20) {
+				if (pawnA < pawnNumber) {
 					SetPawn(x, y, identifierOne);
 					pawnA++;
 				}

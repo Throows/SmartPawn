@@ -20,7 +20,7 @@ namespace SP
 		std::shared_ptr<SPPlugin> api = std::make_shared<SPPlugin>(shared_from_this());
 
 		this->plugins->InitPlugins(api);
-		this->data->PlaceRandomPawn(20, this->plugins->GetActivePlayer().pawnIdentifier, this->plugins->GetWaitingPlayer().pawnIdentifier);
+		this->data->PlaceRandomPawn(5, this->plugins->GetActivePlayer().pawnIdentifier, this->plugins->GetWaitingPlayer().pawnIdentifier);
 
 		this->recorder->StartRecording(this->data->GetBoard(), this->plugins->GetTeams());
 		std::cout << "SimEngine initialized !\n";
@@ -64,6 +64,8 @@ namespace SP
 		}
 		else return;
 
+
+		this->data->ShowBoard();
 		this->recorder->SaveRecord();
 
 	}

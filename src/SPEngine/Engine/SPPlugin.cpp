@@ -49,13 +49,13 @@ namespace SP
 			std::cout << "Il est interdi de bouger un pion ennemi ! " << std::endl;
 			return;
 		}
-		this->engine->GetData()->SetPawn(coords.x, coords.y , 0);
 		PawnCoordinates newCoords = GetCoordinatesByMove(coords, move);
 		if (this->engine->GetData()->GetPawn(newCoords.x, newCoords.y) == this->engine->GetPLManager()->GetActivePlayer().pawnIdentifier)
 		{
 			std::cout << "Il est interdi de se deplacer sur son pion! " << std::endl;
 			return;
 		}
+		this->engine->GetData()->SetPawn(coords.x, coords.y , 0);
 		this->engine->GetData()->SetPawn(newCoords.x, newCoords.y, this->engine->GetPLManager()->GetActivePlayer().pawnIdentifier);
 
 		this->engine->AddActionRecorder(coords, newCoords);

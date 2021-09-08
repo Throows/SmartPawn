@@ -17,7 +17,7 @@ namespace SP
 	void ReplayState::OnUpdate()
 	{
 		sf::Time time = clock.getElapsedTime();
-		if (time.asMilliseconds() >= 100)
+		if (time.asMilliseconds() >= 300)
 		{
 			if (this->reader.HasNext()) {
 				Action action = this->reader.GetAction();
@@ -58,7 +58,8 @@ namespace SP
 
 	bool ReplayState::ExistPawn(int x, int y)
 	{
-		return std::any_of(this->pawns.begin(), this->pawns.end(), [x, y](std::shared_ptr<Pawn> pawn) { if(pawn->IsCoords(x, y)) return true; });
+		return this->reader.ExistPawn(x, y);
+		//return std::any_of(this->pawns.begin(), this->pawns.end(), [x, y](std::shared_ptr<Pawn> pawn) { if(pawn->IsCoords(x, y)) return true; });
 	}
 
 	std::shared_ptr<Pawn> ReplayState::GetPawn(int x, int y)

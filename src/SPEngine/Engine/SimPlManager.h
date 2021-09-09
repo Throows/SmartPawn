@@ -34,6 +34,11 @@ struct Plugin
 		return a.name == name;
 	}
 
+	void SetRemainingPawn(int pawn)
+	{
+		pawnRemaining = pawn;
+	}
+
 };
 
 namespace SP

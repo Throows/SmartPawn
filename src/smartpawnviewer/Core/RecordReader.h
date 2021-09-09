@@ -15,6 +15,7 @@ enum class RecordCategory
 	BOARD,
 	PAWNS,
 	RECORD,
+	WINNER,
 	READ_ERROR
 };
 
@@ -42,6 +43,7 @@ namespace SP
 		bool ExistPawn(int x, int y) { return this->board.at(y).at(x) != 0; };
 		void UpdateBoard();
 		int GetTeam(std::string& teamName);
+		std::string GetWinner() { return this->winnerTeam; };
 
 		std::vector<std::vector<int>>& GetBoard() { return this->board; };
 
@@ -52,12 +54,14 @@ namespace SP
 		void ReadPawns(std::smatch& result);
 		void ReadRecord(std::smatch& result);
 		void ReadError(std::smatch& result);
+		void ReadWinner(std::smatch& result);
 
 	private:
 		std::map<std::string, int> teams;
 		std::vector<std::vector<int>> board;
 		std::vector<Action> actions;
 		std::string filePath;
+		std::string winnerTeam;
 
 		RecordCategory actualCategory;
 		std::map<RecordCategory, ReaderState> states;	

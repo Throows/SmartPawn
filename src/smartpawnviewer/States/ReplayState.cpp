@@ -16,27 +16,13 @@ namespace SP
 
 	void ReplayState::OnUpdate()
 	{
-		sf::Time time = clock.getElapsedTime();
-		if (time.asMilliseconds() >= 300)
-		{
-			if (this->reader.HasNext()) {
-				Action action = this->reader.GetAction();
-				if (ExistPawn(action.fromX, action.fromY))
-				{
-					if (ExistPawn(action.toX, action.toY))
-					{
-						RemovePawn(action.toX, action.toY);
-					}
-					std::shared_ptr<Pawn> pawn = GetPawn(action.fromX, action.fromY);
-					pawn->SetCoords(action.toX, action.toY);
-				}
-				else
-				{
-					std::cout << "Error pawn not found !" << std::endl;
-				}
-				this->reader.UpdateBoard();
-			}
-			clock.restart();
+		bool oldState = isReplay;
+		if (isReplay) {
+			UpdateReplay();
+		}
+		if (!isReplay && oldState) {
+			std::cout << this->reader.GetWinner() << std::endl;
+			this->title.setString("Gagnant : " + this->reader.GetWinner());
 		}
 
 	}
@@ -50,6 +36,7 @@ namespace SP
 		{
 			pawn->OnRender(*this->window);
 		}
+		this->window->draw(this->title);
 	}
 
 	void ReplayState::ProcessEvents(sf::Event& event)
@@ -59,7 +46,6 @@ namespace SP
 	bool ReplayState::ExistPawn(int x, int y)
 	{
 		return this->reader.ExistPawn(x, y);
-		//return std::any_of(this->pawns.begin(), this->pawns.end(), [x, y](std::shared_ptr<Pawn> pawn) { if(pawn->IsCoords(x, y)) return true; });
 	}
 
 	std::shared_ptr<Pawn> ReplayState::GetPawn(int x, int y)
@@ -88,6 +74,12 @@ namespace SP
 
 	void ReplayState::InitState()
 	{
+
+		this->font = std::make_shared<sf::Font>();
+		if (!this->font->loadFromFile("resources/fonts/neuropol_x_rg.ttf"))
+		{
+			SP_APP_ERROR("Could not load the font ! (SimGameState)");
+		}
 
 		this->textures.emplace("PAWN_TEXTURE", std::make_shared<sf::Texture>());
 		if (!this->textures.at("PAWN_TEXTURE")->loadFromFile("resources/gui/pawns.png"))
@@ -132,6 +124,42 @@ namespace SP
 				x++;
 			}
 			y++;
+		}
+
+		this->title = sf::Text("", *this->font, 30);
+		this->title.setPosition(sf::Vector2f(475.f, 50.0f));
+		this->title.setColor(sf::Color::Black);
+		this->title.setOutlineColor(sf::Color::White);
+		this->title.setOutlineThickness(1.5f);
+
+	}
+
+	void ReplayState::UpdateReplay()
+	{
+		sf::Time time = clock.getElapsedTime();
+		if (time.asMilliseconds() >= 1)
+		{
+			if (this->reader.HasNext()) {
+				Action action = this->reader.GetAction();
+				if (ExistPawn(action.fromX, action.fromY))
+				{
+					if (ExistPawn(action.toX, action.toY))
+					{
+						RemovePawn(action.toX, action.toY);
+					}
+					std::shared_ptr<Pawn> pawn = GetPawn(action.fromX, action.fromY);
+					pawn->SetCoords(action.toX, action.toY);
+				}
+				else
+				{
+					std::cout << "Error pawn not found !" << std::endl;
+				}
+				this->reader.UpdateBoard();
+			}
+			else {
+				isReplay = false;
+			}
+			clock.restart();
 		}
 	}
 }

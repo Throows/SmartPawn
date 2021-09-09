@@ -41,5 +41,7 @@ namespace SP
 		std::shared_ptr<SimData> data;
 		std::shared_ptr<SimRecorder> recorder;
 
+		const unsigned int initalPawnNumber = 5;
+
 	};
 };

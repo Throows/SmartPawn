@@ -9,84 +9,43 @@ namespace SP
 		std::string path = "./Records/";
 		this->filePath = path + fileName;
 
-		std::regex teamRegex;
-		try
-		{
-			teamRegex = std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\})");
-		}
-		catch (const std::regex_error& e)
-		{
-			std::cout << "Error Team Regex : " << e.what() << std::endl;
-		}
-
 		ReaderState teamState{
-			teamRegex,
+			std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\})"),
 			[=](std::smatch& result) { this->ReadTeams(result); },
 			2,
 		};
 		this->states.emplace(RecordCategory::TEAMS, teamState);
 
-
-		std::regex boardRegex;
-		try
-		{
-			boardRegex = std::regex(R"(\{([0-9]*)\;([0-9]*)\})");
-		}
-		catch (const std::regex_error& e)
-		{
-			std::cout << "Error Board Regex : " << e.what() << std::endl;
-		}
 		ReaderState boardState{
-			boardRegex,
+			std::regex(R"(\{([0-9]*)\;([0-9]*)\})"),
 			[=](std::smatch& result) { this->ReadBoard(result); },
 			2,
 		};
 		this->states.emplace(RecordCategory::BOARD, boardState);
 
-
-		std::regex pawnRegex;
-		try
-		{
-			pawnRegex = std::regex(R"(\[([0-9]*)\]\{([0-9]*)\;([0-9]*)\})");
-		}
-		catch (const std::regex_error& e)
-		{
-			std::cout << "Error Pawn Regex : " << e.what() << std::endl;
-		}
 		ReaderState pawnState{
-			pawnRegex,
+			std::regex(R"(\[([0-9]*)\]\{([0-9]*)\;([0-9]*)\})"),
 			[=](std::smatch& result) { this->ReadPawns(result); },
 			3,
 		};
 		this->states.emplace(RecordCategory::PAWNS, pawnState);
 
-		std::regex recordRegex;
-		try
-		{
-			recordRegex = std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\;([0-9]*)\}\:\{([0-9]*)\;([0-9]*)\})");
-		}
-		catch (const std::regex_error& e)
-		{
-			std::cout << "Error Record Regex : " << e.what() << std::endl;
-		}
 		ReaderState recordState{
-			recordRegex,
+			std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\;([0-9]*)\}\:\{([0-9]*)\;([0-9]*)\})"),
 			[=](std::smatch& result) { this->ReadRecord(result); },
 			5,
 		};
 		this->states.emplace(RecordCategory::RECORD, recordState);
 
-		std::regex errorRegex;
-		try
-		{
-			errorRegex = std::regex(R"((.*))");
-		}
-		catch (const std::regex_error& e)
-		{
-			std::cout << "Error Regex : " << e.what() << std::endl;
-		}
+		ReaderState winnerState{
+			std::regex(R"(\[([A-Za-z\s_]*)\])"),
+			[=](std::smatch& result) { this->ReadWinner(result); },
+			1,
+		};
+		this->states.emplace(RecordCategory::WINNER, winnerState);
+
 		ReaderState errorState{
-			errorRegex,
+			std::regex(R"((.*))"),
 			[=](std::smatch& result) { this->ReadTeams(result); },
 			1,
 		};
@@ -108,7 +67,6 @@ namespace SP
 		{
 			if (line.find("##") != std::string::npos) {
 				std::string rawState = line.substr(3, line.length()-1);
-				std::cout << "State : " << rawState << std::endl;
 				this->actualCategory = GetStateFromString(rawState);
 				activeReader = this->states.at(this->actualCategory);
 				continue;
@@ -159,7 +117,6 @@ namespace SP
 		 // prevent last team (default value)
 		 if (team->first == teamName) return team->second;
 		 throw std::runtime_error("Could not find team ! ");
-
 	}
 
 	RecordCategory RecordReader::GetStateFromString(const std::string& str)
@@ -168,6 +125,7 @@ namespace SP
 		else if (str == "BOARD") return RecordCategory::BOARD;
 		else if (str == "PAWNS") return RecordCategory::PAWNS;
 		else if (str == "STARTING RECORDING") return RecordCategory::RECORD;
+		else if (str == "WINNER") return RecordCategory::WINNER;
 		else return RecordCategory::READ_ERROR;
 
 	}
@@ -181,7 +139,6 @@ namespace SP
 	void RecordReader::ReadTeams(std::smatch& result)
 	{
 		this->teams.emplace(result[1], std::stoi(result[2]));
-		std::cout << "Registered team : " << result[1] << " number : " << result[2] << std::endl;
 	}
 
 	void RecordReader::ReadBoard(std::smatch& result)
@@ -191,7 +148,6 @@ namespace SP
 			std::vector<int> row(std::stoi(result[1]), 0);
 			this->board.push_back(row);
 		}
-		std::cout << "Board : " << board.begin()->size() << ", " << board.size() << std::endl;
 	}
 
 	void RecordReader::ReadPawns(std::smatch& result)
@@ -217,6 +173,14 @@ namespace SP
 	void RecordReader::ReadError(std::smatch& result)
 	{
 		std::cout << "Error : " << result[0] << std::endl;
+	}
+
+	void RecordReader::ReadWinner(std::smatch& result)
+	{
+		std::string team = result[1].str();
+		std::cout << "Team :" << team << std::endl;
+ 		if(team == "NO WINNER") this->winnerTeam = "EQUALITÉ";
+		else this->winnerTeam = team;
 	}
 }
 

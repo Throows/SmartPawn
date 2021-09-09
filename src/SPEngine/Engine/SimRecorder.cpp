@@ -63,6 +63,11 @@ namespace SP
 		this->lines.push_back(action);
 	}
 
+	void SimRecorder::AddWinner(std::string winner)
+	{
+		this->winner = winner;
+	}
+
 	void SimRecorder::SaveRecord()
 	{
 		file.open(filePath, std::ios::app);
@@ -75,6 +80,10 @@ namespace SP
 		else {
 			std::cout << "Error at file " << this->filePath << " : " << strerror(errno) << std::endl;
 		}
+
+		file << "## WINNER" << std::endl;
+		file << "[" << this->winner << "]" << std::endl;
+
 		std::cout << "Record saved ! Writed " << this->lines.size() << " lines !!" << std::endl;
 		this->file.close();
 	}

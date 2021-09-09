@@ -20,7 +20,7 @@ namespace SP
 		std::shared_ptr<SPPlugin> api = std::make_shared<SPPlugin>(shared_from_this());
 
 		this->plugins->InitPlugins(api);
-		this->data->PlaceRandomPawn(5, this->plugins->GetActivePlayer().pawnIdentifier, this->plugins->GetWaitingPlayer().pawnIdentifier);
+		this->data->PlaceRandomPawn(this->initalPawnNumber, this->plugins->GetActivePlayer().pawnIdentifier, this->plugins->GetWaitingPlayer().pawnIdentifier);
 
 		this->recorder->StartRecording(this->data->GetBoard(), this->plugins->GetTeams());
 		std::cout << "SimEngine initialized !\n";
@@ -46,8 +46,8 @@ namespace SP
 	float SimEngine::GetPercentageEnded()
 	{
 		float plOneEndingPercent, plTwoEndingPercent;
-		plOneEndingPercent = 1 - (this->data->GetRemainingPawn(1) / 20.0f);
-		plTwoEndingPercent = 1 - (this->data->GetRemainingPawn(2) / 20.0f);
+		plOneEndingPercent = 1 - (this->data->GetRemainingPawn(1) / (float) this->initalPawnNumber);
+		plTwoEndingPercent = 1 - (this->data->GetRemainingPawn(2) / (float) this->initalPawnNumber);
 		if (this->data->IsGameEnded()) plOneEndingPercent = 1.0f;
 		return plTwoEndingPercent > plOneEndingPercent ? plTwoEndingPercent : plOneEndingPercent;
 	}
@@ -57,15 +57,23 @@ namespace SP
 		if (this->data->CalculateTie())
 		{
 			std::cout << "Sim ended by Equality" << std::endl;
+			this->recorder->AddWinner("NO WINNER");
 		}
 		else if (this->data->CalculateWon(this->plugins->GetActivePlayer().pawnIdentifier, this->plugins->GetWaitingPlayer().pawnIdentifier))
 		{
+
+			this->plugins->GetActivePlayer().SetRemainingPawn(this->data->GetRemainingPawn(this->plugins->GetActivePlayer().pawnIdentifier));
+			this->plugins->GetWaitingPlayer().SetRemainingPawn(this->data->GetRemainingPawn(this->plugins->GetWaitingPlayer().pawnIdentifier));
+
+			std::string winner = this->plugins->GetActivePlayer().pawnRemaining == 0 ? this->plugins->GetActivePlayer().name : this->plugins->GetWaitingPlayer().name;
+			this->recorder->AddWinner(winner);
 			std::cout << "Sim ended !" << std::endl;
 		}
 		else return;
 
 
 		this->data->ShowBoard();
+		
 		this->recorder->SaveRecord();
 
 	}

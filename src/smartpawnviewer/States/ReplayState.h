@@ -23,11 +23,16 @@ namespace SP
 
 	private:
 		void InitState();
+		void UpdateReplay();
+		bool isReplay = true;
+
 
 		RecordReader reader;
 
 		sf::Clock clock;
 
+		std::shared_ptr<sf::Font> font;
+		sf::Text title;
 		std::unique_ptr<sf::Sprite> background;
 		std::unique_ptr<sf::Sprite> grid;
 		std::vector<std::shared_ptr<Pawn>> pawns;

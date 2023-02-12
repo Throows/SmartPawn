@@ -12,7 +12,6 @@ namespace SP{
 		AddState(std::make_shared<MenuState>(this->states, this->window));
 
 		this->Init();
-
 	}
 
 	Application::~Application()

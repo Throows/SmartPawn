@@ -1,11 +1,8 @@
 #pragma once
-
-#include <windows.h>
-#include <libloaderapi.h>
-#include "Core.h"
 #include <Engine/SPPlugin.h>
 #include <iostream>
 #include <map>
+#include <pybind11/pybind11.h>
 
 namespace SP
 {
@@ -26,8 +23,7 @@ struct Plugin
 	std::string name;
 	unsigned int pawnIdentifier;
 	unsigned int pawnRemaining;
-	HMODULE handle;
-	PLUGIN RunInstance;
+	pybind11::module_ pluginScript;
 
 	bool operator==(Plugin a)
 	{
@@ -38,12 +34,11 @@ struct Plugin
 	{
 		pawnRemaining = pawn;
 	}
-
 };
 
 namespace SP
 {
-	class SP_API SimPLManager 
+	class SimPLManager 
 	{
 	public:
 		SimPLManager();

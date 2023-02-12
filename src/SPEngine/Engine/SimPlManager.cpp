@@ -10,16 +10,16 @@ namespace SP
 
 	SimPLManager::~SimPLManager()
 	{
-		FreeLibrary(activePlayer->handle);
-		FreeLibrary(inactivePlayer->handle);
+		//FreeLibrary(activePlayer->handle);
+		//FreeLibrary(inactivePlayer->handle);
 	}
 
 
 	void SimPLManager::RegisterPlugins()
 	{
 
-		activePlayer->handle = LoadLibrary("SPIntelligenceBlue.dll");
-		inactivePlayer->handle = LoadLibrary("SPIntelligence.dll");
+		//activePlayer->handle = LoadLibrary("SPIntelligenceBlue.dll");
+		//inactivePlayer->handle = LoadLibrary("SPIntelligence.dll");
 		if (activePlayer->handle == NULL || inactivePlayer->handle == NULL)
 		{
 			throw std::runtime_error("Could not load plugin file !");

@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include <Engine/SimEngine.h>
 
 namespace SP
@@ -34,7 +33,7 @@ namespace SP
 
 		this->plugins->SwapTurn();
 		Plugin plugin = this->plugins->GetActivePlayer();
-		plugin.RunInstance();
+		//plugin.RunInstance();
 
 		CalculateEnded();
 		if (this->data->IsGameEnded())
@@ -84,7 +83,7 @@ namespace SP
 	}
 }
 
-extern SP_API std::shared_ptr<SP::SimEngine> CreateEngine()
+extern std::shared_ptr<SP::SimEngine> CreateEngine()
 {
 	return std::make_shared<SP::SimEngine>();
 }

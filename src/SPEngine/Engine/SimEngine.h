@@ -1,6 +1,4 @@
 #pragma once
-
-#include "Core.h"
 #include <Engine/SimPlManager.h>
 #include <Engine/SimData.h>
 #include <Engine/SimRecorder.h>
@@ -18,7 +16,7 @@ namespace SP
 
 	class SPPlugin;
 
-	class SP_API SimEngine 
+	class SimEngine 
 		: public std::enable_shared_from_this<SimEngine>
 	{
 	public:

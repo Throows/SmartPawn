@@ -1,5 +1,4 @@
 #pragma once
-
 #include <Engine/SimEngine.h>
 
 namespace SP
@@ -14,7 +13,7 @@ struct PawnCoordinates;
 
 namespace SP
 {
-	class SP_API SPPlugin
+	class SPPlugin
 	{
 	public:
 		SPPlugin(std::shared_ptr<SimEngine> engine);

@@ -1,8 +1,6 @@
 #pragma once
-
 #include <iostream>
 #include <vector>
-#include "Core.h"
 
 struct PawnCoordinates
 {
@@ -25,7 +23,7 @@ enum class MOVES : int
 namespace SP
 {
 
-	class SP_API SimData
+	class SimData
 	{
 	public:
 		SimData();

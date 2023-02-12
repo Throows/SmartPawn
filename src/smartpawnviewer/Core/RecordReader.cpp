@@ -162,7 +162,8 @@ namespace SP
 	void RecordReader::ReadRecord(std::smatch& result)
 	{
 		Action action;
-		action.team = GetTeam(result[1].str());
+		auto resultStr = result[1].str()
+		action.team = GetTeam(resultStr);
 		action.fromX = std::stoi(result[2]);
 		action.fromY = std::stoi(result[3]);
 		action.toX = std::stoi(result[4]);
@@ -179,7 +180,7 @@ namespace SP
 	{
 		std::string team = result[1].str();
 		std::cout << "Team :" << team << std::endl;
- 		if(team == "NO WINNER") this->winnerTeam = "EQUALITÉ";
+ 		if(team == "NO WINNER") this->winnerTeam = "EQUALITï¿½";
 		else this->winnerTeam = team;
 	}
 }

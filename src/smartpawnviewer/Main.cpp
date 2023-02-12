@@ -6,7 +6,7 @@
 int main(int argc, char** argv) 
 {
 	SP::Logger::Init();
-	
+	SP_APP_INFO("Logger Initialized successfully !");
 	auto app = new SP::Application();
 	app->Run();
 	delete app;

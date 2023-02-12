@@ -1,14 +1,15 @@
-#include <Engine/SimRecorder.h>
+#include <Engine/GameRecorder.h>
 #include <chrono>
-#include<ctime>
+#include <ctime>
 #include <iostream>
 #include <stdio.h>
 #include <filesystem>
+#include <cmath>
 
 namespace SP
 {
 
-	SimRecorder::SimRecorder()
+	GameRecorder::GameRecorder()
 	{
 		std::filesystem::create_directories("./Records");
 
@@ -26,11 +27,11 @@ namespace SP
 		file.close();
 	}
 
-	SimRecorder::~SimRecorder()
+	GameRecorder::~GameRecorder()
 	{
 	}
 
-	void SimRecorder::StartRecording(std::vector<std::vector<int>>& board, std::map<std::string, int> teams)
+	void GameRecorder::StartRecording(const std::vector<uint8_t>& board, std::map<std::string, int> teams)
 	{
 		file.open(filePath, std::ios::app);
 		file << "## TEAMS" << std::endl;
@@ -40,35 +41,31 @@ namespace SP
 		}
 
 		file << "## BOARD" << std::endl;
-		file << "{" << board.at(0).size() << ";" << board.size() << "}" << std::endl;
+		file << "{" << std::sqrt(board.size()) << ";" << std::sqrt(board.size()) << "}" << std::endl;
 
 		file << "## PAWNS" << std::endl;
-		for (int y = 0; y < board.size(); y++)
-		{
-			for (int x = 0; x < board.at(y).size(); x++)
-			{
-				if (board.at(y).at(x) != 0) {
-					file << "[" << board.at(y).at(x) << "]" << "{" << x << ";" << y << "}" << std::endl;
-				}
-			}
+		int x = 0, y = 0; // TODO: get x and y from board
+		for (auto& pawn : board) {
+			if (pawn != 0)
+				file << "[" << pawn << "]" << "{" << x << ";" << y << "}" << std::endl;
 		}
 		
 		file << "## STARTING RECORDING" << std::endl;
 		file.close();
 	}
 
-	void SimRecorder::AddAction(std::string teamName, int oldXcoord, int oldYCoord, int xCoord, int yCoord)
+	void GameRecorder::AddAction(std::string teamName, int oldXcoord, int oldYCoord, int xCoord, int yCoord)
 	{
 		std::string action = "[" + teamName + "]" + "{" + std::to_string(oldXcoord) + ";" + std::to_string(oldYCoord) + "}:{" + std::to_string(xCoord) + ";" + std::to_string(yCoord) + "}";
 		this->lines.push_back(action);
 	}
 
-	void SimRecorder::AddWinner(std::string winner)
+	void GameRecorder::AddWinner(std::string winner)
 	{
 		this->winner = winner;
 	}
 
-	void SimRecorder::SaveRecord()
+	void GameRecorder::SaveRecord()
 	{
 		file.open(filePath, std::ios::app);
 		if (file.is_open()) {
@@ -88,7 +85,7 @@ namespace SP
 		this->file.close();
 	}
 
-	std::string SimRecorder::formatNumber(int nb)
+	std::string GameRecorder::formatNumber(int nb)
 	{
 		return nb < 10 ? "0" + std::to_string(nb) : std::to_string(nb);
 	}

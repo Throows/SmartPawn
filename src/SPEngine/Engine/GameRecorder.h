@@ -6,13 +6,13 @@
 
 namespace SP
 {
-	class SimRecorder
+	class GameRecorder
 	{	
 	public:
-		SimRecorder();
-		~SimRecorder();
+		GameRecorder();
+		~GameRecorder();
 
-		void StartRecording(std::vector<std::vector<int>>& board, std::map<std::string, int> teams);
+		void StartRecording(const std::vector<uint8_t>& board, std::map<std::string, int> teams);
 		void AddAction(std::string teamName, int oldXcoord, int oldYCoord, int xCoord, int yCoord);
 		void AddWinner(std::string winner);
 		void SaveRecord();

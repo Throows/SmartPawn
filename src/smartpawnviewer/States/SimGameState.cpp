@@ -1,7 +1,5 @@
 #include "SimGameState.h"
 
-extern std::shared_ptr<SP::SimEngine> CreateEngine();
-
 namespace SP
 {
 	SimGameState::SimGameState(StatesPtr states, WindowPtr window) : State("SimGameState")
@@ -74,8 +72,8 @@ namespace SP
 		this->background = std::make_unique<sf::Sprite>(*this->textures.at("BACKGROUND_TEXTURE"), static_cast<sf::IntRect>(this->window->getViewport(this->window->getView())));
 		this->background->setScale(sf::Vector2f(2.0f, 2.0f));
 
-		this->engine = CreateEngine();
-		this->engine->InitEngine();
+		this->engine = std::make_shared<SPGame>();
+		this->engine->InitGame();
 		
 	}
 }

@@ -50,7 +50,6 @@ namespace SP
 			1,
 		};
 		this->states.emplace(RecordCategory::READ_ERROR, errorState);
-
 	}
 
 	void RecordReader::ReadSimulate()
@@ -162,7 +161,7 @@ namespace SP
 	void RecordReader::ReadRecord(std::smatch& result)
 	{
 		Action action;
-		auto resultStr = result[1].str()
+		auto resultStr = result[1].str();
 		action.team = GetTeam(resultStr);
 		action.fromX = std::stoi(result[2]);
 		action.fromY = std::stoi(result[3]);

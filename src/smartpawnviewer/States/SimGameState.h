@@ -24,7 +24,7 @@ namespace SP
 
 		sf::Clock clock;
 
-		std::shared_ptr<SP::SimEngine> engine;
+		std::shared_ptr<SP::SPGame> engine;
 
 		std::vector<sf::Text> title;
 		std::unique_ptr<sf::Sprite> background;
@@ -32,4 +32,4 @@ namespace SP
 		std::shared_ptr<sf::Font> font;
 
 	};
-}
+} // Namespace SP

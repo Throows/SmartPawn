@@ -1,31 +1,30 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![Releases](https://img.shields.io/github/v/release/Throows/SmartPawn)](https://github.com/Throows/Throows)
+[![Forks](https://img.shields.io/github/forks/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/fork)
+[![Stargazers](https://img.shields.io/github/stars/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/stargazers)
+[![Issues](https://img.shields.io/github/issues-raw/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/issues)
+[![License](https://img.shields.io/github/license/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/blob/master/LICENSE)
 
-<br />
-<p align="center">
+<br/>
+<!-- <p align="center">
   <a href="https://github.com/Throows/SmartPawn">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+  </a>-->
 
   <h3 align="center">Smart Pawn</h3>
 
   <p align="center">
-    todo desc
+    Smart pawn is a two person game where the goad is to play chest by programming a IA to play for you. The last pawn remaining is the winner.
     <br />
     <a href="https://github.com/Throows/SmartPawn"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Throows/SmartPawn">View Demo</a>
+    <a href="https://github.com/Throows/SmartPawn/releases">View Demo</a>
     ·
     <a href="https://github.com/Throows/SmartPawn/issues">Report Bug</a>
     ·
     <a href="https://github.com/Throows/SmartPawn/issues">Request Feature</a>
   </p>
 </p>
-
 
 
 <!-- TABLE OF CONTENTS -->
@@ -59,61 +58,73 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![Photo](https://raw.githubusercontent.com/Throows/SmartPawn/master/assets/SMHone.jpg)
 
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`Throows`, `SmartPawn`, `@throows`, `throowsdev@gmail.com`, `SmartPawn`, `project_description`
+Start by programming your basic IA, then you can improve it by adding new functions and improving the existing ones. The goal is to play chest like game by programming a IA to play for you. The last pawn remaining is the winner. You can also play against your IA (In the future). \
+Launch the simulation and see how your IA is doing against the other one. One the game is ended you can see the result of the game by reviewing it thanks to the replay mode. \
+Don't Stop improving your IA. You can also share your IA with your friends and see who is the best.
 
 
 ### Built With
 
-* []()
-* []()
-* []()
+* [SFML](https://www.sfml-dev.org/)
+* [PyBind11](https://github.com/pybind/pybind11)
+* [xmake](https://xmake.io/)
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To build the project you need to install xmake and you will require SFML and PyBind11.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+- MacOS
+
+1. Install xmake
+   ```sh
+   brew install xmake
+   ```
+2. Install SFML
+   ```sh
+    brew install sfml
+    ```
+3. Install PyBind11
+    ```sh
+    brew install pybind11
+    ```
+4. Build the project
+    ```sh
+    xmake build
+    ```
+5. Run the project
+
+    Just start the project and have fun ! There is "by-defaul" IA that you can use to try and understand the games.
+    
+- Linux & Windows (Not tested)
+
+The game hasn't been tested on windows and linux yet. If you want to try it, you will need to install SFML and PyBind11 and then build the project with xmake. Create an issue if you have any problem.
 
 ### Installation
 
 1. Clone the repo
    ```sh
    git clone https://github.com/Throows/SmartPawn.git
-   ```
-2. Install NPM packages
-   ```sh
-   npm install
-   ```
-
-
+    ```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Create your IA by editing the `BluePlugin.py` or `RedPlugin.py`files in the `Plugin` Folder. \
+You can also review the game by adding the game log file in the `Record` folder. \
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
+_For more examples, please refer to the [Documentation](https://github.com/Throows/SmartPawn/wiki)_
 
 <!-- ROADMAP -->
 ## Roadmap
 
 See the [open issues](https://github.com/Throows/SmartPawn/issues) for a list of proposed features (and known issues).
-
 
 
 <!-- CONTRIBUTING -->
@@ -127,44 +138,21 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
+If you want to share your IA with the community, you can create a pull request and add your IA in the `ExempleIA` folder. \
 
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-
-
 <!-- CONTACT -->
 ## Contact
 
-Throows - [@@throows](https://twitter.com/@throows) - throowsdev@gmail.com
+Throows - [@throows](https://www.instagram.com/romain.brtl/) - throowsdev@gmail.com
 
 Project Link: [https://github.com/Throows/SmartPawn](https://github.com/Throows/SmartPawn)
-
-
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* []()
-* []()
-* []()
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Throows/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/Throows/SmartPawn/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Throows/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/Throows/SmartPawn/network/members
-[stars-shield]: https://img.shields.io/github/stars/Throows/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/Throows/SmartPawn/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Throows/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/Throows/SmartPawn/issues
-[license-shield]: https://img.shields.io/github/license/Throows/repo.svg?style=for-the-badge
-[license-url]: https://github.com/Throows/SmartPawn/blob/master/LICENSE
+Will add in the future I HOPE

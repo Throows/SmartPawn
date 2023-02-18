@@ -4,8 +4,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <filesystem>
 
 #include <pybind11/pybind11.h>
+#include <pybind11/embed.h>
 
 namespace SP
 {
@@ -43,7 +45,10 @@ private:
 	std::vector<PluginInfo> plugins;
 	int activePlayerIndex;
 
-	void RegisterPlugin(std::string& name, Teams team, unsigned int pawnID);
+	void RegisterPlugin(std::string& name);
+	void LoadPlugin(PluginInfo& plugin);
+	bool IsPluginDir(const std::filesystem::directory_entry& dir);
+	Teams GetFreeTeam();
 };
 
 } // Namespace SP

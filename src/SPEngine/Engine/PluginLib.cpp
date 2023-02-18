@@ -4,7 +4,8 @@
 namespace SP
 {
 
-PluginLib::PluginLib()
+PluginLib::PluginLib(std::string name)
+	: name(name)
 {
 }
 

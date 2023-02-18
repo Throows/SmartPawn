@@ -28,10 +28,6 @@ target("SPEngine")
     set_symbols("debug", "hidden")
     set_runtimes("MDd")
     
-    after_build(function (target) 
-        os.cp("$(projectdir)/resources/**", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/resources/")
-    end)
-    
 target_end()
 
 target("SmartPawnViewer")
@@ -56,7 +52,8 @@ target("SmartPawnViewer")
     set_symbols("debug", "hidden")
     
     after_build(function (target) 
-        os.cp("$(projectdir)/resources/**", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/resources/")
+        os.cp("$(projectdir)/resources/*", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/resources/")
+        os.cp("$(projectdir)/src/Plugins/*", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/Plugins/")
     end)
 
 target_end()

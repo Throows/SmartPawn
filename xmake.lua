@@ -54,6 +54,7 @@ target("SmartPawnViewer")
     after_build(function (target) 
         os.cp("$(projectdir)/resources/*", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/resources/")
         os.cp("$(projectdir)/src/Plugins/*", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/Plugins/")
+        os.rm("$(projectdir)/bin/$(os)_$(arch)_$(mode)/Records/*")
     end)
 
 target_end()

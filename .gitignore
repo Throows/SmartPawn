@@ -1,8 +1,7 @@
 .xmake
-build/*
+build
 vsxmake2019/*
 *.bat
-bin/*
-RawResources/*
+bin
 .vscode
 *.DS_Store

@@ -59,7 +59,6 @@ void SimGameState::InitState()
 	this->background->setScale(sf::Vector2f(2.0f, 2.0f));
 	this->engine = std::make_shared<SP::SPGame>();
 	this->engine->InitGame();
-	
 }
 
 } // Namespace SPV

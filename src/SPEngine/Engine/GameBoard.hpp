@@ -11,18 +11,6 @@ struct Pawn
 	uint value;
 };
 
-enum class MoveType : int
-{
-	UP = 0,
-	DOWN,
-	RIGHT,
-	LEFT,
-	LEFT_TOP_CORNER,
-	LEFT_DOWN_CORNER,
-	RIGHT_TOP_CORNER,
-	RIGHT_DOWN_CORNER
-};
-
 namespace SP
 {
 
@@ -37,13 +25,13 @@ public:
 	int GetRemainingPawn(Teams team);
 	void SetPawn(Pawn Pawn);
  	Pawn GetPawn(int x, int y);
+	Pawn GetPawnByMove(Pawn pawn, MoveType moveType);
 	void PopulateBoard(int teamPawnNb);
 	bool IsPawnDied();
 	bool IsGameEnded() { return ended; };
 	bool CalculateTie();
 	bool CalculateWon();
 	void SetEnded(bool state) { this->ended = state; };
-	std::string GetStringMove(MoveType move);
 	
 private:
 	std::vector<uint8_t> board;

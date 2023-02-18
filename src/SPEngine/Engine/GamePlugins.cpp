@@ -1,5 +1,6 @@
 #include "GamePlugins.hpp"
 
+#define NB_MAX_PLAYER 2
 namespace SP
 {
 
@@ -62,6 +63,24 @@ void GamePlugins::SwapTurn()
 	activePlayerIndex++;
 	if (activePlayerIndex >= plugins.size())
 		activePlayerIndex = 0;
+}
+
+MoveType GamePlugins::PlayRound(uint &x, uint &y)
+{
+	pybind11::scoped_interpreter scope{};
+	PluginInfo &activePlayer = plugins[this->activePlayerIndex];
+	// Update PluginLib
+	activePlayer.plugin.Reset();
+
+	try {
+		activePlayer.pluginScript.attr("PlayRound")(&activePlayer.plugin);
+	}
+	catch (const std::exception &e) {
+		std::cout << "Error: " << e.what() << std::endl;
+	}
+	x = activePlayer.plugin.GetPawnX();
+	y = activePlayer.plugin.GetPawnY();
+	return activePlayer.plugin.GetPawnMove();
 }
 
 void GamePlugins::RegisterPlugin(std::string& name)

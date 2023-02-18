@@ -35,11 +35,13 @@ public:
 	GamePlugins();
 	virtual ~GamePlugins() = default;
 	void InitPlugins();
-	const PluginInfo& GetActivePlayer() { return plugins[activePlayerIndex]; };
+	const PluginInfo &GetActivePlayer() { return plugins[activePlayerIndex]; };
+	[[deprecated("Undefined behavior (if more than 2 players)")]] 
 	const PluginInfo& GetWaitingPlayer();
 	const PluginInfo& GetPluginByTeam(Teams team);
 	std::map<std::string, int> GetTeamsName();
 	void SwapTurn();
+	MoveType PlayRound(uint& x, uint& y);
 
 private:
 	std::vector<PluginInfo> plugins;

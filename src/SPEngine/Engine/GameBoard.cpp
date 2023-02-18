@@ -1,12 +1,13 @@
 #include <Engine/GameBoard.hpp>
+#include "GameBoard.hpp"
 
 namespace SP
 {
 
-GameBoard::GameBoard(int width, int height) :	width(10),
-												height(10)
+GameBoard::GameBoard(int width, int height) : 	width(width),
+												height(width)
 {
-	this->board.resize(this->width * this->height, (uint8_t) Teams::NO_TEAM);
+	this->board.resize(this->width * this->height, (uint8_t)Teams::NO_TEAM);
 	std::cout << "Data created !" << std::endl;
 }
 
@@ -45,6 +46,33 @@ Pawn GameBoard::GetPawn(int x, int y)
 	};
 }
 
+Pawn GameBoard::GetPawnByMove(Pawn pawn, MoveType moveType)
+{
+	if(moveType == MoveType::UP ||
+		moveType == MoveType::LEFT_TOP_CORNER ||
+	 	moveType == MoveType::RIGHT_TOP_CORNER) {
+		pawn.y--;
+	}
+
+	if(moveType == MoveType::DOWN ||
+		moveType == MoveType::LEFT_DOWN_CORNER ||
+	 	moveType == MoveType::RIGHT_DOWN_CORNER) {
+		pawn.y++;
+	}
+
+	if (moveType == MoveType::LEFT ||
+		moveType == MoveType::LEFT_DOWN_CORNER ||
+		moveType == MoveType::LEFT_TOP_CORNER) {
+		pawn.x--;
+	}
+
+	if (moveType == MoveType::RIGHT ||
+		moveType == MoveType::RIGHT_DOWN_CORNER ||
+		moveType == MoveType::RIGHT_TOP_CORNER) {
+		pawn.x++;
+	}
+	return pawn;
+}
 void GameBoard::PopulateBoard(int teamPawnNb)
 {
 	if(teamPawnNb > (this->width * this->height) / 2) {
@@ -107,52 +135,20 @@ char GameBoard::GetPluginChar(Teams team)
 
 void GameBoard::ShowBoard()
 {
-	std::cout << "--+---+---+---+---+---+---+---+---+---+---+--" << std::endl;
-	int x = 1;
-	for (auto& pawn : this->board) {
-		std::cout << "  | " << GetPluginChar(static_cast<Teams>(pawn)) << " | ";
-
-		if (x % this->width == 0) {
-			std::cout << std::endl;
-			std::cout << "--+---+---+---+---+---+---+---+---+---+---+--" << std::endl;
+	bool first = true;
+	int x = 0;
+	for (const auto& pawn : this->board) {
+		if ((x % this->width) == 0) {
+			std::cout << (first ? "" : " |") << std::endl;
+			std::cout << "-+---+---+---+---+---+---+---+---+---+---+-" << std::endl;
 			x = 0;
+			first = false;
 		}
+		std::cout << " | " << GetPluginChar(static_cast<Teams>(pawn));
 		x++;
 	}
-}
-
-std::string GameBoard::GetStringMove(MoveType move)
-{
-	switch (move)
-	{
-	case MoveType::UP:
-		return "UP";
-		break;
-	case MoveType::DOWN:
-		return "DOWN";
-		break;
-	case MoveType::RIGHT:
-		return "RIGHT";
-		break;
-	case MoveType::LEFT:
-		return "LEFT";
-		break;
-	case MoveType::LEFT_TOP_CORNER:
-		return "LEFT_TOP_CORNER";
-		break;
-	case MoveType::LEFT_DOWN_CORNER:
-		return "LEFT_DOWN_CORNER";
-		break;
-	case MoveType::RIGHT_TOP_CORNER:
-		return "RIGHT_TOP_CORNER";
-		break;
-	case MoveType::RIGHT_DOWN_CORNER:
-		return "RIGHT_DOWN_CORNER";
-		break;
-	default:
-		return "NONE";
-		break;
-	}
+	std::cout << " |" << std::endl;
+	std::cout << "-+---+---+---+---+---+---+---+---+---+---+-" << std::endl;
 }
 
 } // namespace SP

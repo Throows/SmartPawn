@@ -26,6 +26,19 @@ void SPGame::InitGame()
 void SPGame::PlayNextTurn()
 {
 	this->plugins->SwapTurn();
+
+	Pawn oldPawn{
+		.x = 0,
+		.y = 0,
+		.value = 0,
+	};
+	MoveType move = this->plugins->PlayRound(oldPawn.x, oldPawn.y);
+	this->board->SetPawn(oldPawn); // Remove the old pawn from the board
+	Pawn newPawn = this->board->GetPawnByMove(oldPawn, move);
+	this->board->SetPawn(newPawn); // Add the new pawn to the board
+
+	SPGame::AddActionRecorder(oldPawn, newPawn);
+
 	SPGame::CalculateEnded();
 	if (this->board->IsGameEnded()) {
 		std::cout << "Player : has won ! " << std::endl; // TODO

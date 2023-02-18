@@ -12,7 +12,7 @@ target("SPEngine")
     set_version("0.0.1")
     set_kind("shared")
 
-    add_headerfiles("src/SPEngine/**.h")
+    add_headerfiles("src/SPEngine/**.hpp")
     add_includedirs("src/SPEngine", {public = true})
     add_files("src/SPEngine/**.cpp")
     add_packages("spdlog", "brew::sfml", "brew::pybind11", "python") 
@@ -39,10 +39,10 @@ target("SmartPawnViewer")
     set_kind("binary")
     add_deps("SPEngine")
 
-    add_headerfiles("src/smartpawnviewer/**.h")
+    add_headerfiles("src/smartpawnviewer/**.hpp")
     add_includedirs("src/smartpawnviewer")
     add_files("src/smartpawnviewer/**.cpp")
-    set_pcxxheader("src/smartpawnviewer/Core/pch.h");
+    set_pcxxheader("src/smartpawnviewer/Core/pch.hpp");
     add_packages("spdlog", "brew::sfml", "brew::pybind11", "python") 
 
     if is_plat("windows") then

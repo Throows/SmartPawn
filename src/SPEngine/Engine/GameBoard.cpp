@@ -1,7 +1,8 @@
-#include <Engine/GameBoard.h>
+#include <Engine/GameBoard.hpp>
 
 namespace SP
 {
+
 GameBoard::GameBoard(int width, int height) :	width(10),
 												height(10)
 {

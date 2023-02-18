@@ -1,4 +1,4 @@
-#include "GamePlugins.h"
+#include "GamePlugins.hpp"
 
 namespace SP
 {
@@ -7,39 +7,9 @@ GamePlugins::GamePlugins()
 {
 }
 
-GamePlugins::~GamePlugins()
-{
-}
-
-void GamePlugins::RegisterPlugins()
-{
-	//TODO : Load plugins from available files
-	std::string name = "BluePlugin";
-	std::cout << "Making " << name << " Plugin !" << std::endl;
-	PluginInfo pluginOne = {
-		name,
-		Teams::TEAM_ONE,
-		1,
-		0,
-		pybind11::module_::import(name.c_str())
-	};
-	plugins.push_back(pluginOne);
-
-	name = "RedPlugin";
-	std::cout << "Making "<< name << " Plugin !" << std::endl;
-	PluginInfo pluginTwo = {
-		name,
-		Teams::TEAM_TWO,
-		2,
-		0,
-		pybind11::module_::import(name.c_str())
-	};
-	plugins.push_back(pluginTwo);
-}
-
 void GamePlugins::InitPlugins()
 {
-	// TODO mv plugininfo creation to here
+	
 }
 
 const PluginInfo& GamePlugins::GetWaitingPlayer()
@@ -75,6 +45,21 @@ void GamePlugins::SwapTurn()
 	activePlayerIndex++;
 	if (activePlayerIndex >= plugins.size())
 		activePlayerIndex = 0;
+}
+
+void GamePlugins::RegisterPlugin(std::string& name, Teams team, unsigned int pawnID)
+{
+	std::cout << "Making " << name << " Plugin !" << std::endl;
+	PluginInfo pluginOne = {
+		.name = name,
+		.team = team,
+		.pawnID = pawnID,
+		.pawnRemaining = 0,
+		.pluginScript = pybind11::module_::import(name.c_str()),
+		.plugin = PluginLib{},
+	};
+	plugins.push_back(pluginOne);
+	
 }
 
 } // Namespace SP

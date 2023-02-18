@@ -9,7 +9,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <Core/Logger.h>
+#include <Core/Logger.hpp>
 
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>

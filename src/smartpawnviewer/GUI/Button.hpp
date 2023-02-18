@@ -1,5 +1,5 @@
 #pragma once
-#include <Core/pch.h>
+#include <Core/pch.hpp>
 
 enum class Status : int
 {
@@ -34,7 +34,6 @@ private:
 	std::shared_ptr<sf::Text> text;
 
 	Status m_status;
-
 
 	void UpdateState(sf::Vector2f& mousePos);
 };

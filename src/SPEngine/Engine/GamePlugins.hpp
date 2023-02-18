@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/PluginLib.h>
+#include <Engine/PluginLib.hpp>
 
 #include <iostream>
 #include <vector>
@@ -31,8 +31,7 @@ class GamePlugins
 {
 public:
 	GamePlugins();
-	~GamePlugins();
-	void RegisterPlugins();
+	virtual ~GamePlugins() = default;
 	void InitPlugins();
 	const PluginInfo& GetActivePlayer() { return plugins[activePlayerIndex]; };
 	const PluginInfo& GetWaitingPlayer();
@@ -43,6 +42,8 @@ public:
 private:
 	std::vector<PluginInfo> plugins;
 	int activePlayerIndex;
+
+	void RegisterPlugin(std::string& name, Teams team, unsigned int pawnID);
 };
 
 } // Namespace SP

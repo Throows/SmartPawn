@@ -1,4 +1,4 @@
-#include "PluginLib.h"
+#include "PluginLib.hpp"
 #include <iostream>
 
 namespace SP
@@ -35,4 +35,4 @@ int PluginLib::GetCoordinatesByMove(int x, int y, int moveType)
 	return 0;	// TODO
 }
 
-}
+} // Namespace SP

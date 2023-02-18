@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#include <Engine/GamePlugins.h>
+#include <Engine/GamePlugins.hpp>
 
 struct Pawn
 {

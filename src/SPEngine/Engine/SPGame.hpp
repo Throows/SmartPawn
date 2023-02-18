@@ -1,6 +1,6 @@
 #pragma once
-#include <Engine/GameBoard.h>
-#include <Engine/GameRecorder.h>
+#include <Engine/GameBoard.hpp>
+#include <Engine/GameRecorder.hpp>
 
 #ifdef SP_PLATFORM_WIN
 #define EXPORT __declspec(dllexport)

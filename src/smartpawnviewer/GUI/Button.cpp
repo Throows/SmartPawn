@@ -1,4 +1,4 @@
-#include "Button.h"
+#include "Button.hpp"
 
 Button::Button(sf::Vector2f pos, sf::Vector2i size, const std::string& value, const sf::Font& font, sf::Texture& texture, sf::Vector2i idleBound, sf::Vector2i hoverBound, sf::Vector2i clickedBound)
 	: pos(pos), size(size)
@@ -16,7 +16,6 @@ Button::Button(sf::Vector2f pos, sf::Vector2i size, const std::string& value, co
 
 void Button::Update(sf::Vector2f& mousePos)
 {
-
 	UpdateState(mousePos);
 
 	sf::Vector2i startingText = this->statusBounds.at(this->m_status);
@@ -31,13 +30,10 @@ void Button::Render(sf::RenderTarget& window)
 
 void Button::UpdateState(sf::Vector2f& mousePos)
 {
-	
 	this->m_status = Status::IDLE;
-	if (this->sprite->getGlobalBounds().contains(mousePos))
-	{
+	if (this->sprite->getGlobalBounds().contains(mousePos)) {
 		this->m_status = Status::HOVERED;
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			this->m_status = Status::CLICKED;
 		}
 	}

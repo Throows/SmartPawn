@@ -1,4 +1,4 @@
-#include <Engine/SPGame.h>
+#include <Engine/SPGame.hpp>
 
 #include <iostream>
 
@@ -11,7 +11,6 @@ SPGame::SPGame()
 	this->plugins = std::make_shared<GamePlugins>();
 	this->board = std::make_shared <GameBoard>(10, 10);
 	this->recorder = std::make_shared<GameRecorder>();
-	this->plugins->RegisterPlugins();
 }
 
 void SPGame::InitGame()

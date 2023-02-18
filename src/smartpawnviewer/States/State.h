@@ -9,8 +9,8 @@ namespace SP
 		State(const std::string& name);
 		~State();
 
-		virtual void OnUpdate() {}
-		virtual void OnRender() {}
+		virtual void OnUpdate() = 0;
+		virtual void OnRender() = 0;
 
 		virtual void ProcessEvents(sf::Event& event) = 0;
 
@@ -29,7 +29,7 @@ namespace SP
 		std::shared_ptr<sf::RenderWindow> window;
 		std::shared_ptr<std::vector<std::shared_ptr<State>>> states;
 
-		virtual void InitState() {}
+		virtual void InitState() = 0;
 	};
 }
 

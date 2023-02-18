@@ -128,7 +128,7 @@ namespace SP
 
 		this->title = sf::Text("", *this->font, 30);
 		this->title.setPosition(sf::Vector2f(475.f, 50.0f));
-		this->title.setColor(sf::Color::Black);
+		this->title.setFillColor(sf::Color::Black);
 		this->title.setOutlineColor(sf::Color::White);
 		this->title.setOutlineThickness(1.5f);
 

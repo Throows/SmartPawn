@@ -1,5 +1,6 @@
-#include <iostream>
 #include <Engine/SPGame.h>
+
+#include <iostream>
 
 namespace SP
 {
@@ -26,7 +27,7 @@ void SPGame::InitGame()
 void SPGame::PlayNextTurn()
 {
 	this->plugins->SwapTurn();
-	CalculateEnded();
+	SPGame::CalculateEnded();
 	if (this->board->IsGameEnded()) {
 		std::cout << "Player : has won ! " << std::endl; // TODO
 	}

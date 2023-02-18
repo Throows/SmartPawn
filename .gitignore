@@ -5,3 +5,4 @@ vsxmake2019/*
 bin/*
 RawResources/*
 .vscode
+*.DS_Store

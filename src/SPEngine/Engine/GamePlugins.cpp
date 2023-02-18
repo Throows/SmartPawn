@@ -47,15 +47,18 @@ const PluginInfo& GamePlugins::GetWaitingPlayer()
 	int lastPlayerIndex = activePlayerIndex - 1;
 	if (lastPlayerIndex < 0)
 		lastPlayerIndex = plugins.size() - 1;
+	
+	return plugins.at(lastPlayerIndex);
 }
 
 const PluginInfo& GamePlugins::GetPluginByTeam(Teams team)
 {
-	for (auto plugin : plugins) {
+	for (auto& plugin : plugins) {
 		if (plugin.team == team) {
 			return plugin;
 		}
 	}
+	return plugins.front();
 }
 
 std::map<std::string, int> GamePlugins::GetTeamsName()

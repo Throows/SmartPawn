@@ -13,16 +13,18 @@ namespace SP
 		ReplayState(StatesPtr states, WindowPtr window, const std::string& recordFile);
 		~ReplayState();
 
-		virtual void OnUpdate() override;
-		virtual void OnRender() override;
+		void OnUpdate() override;
+		void OnRender() override;
 		void ProcessEvents(sf::Event& event) override;
 
 		bool ExistPawn(int x, int y);
 		std::shared_ptr<Pawn> GetPawn(int x, int y);
 		void RemovePawn(int x, int y);
 
+	protected:
+		void InitState() override;
+
 	private:
-		void InitState();
 		void UpdateReplay();
 		bool isReplay = true;
 

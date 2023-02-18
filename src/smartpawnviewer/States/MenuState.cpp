@@ -115,7 +115,7 @@ namespace SP
 		this->title = sf::Text("SmartPawn\n The Game", *this->font, 50);
 		this->title.setPosition(sf::Vector2f(50.0f, 50.0f));
 		this->title.setStyle(sf::Text::Style::Bold);
-		this->title.setColor(sf::Color::Black);
+		this->title.setFillColor(sf::Color::Black);
 		this->title.setOutlineColor(sf::Color::White);
 		this->title.setOutlineThickness(2.0f);
 

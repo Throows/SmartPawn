@@ -12,19 +12,20 @@ namespace SP
 		SimGameState(StatesPtr states, WindowPtr window);
 		~SimGameState();
 
-		virtual void OnUpdate() override;
-		virtual void OnRender() override;
+		void OnUpdate() override;
+		void OnRender() override;
 		void ProcessEvents(sf::Event& event) override;
-		virtual void SetExitedState() override;
+		void SetExitedState() override;
+
+	protected:
+		void InitState() override;
 
 	private:
-		void InitState();
-
 		std::shared_ptr<SP::ProgressBar> progressBar;
 
 		sf::Clock clock;
 
-		std::shared_ptr<SP::SPGame> engine;
+		std::shared_ptr<SPGame> engine;
 
 		std::vector<sf::Text> title;
 		std::unique_ptr<sf::Sprite> background;

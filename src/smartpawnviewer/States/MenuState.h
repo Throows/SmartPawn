@@ -12,15 +12,16 @@ namespace SP
 		MenuState(StatesPtr states, WindowPtr window);
 		~MenuState();
 
-		virtual void OnUpdate() override;
-		virtual void OnRender() override;
+		void OnUpdate() override;
+		void OnRender() override;
 		void ProcessEvents(sf::Event& event) override;
 
 		void UpdateListViewButton();
 
-	private:
-		void InitState();
+	protected:
+		void InitState() override;
 
+	private:
 		std::vector<Button> buttons;
 
 		std::shared_ptr<ListView> recordListView;

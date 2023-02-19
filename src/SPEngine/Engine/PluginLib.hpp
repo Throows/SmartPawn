@@ -1,7 +1,5 @@
 #pragma once
 #include <string>
-namespace SP
-{
 
 enum class MoveType : int
 {
@@ -20,24 +18,21 @@ class PluginLib
 {
 public:
 	PluginLib(std::string name);
-	virtual ~PluginLib() = default;
+	virtual ~PluginLib() {};
 	std::string GetName() { return this->name; }
 	int GetRandomPawn();
 	int GetFirstPawn();
-	bool SetAction(int x, int y, MoveType moveType);
-	void ValidateMove() { this->hasPlayed = true; }
+	bool SetAction(int x, int y, int moveType);
+	void ValidateMove(bool played = true) { this->hasPlayed = played; }
 	void Reset();
-	MoveType GetPawnMove() { return this->moveType; }
+	int GetPawnMove() { return this->moveType; }
 	int GetPawnX() { return this->pawnX; }
 	int GetPawnY() { return this->pawnY; }
 
 private:
 	bool hasPlayed = false;
 	std::string name;
-	int pawnX = 0;
-	int pawnY = 0;
-	MoveType moveType = MoveType::NONE;
-	
+	int pawnX = 1;
+	int pawnY = 2;
+	int moveType = -1;
 };
-
-} // Namespace SP

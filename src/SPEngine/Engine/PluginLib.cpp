@@ -1,75 +1,43 @@
 #include "PluginLib.hpp"
+#include <stdlib.h>
 #include <iostream>
-
-namespace SP
-{
 
 PluginLib::PluginLib(std::string name)
 	: name(name)
 {
 }
 
-int PluginLib::GetRandomPawn()
+Coordinates PluginLib::GetMyRandomPawn()
 {
-	return 0;	// TODO
-}
-int PluginLib::GetFirstPawn()
-{
-	return 0;	// TODO
+	int random = rand() % this->myPawns.size();
+	return this->myPawns[random];
 }
 
-bool PluginLib::SetAction(int x, int y, MoveType moveType)
+Coordinates PluginLib::GetMyFirstPawn()
 {
-	if (this->hasPlayed) {
-		std::cout << " You have already Played !" << std::endl;
-		return false;
-	}
-	this->pawnX = x;
-	this->pawnY = y;
+	return this->myPawns.front();
+}
+
+Coordinates PluginLib::GetEnnemyRandomPawn()
+{
+	int random = rand() % this->ennemyPawns.size();
+	return this->ennemyPawns[random];
+}
+
+Coordinates PluginLib::GetEnnemyFirstPawn()
+{
+	return this->ennemyPawns.front();
+}
+
+bool PluginLib::SetAction(Coordinates pawn, MoveType moveType)
+{
+	this->pawnToMove = pawn;
 	this->moveType = moveType;
 	return true;
 }
 
-/*std::string PluginLib::GetStringMove(MoveType move)
-{
-	switch (move)
-	{
-	case MoveType::UP:
-		return "UP";
-		break;
-	case MoveType::DOWN:
-		return "DOWN";
-		break;
-	case MoveType::RIGHT:
-		return "RIGHT";
-		break;
-	case MoveType::LEFT:
-		return "LEFT";
-		break;
-	case MoveType::LEFT_TOP_CORNER:
-		return "LEFT_TOP_CORNER";
-		break;
-	case MoveType::LEFT_DOWN_CORNER:
-		return "LEFT_DOWN_CORNER";
-		break;
-	case MoveType::RIGHT_TOP_CORNER:
-		return "RIGHT_TOP_CORNER";
-		break;
-	case MoveType::RIGHT_DOWN_CORNER:
-		return "RIGHT_DOWN_CORNER";
-		break;
-	default:
-		return "NONE";
-		break;
-	}
-}*/
-
 void PluginLib::Reset()
 {
-	this->hasPlayed = false;
-	this->pawnX = 0;
-	this->pawnY = 0;
+	this->pawnToMove = Coordinates{ -1, -1 };
 	this->moveType = MoveType::NONE;
 }
-
-} // Namespace SP

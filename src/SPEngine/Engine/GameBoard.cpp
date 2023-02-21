@@ -71,7 +71,26 @@ Pawn GameBoard::GetPawnByMove(Pawn pawn, MoveType moveType)
 		moveType == MoveType::RIGHT_TOP_CORNER) {
 		pawn.x++;
 	}
+	if (pawn.x < 0) pawn.x = this->width - 1;
+	if (pawn.x >= this->width) pawn.x = 0;
+	if (pawn.y < 0) pawn.y = this->height - 1;
+	if (pawn.y >= this->height) pawn.y = 0;
 	return pawn;
+}
+std::vector<Pawn> GameBoard::GetPawns()
+{
+    std::vector<Pawn> pawns{};
+	// get the coordinte of the pawns from the board
+	int id = 0, x, y;
+	for(const auto& p : this->board) {
+		if (p != static_cast<uint8_t>(Teams::NO_TEAM)) {
+			x = id % this->width;
+			y = id / this->width;
+			pawns.push_back({static_cast<uint>(x), static_cast<uint>(y), p});
+		}
+		id++;
+	}
+	return pawns;
 }
 void GameBoard::PopulateBoard(int teamPawnNb)
 {

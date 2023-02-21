@@ -31,13 +31,19 @@ void GameRecorder::StartRecording(const std::vector<uint8_t>& board, std::map<st
 	for (auto& entry : teams) {
 		file << "[" << entry.first << "]{" << entry.second << "}" << std::endl;
 	}
+	int width = std::sqrt(board.size()); // Assume the board is a square
 	file << "## BOARD" << std::endl;
-	file << "{" << std::sqrt(board.size()) << ";" << std::sqrt(board.size()) << "}" << std::endl;
+	file << "{" << width << ";" << width << "}" << std::endl;
 	file << "## PAWNS" << std::endl;
-	int x = 0, y = 0; // TODO: get x and y from board
-	for (auto& pawn : board) {
+	int id = 0, x, y;
+	for (const auto& pawn : board) {
 		if (pawn != 0)
-			file << "[" << pawn << "]" << "{" << x << ";" << y << "}" << std::endl;
+		{
+			x = id % width;
+			y = id / width;
+			file << "[" << static_cast<int>(pawn) << "]" << "{" << x << ";" << y << "}" << std::endl;
+		}
+		id++;
 	}
 	
 	file << "## STARTING RECORDING" << std::endl;

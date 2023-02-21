@@ -65,28 +65,45 @@ void GamePlugins::SwapTurn()
 		activePlayerIndex = 0;
 }
 
+void GamePlugins::UpdatePawn(std::vector<Pawn> pawns)
+{
+	PluginInfo* activePlayer = &plugins[activePlayerIndex];
+	activePlayer->pawnRemaining = 0;
+	for (const auto &pawn : pawns) {
+		if (pawn.value == static_cast<uint>(activePlayer->team)) {
+			activePlayer->pawnRemaining++;
+			activePlayer->plugin.myPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
+		}
+		else {
+			activePlayer->plugin.ennemyPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
+		}
+	}
+}
+
 MoveType GamePlugins::PlayRound(uint &x, uint &y)
 {
 	pybind11::scoped_interpreter scope{};
-	PluginInfo &activePlayer = plugins[this->activePlayerIndex];
-	// Update PluginLib
-	activePlayer.plugin.Reset();
+	plugins[activePlayerIndex].plugin.Reset();
 
 	try {
-		activePlayer.pluginScript.attr("PlayRound")(&activePlayer.plugin);
+		auto pModule = pybind11::module_::import(plugins[activePlayerIndex].path.c_str());
+		int errCode = pModule.attr("PlayRound")(&(plugins[activePlayerIndex].plugin)).cast<int>();
+		std::cout << "End program with code : " << errCode << std::endl;
 	}
 	catch (const std::exception &e) {
 		std::cout << "Error: " << e.what() << std::endl;
 	}
-	x = activePlayer.plugin.GetPawnX();
-	y = activePlayer.plugin.GetPawnY();
-	return activePlayer.plugin.GetPawnMove();
+	Coordinates pawn = plugins[activePlayerIndex].plugin.GetPawnCoordinates();
+	std::cout << "Pawn coordinates : " << pawn.x << " " << pawn.y << std::endl;
+	std::cout << "move : " << (int)plugins[activePlayerIndex].plugin.GetPawnMove() << std::endl;
+	x = pawn.x;
+	y = pawn.y;
+	return plugins[activePlayerIndex].plugin.GetPawnMove();
 }
 
 void GamePlugins::RegisterPlugin(std::string& name)
 {
 	std::cout << "Making " << name << " Plugin !" << std::endl;
-	std::string scriptName = "Plugins." + name + "." + name;
 	Teams team = GamePlugins::GetFreeTeam();
 	if (team == Teams::NO_TEAM) {
 		std::cout << "No team available for " << name << " !" << std::endl;
@@ -97,8 +114,7 @@ void GamePlugins::RegisterPlugin(std::string& name)
 		.name = name,
 		.team = team,
 		.pawnID = 0,
-		.pawnRemaining = 0,
-		.pluginScript = pybind11::module_::import(scriptName.c_str()),
+		.path = "Plugins." + name + "." + name,
 		.plugin = PluginLib{name},
 	};
 	plugins.push_back(pluginOne);
@@ -107,12 +123,13 @@ void GamePlugins::RegisterPlugin(std::string& name)
 void GamePlugins::LoadPlugin(PluginInfo &plugin)
 {
 	try {
-		plugin.pluginScript.attr("InitPlugin")(&plugin.plugin);
+		auto pModule = pybind11::module_::import(plugin.path.c_str());
+		pModule.attr("InitPlugin")(&plugin.plugin);
 	}
 	catch (const std::exception &e) {
 		std::cout << "Error: " << e.what() << std::endl;
 	}
-	std::cout << "Plugin " << plugin.name << " loaded !" << std::endl;
+	std::cout << "Plugin " << plugin.plugin.GetName() << " loaded !" << std::endl;
 }
 
 bool GamePlugins::IsPluginDir(const std::filesystem::directory_entry &path)

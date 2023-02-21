@@ -12,6 +12,13 @@
 namespace SP
 {
 
+struct Pawn
+{
+	uint x;
+	uint y;
+	uint value;
+};
+
 enum class Teams
 {
 	NO_TEAM = 0,
@@ -25,7 +32,7 @@ struct PluginInfo
 	Teams team;
 	unsigned int pawnID;
 	unsigned int pawnRemaining;
-	pybind11::module_ pluginScript;
+	std::string path;
 	PluginLib plugin;
 };
 
@@ -41,7 +48,8 @@ public:
 	const PluginInfo& GetPluginByTeam(Teams team);
 	std::map<std::string, int> GetTeamsName();
 	void SwapTurn();
-	MoveType PlayRound(uint& x, uint& y);
+	void UpdatePawn(std::vector<Pawn> pawns);
+	MoveType PlayRound(uint &x, uint &y);
 
 private:
 	std::vector<PluginInfo> plugins;

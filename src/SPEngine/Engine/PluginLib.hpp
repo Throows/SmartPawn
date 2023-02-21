@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
-namespace SP
-{
+#include <vector>
 
 enum class MoveType : int
 {
@@ -16,28 +15,33 @@ enum class MoveType : int
 	RIGHT_DOWN_CORNER
 };
 
+struct Coordinates
+{
+	int x;
+	int y;
+};
+
 class PluginLib
 {
 public:
 	PluginLib(std::string name);
 	virtual ~PluginLib() = default;
 	std::string GetName() { return this->name; }
-	int GetRandomPawn();
-	int GetFirstPawn();
-	bool SetAction(int x, int y, MoveType moveType);
-	void ValidateMove() { this->hasPlayed = true; }
+	Coordinates GetMyRandomPawn();
+	Coordinates GetMyFirstPawn();
+	Coordinates GetEnnemyRandomPawn();
+	Coordinates GetEnnemyFirstPawn();
+	bool SetAction(Coordinates pawn, MoveType moveType);
 	void Reset();
 	MoveType GetPawnMove() { return this->moveType; }
-	int GetPawnX() { return this->pawnX; }
-	int GetPawnY() { return this->pawnY; }
+	Coordinates GetPawnCoordinates() { return this->pawnToMove; }
+	void SetPawnCoordinates(Coordinates coords) { this->pawnToMove = coords; }
+
+	std::vector<Coordinates> myPawns;
+	std::vector<Coordinates> ennemyPawns;
 
 private:
-	bool hasPlayed = false;
 	std::string name;
-	int pawnX = 0;
-	int pawnY = 0;
+	Coordinates pawnToMove;
 	MoveType moveType = MoveType::NONE;
-	
 };
-
-} // Namespace SP

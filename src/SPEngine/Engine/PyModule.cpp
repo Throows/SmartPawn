@@ -3,31 +3,38 @@
 
 #include "PluginLib.hpp"
 
+#define PYBIND11_DETAILED_ERROR_MESSAGES 1
+
 PYBIND11_EMBEDDED_MODULE(PyPluginLib, m)
 {
     m.doc() = "A Python API for the PluginLib library to allow users to make their own IA for the game";
-    
-    pybind11::enum_<SP::MoveType>(m, "MoveType")
-        .value("NONE", SP::MoveType::NONE)
-        .value("UP", SP::MoveType::UP)
-        .value("DOWN", SP::MoveType::DOWN)
-        .value("RIGHT", SP::MoveType::RIGHT)
-        .value("LEFT", SP::MoveType::LEFT)
-        .value("LEFT_TOP_CORNER", SP::MoveType::LEFT_TOP_CORNER)
-        .value("LEFT_DOWN_CORNER", SP::MoveType::LEFT_DOWN_CORNER)
-        .value("RIGHT_TOP_CORNER", SP::MoveType::RIGHT_TOP_CORNER)
-        .value("RIGHT_DOWN_CORNER", SP::MoveType::RIGHT_DOWN_CORNER)
+
+    pybind11::enum_<MoveType>(m, "MoveType")
+        .value("NONE", MoveType::NONE)
+        .value("UP", MoveType::UP)
+        .value("DOWN", MoveType::DOWN)
+        .value("RIGHT", MoveType::RIGHT)
+        .value("LEFT", MoveType::LEFT)
+        .value("LEFT_TOP_CORNER", MoveType::LEFT_TOP_CORNER)
+        .value("LEFT_DOWN_CORNER", MoveType::LEFT_DOWN_CORNER)
+        .value("RIGHT_TOP_CORNER", MoveType::RIGHT_TOP_CORNER)
+        .value("RIGHT_DOWN_CORNER", MoveType::RIGHT_DOWN_CORNER)
         .export_values();
 
-    pybind11::class_<SP::PluginLib>(m, "PluginLib")
+    pybind11::class_<Coordinates>(m, "Coordinates")
+        .def(pybind11::init<int, int>())
+        .def_readonly("x", &Coordinates::x)
+        .def_readonly("y", &Coordinates::y);
+
+    pybind11::class_<PluginLib>(m, "PluginLib")
         .def(pybind11::init<std::string>())
-        .def("GetName", &SP::PluginLib::GetName)
-        .def("GetRandomPawn", &SP::PluginLib::GetRandomPawn)
-        .def("GetFirstPawn", &SP::PluginLib::GetFirstPawn)
-        .def("SetAction", &SP::PluginLib::SetAction)
-        .def("ValidateMove", &SP::PluginLib::ValidateMove)
-        .def("Reset", &SP::PluginLib::Reset)
-        .def("GetPawnMove", &SP::PluginLib::GetPawnMove)
-        .def("GetPawnX", &SP::PluginLib::GetPawnX)
-        .def("GetPawnY", &SP::PluginLib::GetPawnY);
+        .def("GetMyRandomPawn", &PluginLib::GetMyRandomPawn)
+        .def("GetEnnemyRandomPawn", &PluginLib::GetEnnemyRandomPawn)
+        .def("GetEnnemyFirstPawn", &PluginLib::GetEnnemyFirstPawn)
+        .def("GetMyFirstPawn", &PluginLib::GetMyFirstPawn)
+        .def("SetAction", &PluginLib::SetAction)
+        .def_property_readonly("name", &PluginLib::GetName)
+        .def_readonly("myPawns", &PluginLib::myPawns)
+        .def_readonly("ennemyPawns", &PluginLib::ennemyPawns)
+        .def_property("pawnToMove", &PluginLib::GetPawnCoordinates, &PluginLib::SetPawnCoordinates);
 }

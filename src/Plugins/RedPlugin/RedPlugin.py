@@ -1,9 +1,11 @@
-from PyPluginLib import PluginLib
+import PyPluginLib
 
-def InitPlugin(plugin : PluginLib):
-    print("Plugin Registered: " + plugin.GetName())
-    pass
+def InitPlugin(plugin):
+    print("Plugin Registered: " + plugin.name)
+    return 0
 
-def PlayRound(plugin : PluginLib):
-    print("Played Round: " + plugin.GetName())
-    pass
+def PlayRound(plugin):
+    print("Played Round: " + plugin.name)
+    coords = plugin.GetMyFirstPawn()
+    plugin.SetAction(coords, PyPluginLib.MoveType.UP)
+    return 0

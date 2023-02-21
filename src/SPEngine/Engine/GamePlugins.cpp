@@ -67,15 +67,15 @@ void GamePlugins::SwapTurn()
 
 void GamePlugins::UpdatePawn(std::vector<Pawn> pawns)
 {
-	PluginInfo& activePlayer = plugins[activePlayerIndex];
-	activePlayer.pawnRemaining = 0;
+	PluginInfo* activePlayer = &plugins[activePlayerIndex];
+	activePlayer->pawnRemaining = 0;
 	for (const auto &pawn : pawns) {
-		if (pawn.value == static_cast<uint>(activePlayer.team)) {
-			activePlayer.pawnRemaining++;
-			activePlayer.plugin.myPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
+		if (pawn.value == static_cast<uint>(activePlayer->team)) {
+			activePlayer->pawnRemaining++;
+			activePlayer->plugin.myPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
 		}
 		else {
-			activePlayer.plugin.ennemyPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
+			activePlayer->plugin.ennemyPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
 		}
 	}
 }
@@ -87,13 +87,15 @@ MoveType GamePlugins::PlayRound(uint &x, uint &y)
 
 	try {
 		auto pModule = pybind11::module_::import(plugins[activePlayerIndex].path.c_str());
-		int errCode = pModule.attr("PlayRound")(&plugins[activePlayerIndex].plugin).cast<int>();
+		int errCode = pModule.attr("PlayRound")(&(plugins[activePlayerIndex].plugin)).cast<int>();
 		std::cout << "End program with code : " << errCode << std::endl;
 	}
 	catch (const std::exception &e) {
 		std::cout << "Error: " << e.what() << std::endl;
 	}
 	Coordinates pawn = plugins[activePlayerIndex].plugin.GetPawnCoordinates();
+	std::cout << "Pawn coordinates : " << pawn.x << " " << pawn.y << std::endl;
+	std::cout << "move : " << (int)plugins[activePlayerIndex].plugin.GetPawnMove() << std::endl;
 	x = pawn.x;
 	y = pawn.y;
 	return plugins[activePlayerIndex].plugin.GetPawnMove();

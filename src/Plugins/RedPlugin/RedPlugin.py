@@ -7,5 +7,5 @@ def InitPlugin(plugin):
 def PlayRound(plugin):
     print("Played Round: " + plugin.name)
     coords = plugin.GetMyFirstPawn()
-    plugin.SetAction(coords, MoveType.UP)
+    plugin.SetAction(coords, PyPluginLib.MoveType.UP)
     return 0

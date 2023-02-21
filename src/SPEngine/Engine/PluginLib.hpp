@@ -35,6 +35,7 @@ public:
 	void Reset();
 	MoveType GetPawnMove() { return this->moveType; }
 	Coordinates GetPawnCoordinates() { return this->pawnToMove; }
+	void SetPawnCoordinates(Coordinates coords) { this->pawnToMove = coords; }
 
 	std::vector<Coordinates> myPawns;
 	std::vector<Coordinates> ennemyPawns;

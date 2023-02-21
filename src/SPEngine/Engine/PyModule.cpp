@@ -35,5 +35,6 @@ PYBIND11_EMBEDDED_MODULE(PyPluginLib, m)
         .def("SetAction", &PluginLib::SetAction)
         .def_property_readonly("name", &PluginLib::GetName)
         .def_readonly("myPawns", &PluginLib::myPawns)
-        .def_readonly("ennemyPawns", &PluginLib::ennemyPawns);
+        .def_readonly("ennemyPawns", &PluginLib::ennemyPawns)
+        .def_property("pawnToMove", &PluginLib::GetPawnCoordinates, &PluginLib::SetPawnCoordinates);
 }

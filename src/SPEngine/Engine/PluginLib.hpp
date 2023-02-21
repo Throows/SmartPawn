@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 enum class MoveType : int
 {
@@ -14,25 +15,32 @@ enum class MoveType : int
 	RIGHT_DOWN_CORNER
 };
 
+struct Coordinates
+{
+	int x;
+	int y;
+};
+
 class PluginLib
 {
 public:
 	PluginLib(std::string name);
-	virtual ~PluginLib() {};
+	virtual ~PluginLib() = default;
 	std::string GetName() { return this->name; }
-	int GetRandomPawn();
-	int GetFirstPawn();
-	bool SetAction(int x, int y, int moveType);
-	void ValidateMove(bool played = true) { this->hasPlayed = played; }
+	Coordinates GetMyRandomPawn();
+	Coordinates GetMyFirstPawn();
+	Coordinates GetEnnemyRandomPawn();
+	Coordinates GetEnnemyFirstPawn();
+	bool SetAction(Coordinates pawn, MoveType moveType);
 	void Reset();
-	int GetPawnMove() { return this->moveType; }
-	int GetPawnX() { return this->pawnX; }
-	int GetPawnY() { return this->pawnY; }
+	MoveType GetPawnMove() { return this->moveType; }
+	Coordinates GetPawnCoordinates() { return this->pawnToMove; }
+
+	std::vector<Coordinates> myPawns;
+	std::vector<Coordinates> ennemyPawns;
 
 private:
-	bool hasPlayed = false;
 	std::string name;
-	int pawnX = 1;
-	int pawnY = 2;
-	int moveType = -1;
+	Coordinates pawnToMove;
+	MoveType moveType = MoveType::NONE;
 };

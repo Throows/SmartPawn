@@ -69,28 +69,24 @@ MoveType GamePlugins::PlayRound(uint &x, uint &y)
 {
 	pybind11::scoped_interpreter scope{};
 	PluginInfo activePlayer = GetActivePlayer();
-	// Update PluginLib
-	//activePlayer.plugin.SetBoard(board.GetBoard());
-	PluginLib plugin = PluginLib{activePlayer.name};
-	//pybind11::setattr(plugin, "board", board.GetBoard());
 
 	try {
-		auto pModule = pybind11::module_::import(("Plugins." + activePlayer.name + "." + activePlayer.name).c_str());
-		int errCode = pModule.attr("PlayRound")(plugin).cast<int>();
+		auto pModule = pybind11::module_::import(activePlayer.path.c_str());
+		int errCode = pModule.attr("PlayRound")(activePlayer.plugin).cast<int>();
 		std::cout << "End program with code : " << errCode << std::endl;
 	}
 	catch (const std::exception &e) {
 		std::cout << "Error: " << e.what() << std::endl;
 	}
-	x = plugin.GetPawnX();
-	y = plugin.GetPawnY();
-	return static_cast<MoveType>(plugin.GetPawnMove());
+	Coordinates pawn = activePlayer.plugin.GetPawnCoordinates();
+	x = pawn.x;
+	y = pawn.y;
+	return activePlayer.plugin.GetPawnMove();
 }
 
 void GamePlugins::RegisterPlugin(std::string& name)
 {
 	std::cout << "Making " << name << " Plugin !" << std::endl;
-	std::string scriptName = "Plugins." + name + "." + name;
 	Teams team = GamePlugins::GetFreeTeam();
 	if (team == Teams::NO_TEAM) {
 		std::cout << "No team available for " << name << " !" << std::endl;
@@ -101,8 +97,7 @@ void GamePlugins::RegisterPlugin(std::string& name)
 		.name = name,
 		.team = team,
 		.pawnID = 0,
-		.pawnRemaining = 0,
-		.pluginScript = pybind11::module_::import(scriptName.c_str()),
+		.path = "Plugins." + name + "." + name,
 		.plugin = PluginLib{name},
 	};
 	plugins.push_back(pluginOne);
@@ -111,7 +106,8 @@ void GamePlugins::RegisterPlugin(std::string& name)
 void GamePlugins::LoadPlugin(PluginInfo &plugin)
 {
 	try {
-		plugin.pluginScript.attr("InitPlugin")(&plugin.plugin);
+		auto pModule = pybind11::module_::import(plugin.path.c_str());
+		pModule.attr("InitPlugin")(&plugin.plugin);
 	}
 	catch (const std::exception &e) {
 		std::cout << "Error: " << e.what() << std::endl;

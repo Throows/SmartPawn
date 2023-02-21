@@ -56,15 +56,11 @@ float SPGame::GetPercentageEnded()
 
 void SPGame::CalculateEnded()
 {
-	if (this->board->CalculateTie())
-	{
+	if (this->board->CalculateTie()) {
 		std::cout << "Sim ended by Equality" << std::endl;
 		this->recorder->AddWinner("NO WINNER");
 	}
-	else if (this->board->CalculateWon())
-	{
-		//this->plugins->GetActivePlayer().SetRemainingPawn(this->board->GetRemainingPawn(this->plugins->GetActivePlayer().pawnIdentifier));
-		//this->plugins->GetWaitingPlayer().SetRemainingPawn(this->board->GetRemainingPawn(this->plugins->GetWaitingPlayer().pawnIdentifier));
+	else if (this->board->CalculateWon()) {
 		std::string winner = this->plugins->GetActivePlayer().pawnRemaining == 0 ? this->plugins->GetActivePlayer().name : this->plugins->GetWaitingPlayer().name;
 		this->recorder->AddWinner(winner);
 		std::cout << "Sim ended !" << std::endl;
@@ -74,6 +70,7 @@ void SPGame::CalculateEnded()
 	
 	this->recorder->SaveRecord();
 }
+
 void SPGame::AddActionRecorder(Pawn coords, Pawn newCoords)
 {
 	this->recorder->AddAction(this->plugins->GetActivePlayer().name, coords.x, coords.y, newCoords.x, newCoords.y);

@@ -1,4 +1,5 @@
 #include "PluginLib.hpp"
+#include <stdlib.h>
 #include <iostream>
 
 PluginLib::PluginLib(std::string name)
@@ -6,31 +7,37 @@ PluginLib::PluginLib(std::string name)
 {
 }
 
-int PluginLib::GetRandomPawn()
+Coordinates PluginLib::GetMyRandomPawn()
 {
-	return 0;	// TODO
-}
-int PluginLib::GetFirstPawn()
-{
-	return 0;	// TODO
+	int random = rand() % this->myPawns.size();
+	return this->myPawns[random];
 }
 
-bool PluginLib::SetAction(int x, int y, int moveType)
+Coordinates PluginLib::GetMyFirstPawn()
 {
-	if (this->hasPlayed) {
-		std::cout << " You have already Played !" << std::endl;
-		return false;
-	}
-	this->pawnX = x;
-	this->pawnY = y;
+	return this->myPawns.front();
+}
+
+Coordinates PluginLib::GetEnnemyRandomPawn()
+{
+	int random = rand() % this->ennemyPawns.size();
+	return this->ennemyPawns[random];
+}
+
+Coordinates PluginLib::GetEnnemyFirstPawn()
+{
+	return this->ennemyPawns.front();
+}
+
+bool PluginLib::SetAction(Coordinates pawn, MoveType moveType)
+{
+	this->pawnToMove = pawn;
 	this->moveType = moveType;
 	return true;
 }
 
 void PluginLib::Reset()
 {
-	this->hasPlayed = false;
-	this->pawnX = 0;
-	this->pawnY = 0;
-	this->moveType = -1;
+	this->pawnToMove = Coordinates{ -1, -1 };
+	this->moveType = MoveType::NONE;
 }

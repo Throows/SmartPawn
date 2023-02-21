@@ -25,7 +25,7 @@ struct PluginInfo
 	Teams team;
 	unsigned int pawnID;
 	unsigned int pawnRemaining;
-	pybind11::module_ pluginScript;
+	std::string path;
 	PluginLib plugin;
 };
 

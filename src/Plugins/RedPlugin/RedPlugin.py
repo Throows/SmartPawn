@@ -6,4 +6,6 @@ def InitPlugin(plugin):
 
 def PlayRound(plugin):
     print("Played Round: " + plugin.name)
+    coords = plugin.GetMyFirstPawn()
+    plugin.SetAction(coords, MoveType.UP)
     return 0

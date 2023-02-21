@@ -26,6 +26,7 @@ void SPGame::InitGame()
 void SPGame::PlayNextTurn()
 {
 	this->plugins->SwapTurn();
+	this->plugins->UpdatePawn(this->board->GetPawns());
 
 	Pawn oldPawn{
 		.x = 0,

@@ -4,13 +4,6 @@
 
 #include <Engine/GamePlugins.hpp>
 
-struct Pawn
-{
-	uint x;
-	uint y;
-	uint value;
-};
-
 namespace SP
 {
 
@@ -26,6 +19,7 @@ public:
 	void SetPawn(Pawn Pawn);
  	Pawn GetPawn(int x, int y);
 	Pawn GetPawnByMove(Pawn pawn, MoveType moveType);
+	std::vector<Pawn> GetPawns();
 	void PopulateBoard(int teamPawnNb);
 	bool IsPawnDied();
 	bool IsGameEnded() { return ended; };

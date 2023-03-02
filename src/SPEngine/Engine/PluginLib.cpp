@@ -40,4 +40,6 @@ void PluginLib::Reset()
 {
 	this->pawnToMove = Coordinates{ -1, -1 };
 	this->moveType = MoveType::NONE;
+	this->myPawns.clear();
+	this->ennemyPawns.clear();
 }

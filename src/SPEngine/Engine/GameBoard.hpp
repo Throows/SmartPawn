@@ -18,7 +18,7 @@ public:
 	int GetRemainingPawn(Teams team);
 	void SetPawn(Pawn Pawn);
  	Pawn GetPawn(int x, int y);
-	Pawn GetPawnByMove(Pawn pawn, MoveType moveType);
+	void GetPawnByMove(Pawn& pawn, MoveType moveType);
 	std::vector<Pawn> GetPawns();
 	void PopulateBoard(int teamPawnNb);
 	bool IsPawnDied();

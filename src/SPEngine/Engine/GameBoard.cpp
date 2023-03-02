@@ -46,7 +46,7 @@ Pawn GameBoard::GetPawn(int x, int y)
 	};
 }
 
-Pawn GameBoard::GetPawnByMove(Pawn pawn, MoveType moveType)
+void GameBoard::GetPawnByMove(Pawn& pawn, MoveType moveType)
 {
 	if(moveType == MoveType::UP ||
 		moveType == MoveType::LEFT_TOP_CORNER ||
@@ -75,8 +75,8 @@ Pawn GameBoard::GetPawnByMove(Pawn pawn, MoveType moveType)
 	if (pawn.x >= this->width) pawn.x = 0;
 	if (pawn.y < 0) pawn.y = this->height - 1;
 	if (pawn.y >= this->height) pawn.y = 0;
-	return pawn;
 }
+
 std::vector<Pawn> GameBoard::GetPawns()
 {
     std::vector<Pawn> pawns{};

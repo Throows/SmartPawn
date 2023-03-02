@@ -37,8 +37,7 @@ void GameRecorder::StartRecording(const std::vector<uint8_t>& board, std::map<st
 	file << "## PAWNS" << std::endl;
 	int id = 0, x, y;
 	for (const auto& pawn : board) {
-		if (pawn != 0)
-		{
+		if (pawn != 0) {
 			x = id % width;
 			y = id / width;
 			file << "[" << static_cast<int>(pawn) << "]" << "{" << x << ";" << y << "}" << std::endl;

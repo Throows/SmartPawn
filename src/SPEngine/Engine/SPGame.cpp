@@ -34,11 +34,16 @@ void SPGame::PlayNextTurn()
 		.value = 0,
 	};
 	MoveType move = this->plugins->PlayRound(oldPawn.x, oldPawn.y);
-	this->board->SetPawn(oldPawn); // Remove the old pawn from the board
-	Pawn newPawn = this->board->GetPawnByMove(oldPawn, move);
-	this->board->SetPawn(newPawn); // Add the new pawn to the board
 
+	Pawn newPawn = oldPawn;
+	newPawn.value = this->plugins->GetActivePlayer().pawnID;
+	this->board->GetPawnByMove(newPawn, move);
+
+	this->board->SetPawn(oldPawn); // Remove the old pawn from the board
+	this->board->SetPawn(newPawn); // Add the new pawn to the board
 	SPGame::AddActionRecorder(oldPawn, newPawn);
+
+	this->board->ShowBoard();
 
 	SPGame::CalculateEnded();
 	if (this->board->IsGameEnded()) {

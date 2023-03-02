@@ -16,7 +16,7 @@ public:
 	void OnRender() override;
 	void ProcessEvents(sf::Event& event) override;
 	bool ExistPawn(int x, int y);
-	std::shared_ptr<Pawn> GetPawn(int x, int y);
+	Pawn* GetPawn(int x, int y);
 	void RemovePawn(int x, int y);
 
 protected:

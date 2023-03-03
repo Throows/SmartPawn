@@ -14,11 +14,11 @@ public:
 	virtual ~GameBoard() = default;
 	const std::vector<uint8_t>& GetBoard();
 	void ShowBoard();
-	bool isEmpty(int x, int y);
+	bool IsEmpty(int x, int y);
 	int GetRemainingPawn(Teams team);
 	void SetPawn(Pawn Pawn);
- 	Pawn GetPawn(int x, int y);
-	Pawn GetPawnByMove(Pawn pawn, MoveType moveType);
+ 	Pawn GetPawn(int x, int y); // Return only the pawn value (cuz already have the coord)
+	void GetPawnByMove(Pawn& pawn, MoveType moveType);
 	std::vector<Pawn> GetPawns();
 	void PopulateBoard(int teamPawnNb);
 	bool IsPawnDied();
@@ -26,6 +26,8 @@ public:
 	bool CalculateTie();
 	bool CalculateWon();
 	void SetEnded(bool state) { this->ended = state; };
+
+	bool IsValidMove(Pawn& oldPawn, Pawn& newPawn);
 	
 private:
 	std::vector<uint8_t> board;

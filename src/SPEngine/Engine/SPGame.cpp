@@ -34,16 +34,21 @@ void SPGame::PlayNextTurn()
 		.value = 0,
 	};
 	MoveType move = this->plugins->PlayRound(oldPawn.x, oldPawn.y);
-	this->board->SetPawn(oldPawn); // Remove the old pawn from the board
-	Pawn newPawn = this->board->GetPawnByMove(oldPawn, move);
-	this->board->SetPawn(newPawn); // Add the new pawn to the board
 
-	SPGame::AddActionRecorder(oldPawn, newPawn);
+	Pawn newPawn = oldPawn;
+	newPawn.value = this->plugins->GetActivePlayer().pawnID;
+	this->board->GetPawnByMove(newPawn, move);
 
-	SPGame::CalculateEnded();
-	if (this->board->IsGameEnded()) {
-		std::cout << "Player : has won ! " << std::endl; // TODO
+	if (this->board->IsValidMove(oldPawn, newPawn)) {
+		this->board->SetPawn(oldPawn); // Remove the old pawn from the board
+		this->board->SetPawn(newPawn); // Add the new pawn to the board
+		SPGame::AddActionRecorder(oldPawn, newPawn);
 	}
+	else {
+		std::cout << "Move Skipped !" << std::endl;
+	}
+	this->board->ShowBoard();
+	SPGame::CalculateEnded();
 }
 
 float SPGame::GetPercentageEnded()
@@ -62,13 +67,14 @@ void SPGame::CalculateEnded()
 		this->recorder->AddWinner("NO WINNER");
 	}
 	else if (this->board->CalculateWon()) {
-		std::string winner = this->plugins->GetActivePlayer().pawnRemaining == 0 ? this->plugins->GetActivePlayer().name : this->plugins->GetWaitingPlayer().name;
+		std::string winner = (this->plugins->GetActivePlayer().pawnRemaining == 0) 
+								? this->plugins->GetActivePlayer().name 
+								: this->plugins->GetWaitingPlayer().name;
 		this->recorder->AddWinner(winner);
-		std::cout << "Sim ended !" << std::endl;
+		std::cout << "Player : " << winner << " has won ! " << std::endl;
 	}
 	else return;
 	this->board->ShowBoard();
-	
 	this->recorder->SaveRecord();
 }
 

@@ -4,10 +4,6 @@
 namespace SP
 {
 
-GamePlugins::GamePlugins()
-{
-}
-
 void GamePlugins::InitPlugins()
 {
 	// Check the folder for plugins
@@ -16,7 +12,7 @@ void GamePlugins::InitPlugins()
 		return;
 	}
 
-	pybind11::scoped_interpreter scope{}; // Is it a good idea to put it here ?
+	pybind11::scoped_interpreter scope{};
 
 	for (const auto& dir : std::filesystem::directory_iterator("Plugins")) {
 		if (IsPluginDir(dir)) {
@@ -67,15 +63,16 @@ void GamePlugins::SwapTurn()
 
 void GamePlugins::UpdatePawn(std::vector<Pawn> pawns)
 {
-	PluginInfo* activePlayer = &plugins[activePlayerIndex];
-	activePlayer->pawnRemaining = 0;
+	PluginInfo& activePlayer = plugins[activePlayerIndex];
+	activePlayer.plugin.Reset();
+	activePlayer.pawnRemaining = 0;
 	for (const auto &pawn : pawns) {
-		if (pawn.value == static_cast<uint>(activePlayer->team)) {
-			activePlayer->pawnRemaining++;
-			activePlayer->plugin.myPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
+		if (pawn.value == static_cast<uint>(activePlayer.team)) {
+			activePlayer.pawnRemaining++;
+			activePlayer.plugin.myPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
 		}
 		else {
-			activePlayer->plugin.ennemyPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
+			activePlayer.plugin.ennemyPawns.push_back({static_cast<int>(pawn.x), static_cast<int>(pawn.y)});
 		}
 	}
 }
@@ -83,7 +80,6 @@ void GamePlugins::UpdatePawn(std::vector<Pawn> pawns)
 MoveType GamePlugins::PlayRound(uint &x, uint &y)
 {
 	pybind11::scoped_interpreter scope{};
-	plugins[activePlayerIndex].plugin.Reset();
 
 	try {
 		auto pModule = pybind11::module_::import(plugins[activePlayerIndex].path.c_str());
@@ -94,8 +90,6 @@ MoveType GamePlugins::PlayRound(uint &x, uint &y)
 		std::cout << "Error: " << e.what() << std::endl;
 	}
 	Coordinates pawn = plugins[activePlayerIndex].plugin.GetPawnCoordinates();
-	std::cout << "Pawn coordinates : " << pawn.x << " " << pawn.y << std::endl;
-	std::cout << "move : " << (int)plugins[activePlayerIndex].plugin.GetPawnMove() << std::endl;
 	x = pawn.x;
 	y = pawn.y;
 	return plugins[activePlayerIndex].plugin.GetPawnMove();
@@ -110,14 +104,14 @@ void GamePlugins::RegisterPlugin(std::string& name)
 		return;
 	}
 
-	PluginInfo pluginOne = {
+	PluginInfo plugin = {
 		.name = name,
 		.team = team,
-		.pawnID = 0,
+		.pawnID = (uint) team,
 		.path = "Plugins." + name + "." + name,
 		.plugin = PluginLib{name},
 	};
-	plugins.push_back(pluginOne);
+	plugins.push_back(plugin);
 }
 
 void GamePlugins::LoadPlugin(PluginInfo &plugin)

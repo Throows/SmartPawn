@@ -20,6 +20,16 @@ GameRecorder::GameRecorder()
 	int hour = std::localtime(&date)->tm_hour;
 	int min = std::localtime(&date)->tm_min;
 	this->filePath = "Records/REC-" + std::to_string(year) + "-" + formatNumber(month) + "-" + formatNumber(day) + "_" + formatNumber(hour) + "_" + formatNumber(min) + ".txt";
+	// check if exist
+	std::ifstream fileCheck(this->filePath);
+	int i = 1;
+	while (fileCheck.good()) {
+		fileCheck.close();
+		this->filePath = "Records/REC-" + std::to_string(year) + "-" + formatNumber(month) + "-" + formatNumber(day) + "_" + formatNumber(hour) + "_" + formatNumber(min) + "_(" + std::to_string(i) + ").txt";
+		fileCheck = std::ifstream(this->filePath);
+		i++;
+	}
+	fileCheck.close();
 	file = std::ofstream(this->filePath, std::ios::app);
 	file.close();
 }
@@ -37,8 +47,7 @@ void GameRecorder::StartRecording(const std::vector<uint8_t>& board, std::map<st
 	file << "## PAWNS" << std::endl;
 	int id = 0, x, y;
 	for (const auto& pawn : board) {
-		if (pawn != 0)
-		{
+		if (pawn != 0) {
 			x = id % width;
 			y = id / width;
 			file << "[" << static_cast<int>(pawn) << "]" << "{" << x << ";" << y << "}" << std::endl;

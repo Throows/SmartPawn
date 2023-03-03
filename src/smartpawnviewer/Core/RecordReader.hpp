@@ -9,6 +9,13 @@ struct Action
 	int team, fromX, fromY, toX, toY;
 };
 
+inline 
+std::ostream& operator<<(std::ostream& os, const Action& action)
+{
+	os << "Action(Team:" << action.team << ", Fx:" << action.fromX << ", Fy:" << action.fromY << ", Tx:" << action.toX << ", Ty:" << action.toY << ")";
+	return os;
+}
+
 enum class RecordCategory
 {
 	TEAMS = 0,
@@ -26,9 +33,10 @@ struct ReaderState
 	int expectedResults;
 };
 
-
 namespace SPV
 {
+
+typedef std::function<bool(std::string&)> CategoryLineReader;
 class RecordReader
 {
 public:
@@ -36,31 +44,38 @@ public:
 	virtual ~RecordReader() = default;
 
 	void ReadSimulate();
-	Action GetAction();
 	bool HasNext();
+	const Action& GetNextAction() { return this->actions.back(); }
 	bool Exist(std::string& teamName);
-	bool ExistPawn(int x, int y) { return this->board.at(y).at(x) != 0; };
+	bool ExistPawn(int x, int y) { return this->board.at(RecordReader::GetIndex(x, y)) != 0; }
 	void UpdateBoard();
 	int GetTeam(std::string& teamName);
-	std::string GetWinner() { return this->winnerTeam; };
-	std::vector<std::vector<int>>& GetBoard() { return this->board; };
-	RecordCategory GetStateFromString(const std::string& str);
+	std::string GetWinner() { return this->winnerTeam; }
+	std::vector<uint8_t>& GetBoard() { return this->board; }
+	const int& GetWidth() { return this->width; }
 
-	void ReadTeams(std::smatch& result);
-	void ReadBoard(std::smatch& result);
-	void ReadPawns(std::smatch& result);
-	void ReadRecord(std::smatch& result);
-	void ReadError(std::smatch& result);
-	void ReadWinner(std::smatch& result);
-	
+
+	bool ReadTeams(std::string& line);
+	bool ReadBoard(std::string& line);
+	bool ReadPawns(std::string& line);
+	bool ReadRecord(std::string& line);
+	bool ReadError(std::string& line);
+	bool ReadWinner(std::string& line);
+
 private:
 	std::map<std::string, int> teams;
-	std::vector<std::vector<int>> board;
+	std::vector<uint8_t> board;
 	std::vector<Action> actions;
 	std::string filePath;
 	std::string winnerTeam;
-	RecordCategory actualCategory;
-	std::map<RecordCategory, ReaderState> states;	
+	int width = 0;
+	int height = 0;
+
+	RecordCategory GetStateFromString(const std::string &str);
+	CategoryLineReader GetCategoryLineReader(const RecordCategory& category);
+	bool IsSectionLine(const std::string& line);
+
+	int GetIndex(int x, int y) { return x + (y * this->width); };
 };
 
 } // Namespace SPV

@@ -3,6 +3,14 @@
 
 #include <fstream>
 
+const std::map<const std::string, RecordCategory> categoryMap = {
+	{"TEAMS", RecordCategory::TEAMS},
+	{"BOARD", RecordCategory::BOARD},
+	{"PAWNS", RecordCategory::PAWNS},
+	{"STARTING RECORDING", RecordCategory::RECORD},
+	{"WINNER", RecordCategory::WINNER},
+};
+
 namespace SPV
 {
 
@@ -10,88 +18,34 @@ RecordReader::RecordReader(const std::string& fileName)
 {
 	std::string path = "./Records/";
 	this->filePath = path + fileName;
-
-	ReaderState teamState{
-		std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\})"),
-		[=](std::smatch& result) { this->ReadTeams(result); },
-		2,
-	};
-	this->states.emplace(RecordCategory::TEAMS, teamState);
-
-	ReaderState boardState{
-		std::regex(R"(\{([0-9]*)\;([0-9]*)\})"),
-		[=](std::smatch& result) { this->ReadBoard(result); },
-		2,
-	};
-	this->states.emplace(RecordCategory::BOARD, boardState);
-
-	ReaderState pawnState{
-		std::regex(R"(\[([0-9]*)\]\{([0-9]*)\;([0-9]*)\})"),
-		[=](std::smatch& result) { this->ReadPawns(result); },
-		3,
-	};
-	this->states.emplace(RecordCategory::PAWNS, pawnState);
-
-	ReaderState recordState{
-		std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\;([0-9]*)\}\:\{([0-9]*)\;([0-9]*)\})"),
-		[=](std::smatch& result) { this->ReadRecord(result); },
-		5,
-	};
-	this->states.emplace(RecordCategory::RECORD, recordState);
-
-	ReaderState winnerState{
-		std::regex(R"(\[([A-Za-z\s_]*)\])"),
-		[=](std::smatch& result) { this->ReadWinner(result); },
-		1,
-	};
-	this->states.emplace(RecordCategory::WINNER, winnerState);
-
-	ReaderState errorState{
-		std::regex(R"((.*))"),
-		[=](std::smatch& result) { this->ReadTeams(result); },
-		1,
-	};
-	this->states.emplace(RecordCategory::READ_ERROR, errorState);
 }
 
 void RecordReader::ReadSimulate()
 {
 	std::ifstream file(this->filePath);
-	if (!file.is_open()){
+	if (!file.is_open()) {
 		std::cout << "Error at file " << this->filePath << " : " << strerror(errno) << std::endl;
 	}
 
 	std::string line;
 	int lineCount = 0;
-	ReaderState activeReader = this->states.at(RecordCategory::READ_ERROR);
+	RecordCategory lastCategory = RecordCategory::READ_ERROR;
+	CategoryLineReader lineReader = nullptr;
 	while (std::getline(file, line)) {
-		if (line.find("##") != std::string::npos) {
-			std::string rawState = line.substr(3, line.length()-1);
-			this->actualCategory = GetStateFromString(rawState);
-			activeReader = this->states.at(this->actualCategory);
+		if (RecordReader::IsSectionLine(line)) {
+			lastCategory = RecordReader::GetStateFromString(line);
+			lineReader = RecordReader::GetCategoryLineReader(lastCategory);
 			continue;
 		}
-
-		std::smatch result;
-		if (!std::regex_match(line, result, activeReader.regex)) {
-			std::cout << "Error line : " << line << std::endl;
-			return;
+		if (!lineReader) {
+			throw std::runtime_error("Error while trying to find the reader");
 		}
-		if (result.size()-1 == activeReader.expectedResults) {
-			(activeReader.readerFunction)(result);
-		}
-		else {
-			std::cout << "Unexpected result with size : " << result.size() << std::endl;
-			throw std::runtime_error("");
+		if (!lineReader(line)) {
+			throw std::runtime_error("Error while trying to Read the line");
 		}
 		lineCount++;
 	}
 	std::reverse(this->actions.begin(), this->actions.end());
-}
-
-Action RecordReader::GetAction()
-{
-	return this->actions.back();
 }
 
 bool RecordReader::HasNext()
@@ -101,9 +55,11 @@ bool RecordReader::HasNext()
 
 void RecordReader::UpdateBoard()
 {
-	Action action = GetAction();
-	this->board.at(action.toY).at(action.toX) = this->board.at(action.fromY).at(action.fromX);
-	this->board.at(action.fromY).at(action.fromX) = 0;
+	Action& action = this->actions.back();
+	int coordsTo = RecordReader::GetIndex(action.toX, action.toY);
+	int coordsFrom = RecordReader::GetIndex(action.fromX, action.fromY);
+	this->board.at(coordsTo) = this->board.at(coordsFrom);
+	this->board.at(coordsFrom) = 0;
 	this->actions.pop_back();
 }
 
@@ -117,12 +73,13 @@ int RecordReader::GetTeam(std::string& teamName)
 
 RecordCategory RecordReader::GetStateFromString(const std::string& str)
 {
-	if (str == "TEAMS") return RecordCategory::TEAMS;
-	else if (str == "BOARD") return RecordCategory::BOARD;
-	else if (str == "PAWNS") return RecordCategory::PAWNS;
-	else if (str == "STARTING RECORDING") return RecordCategory::RECORD;
-	else if (str == "WINNER") return RecordCategory::WINNER;
-	else return RecordCategory::READ_ERROR;
+	std::string stateStr = str.substr(3, str.length() - 1);
+
+	auto it = categoryMap.find(stateStr);
+	if (it != categoryMap.end()) {
+		return it->second;
+	}
+	return RecordCategory::READ_ERROR;
 }
 
 bool RecordReader::Exist(std::string& teamName)
@@ -131,50 +88,129 @@ bool RecordReader::Exist(std::string& teamName)
 	return this->teams.find(teamName)->first == teamName;
 }
 
-void RecordReader::ReadTeams(std::smatch& result)
+bool RecordReader::ReadTeams(std::string& line)
 {
-	this->teams.emplace(result[1], std::stoi(result[2]));
+	std::smatch result;
+	if (!std::regex_match(line, result, std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\})"))) {
+		std::cout << "Error line : " << line << std::endl;
+		std::cout << "Regex does not match !\n";
+		return false;
+	}
+	if (result.size() == 3) {
+		this->teams.emplace(result[1], std::stoi(result[2]));
+		return true;
+	}
+	return false;
 }
 
-void RecordReader::ReadBoard(std::smatch& result)
+bool RecordReader::ReadBoard(std::string& line)
 {
-	for (int y = 0; y < std::stoi(result[2]); y++) {
-		std::vector<int> row(std::stoi(result[1]), 0);
-		this->board.push_back(row);
+	std::smatch result;
+	if (!std::regex_match(line, result, std::regex(R"(\{([0-9]*)\;([0-9]*)\})"))) {
+		std::cout << "Error line : " << line << std::endl;
+		std::cout << "Regex does not match !\n";
+		return false;
+	}
+	if (result.size() == 3) {
+		this->width = std::stoi(result[1]);
+		this->height = std::stoi(result[2]);
+		this->board.clear();
+		this->board.resize(this->width * this->height, 0);
+		return true;
+	}
+	return false;
+}
+
+bool RecordReader::ReadPawns(std::string& line)
+{
+	std::smatch result;
+	if (!std::regex_match(line, result, std::regex(R"(\[([0-9]*)\]\{([0-9]*)\;([0-9]*)\})"))) {
+		std::cout << "Error line : " << line << std::endl;
+		std::cout << "Regex does not match !\n";
+		return false;
+	}
+	if (result.size() == 4) {
+		int team = std::stoi(result[1]);
+		int coord = RecordReader::GetIndex(std::stoi(result[2]), std::stoi(result[3]));
+		this->board.at(coord) = team;
+		return true;
+	}
+	return false;
+}
+
+bool RecordReader::ReadRecord(std::string& line)
+{
+	std::smatch result;
+	if (!std::regex_match(line, result, std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\;([0-9]*)\}\:\{([0-9]*)\;([0-9]*)\})"))) {
+		std::cout << "Error line : " << line << std::endl;
+		std::cout << "Regex does not match !\n";
+		return false;
+	}
+	if (result.size() == 6) {
+		auto teamStr = result[1].str();
+		Action action{
+			.team = GetTeam(teamStr),
+			.fromX = std::stoi(result[2]),
+			.fromY = std::stoi(result[3]),
+			.toX = std::stoi(result[4]),
+			.toY = std::stoi(result[5]),
+		};
+		this->actions.push_back(action);
+		return true;
+	}
+	return false;
+}
+
+bool RecordReader::ReadError(std::string& line)
+{
+	std::cout << "Error at line : " << line << std::endl;
+	return true;
+}
+
+bool RecordReader::ReadWinner(std::string& line)
+{
+	std::smatch result;
+	if (!std::regex_match(line, result, std::regex(R"(\[([A-Za-z\s_]*)\])"))) {
+		std::cout << "Error line : " << line << std::endl;
+		std::cout << "Regex does not match !\n";
+		return false;
+	}
+	if (result.size() == 2) {
+		std::string team = result[1].str();
+		this->winnerTeam = (team == "NO WINNER") ?  "EQUALITÉ" : team;
+		return true;
+	}
+	return false;
+}
+
+CategoryLineReader RecordReader::GetCategoryLineReader(const RecordCategory& category)
+{
+    switch (category)
+	{
+	case RecordCategory::TEAMS:
+		return [this](std::string& line) { return RecordReader::ReadTeams(line); };
+		break;
+	case RecordCategory::BOARD:
+		return [this](std::string& line) { return RecordReader::ReadBoard(line); };
+		break;
+	case RecordCategory::PAWNS:
+		return [this](std::string& line) { return RecordReader::ReadPawns(line); };
+		break;
+	case RecordCategory::RECORD:
+		return [this](std::string& line) { return RecordReader::ReadRecord(line); };
+		break;
+	case RecordCategory::WINNER:
+		return [this](std::string& line) { return RecordReader::ReadWinner(line); };
+		break;
+	default:
+		return [this](std::string& line) { return RecordReader::ReadError(line); };
+		break;
 	}
 }
 
-void RecordReader::ReadPawns(std::smatch& result)
+bool RecordReader::IsSectionLine(const std::string &line)
 {
-	int team = std::stoi(result[1]);
-	int x = std::stoi(result[2]);
-	int y = std::stoi(result[3]);
-	this->board.at(y).at(x) = team;
-}
-
-void RecordReader::ReadRecord(std::smatch& result)
-{
-	Action action;
-	auto resultStr = result[1].str();
-	action.team = GetTeam(resultStr);
-	action.fromX = std::stoi(result[2]);
-	action.fromY = std::stoi(result[3]);
-	action.toX = std::stoi(result[4]);
-	action.toY = std::stoi(result[5]);
-	this->actions.push_back(action);
-}
-
-void RecordReader::ReadError(std::smatch& result)
-{
-	std::cout << "Error : " << result[0] << std::endl;
-}
-
-void RecordReader::ReadWinner(std::smatch& result)
-{
-	std::string team = result[1].str();
-	std::cout << "Team :" << team << std::endl;
-	if(team == "NO WINNER") this->winnerTeam = "EQUALIT�";
-	else this->winnerTeam = team;
+	return line.find("##") != std::string::npos;
 }
 
 } // Namespace SPV

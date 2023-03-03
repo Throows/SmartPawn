@@ -3,7 +3,9 @@
 namespace SPV
 {
 
-ReplayState::ReplayState(StatesPtr states, WindowPtr window, const std::string& recordFile) : State("ReplayState"), reader(recordFile)
+ReplayState::ReplayState(StatesPtr states, WindowPtr window, const std::string& recordFile) 
+	: State("ReplayState")
+	, reader(recordFile)
 {
 	this->states = states;
 	this->window = window;
@@ -46,12 +48,12 @@ bool ReplayState::ExistPawn(int x, int y)
 	return this->reader.ExistPawn(x, y);
 }
 
-std::shared_ptr<Pawn> ReplayState::GetPawn(int x, int y)
+Pawn* ReplayState::GetPawn(int x, int y)
 {
 	for (auto pawn : this->pawns) {
-		if (pawn->IsCoords(x, y)) return pawn;
+		if (pawn->IsCoords(x, y)) return pawn.get();
 	}
-	throw std::runtime_error("No Pawn has been found at these coordinates");
+	return nullptr;
 }
 
 void ReplayState::RemovePawn(int x, int y)
@@ -97,19 +99,17 @@ void ReplayState::InitState()
 	this->grid->setTexture(*this->textures.at("GRID_TEXTURE"));
 	this->reader.ReadSimulate();
 	
-	std::vector<std::vector<int>> board = this->reader.GetBoard();
-	int x = 0;
-	int y = 0;
-	for (auto& column : board) {
-		x = 0;
-		for (auto& row : column) {
-			if (row != 0) {
-				std::shared_ptr<Pawn> pawn = std::make_shared<Pawn>(x, y, this->textures.at("PAWN_TEXTURE"), row == 1 ? 35 : 0);
-				this->pawns.push_back(std::move(pawn));
-			}
-			x++;
+	std::vector<uint8_t> board = this->reader.GetBoard();
+	int width = this->reader.GetWidth();
+	int id = 0, x, y;
+	for (const auto &p : board) {
+		x = id % width;
+		y = id / width;
+		if (p != 0) {
+			std::shared_ptr<Pawn> pawn = std::make_shared<Pawn>(x, y, this->textures.at("PAWN_TEXTURE"), p == 1 ? 0 : 35);
+			this->pawns.push_back(std::move(pawn));
 		}
-		y++;
+		id++;
 	}
 	this->title = sf::Text("", *this->font, 30);
 	this->title.setPosition(sf::Vector2f(475.f, 50.0f));
@@ -121,19 +121,18 @@ void ReplayState::InitState()
 void ReplayState::UpdateReplay()
 {
 	sf::Time time = clock.getElapsedTime();
-	if (time.asMilliseconds() >= 1) {
+	if (time.asMilliseconds() >= 50) {
 		if (this->reader.HasNext()) {
-			Action action = this->reader.GetAction();
-			if (ExistPawn(action.fromX, action.fromY)) {
-				if (ExistPawn(action.toX, action.toY)) {
-					RemovePawn(action.toX, action.toY);
-				}
-				std::shared_ptr<Pawn> pawn = GetPawn(action.fromX, action.fromY);
-				pawn->SetCoords(action.toX, action.toY);
+			Action action = this->reader.GetNextAction();
+			Pawn *movePawn = ReplayState::GetPawn(action.fromX, action.fromY);
+			if (movePawn == nullptr) {
+				SP_APP_ERROR("Pawn not found !");
 			}
-			else {
-				std::cout << "Error pawn not found !" << std::endl;
+			Pawn *attackedPawn = ReplayState::GetPawn(action.toX, action.toY);
+			if (attackedPawn != nullptr) {
+				ReplayState::RemovePawn(action.toX, action.toY);
 			}
+			movePawn->SetCoords(action.toX, action.toY); // No error check (Supposed to be valid)
 			this->reader.UpdateBoard();
 		}
 		else {

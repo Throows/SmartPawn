@@ -39,8 +39,8 @@ struct PluginInfo
 class GamePlugins 
 {
 public:
-	GamePlugins();
-	virtual ~GamePlugins() = default;
+	GamePlugins() = default;
+	~GamePlugins() = default;
 	void InitPlugins();
 	const PluginInfo &GetActivePlayer() { return plugins[activePlayerIndex]; };
 	[[deprecated("Undefined behavior (if more than 2 players)")]] 

@@ -13,7 +13,7 @@
   <h3 align="center">Smart Pawn</h3>
 
   <p align="center">
-    Smart pawn is a two person game where the goal is to play chest by programming a IA to win for you. The last pawn remaining is the winner.
+    Smart pawn is a two person game where the goal is to play chest by programming a IA to win for you. The last pawn remaining is the winner. (Version 1.0.0)
     <br />
     <a href="https://github.com/Throows/SmartPawn"><strong>Explore the docs »</strong></a>
     <br />
@@ -70,6 +70,7 @@ Don't Stop improving your IA. You can also share your IA with your friends and s
 * [SFML](https://www.sfml-dev.org/)
 * [PyBind11](https://github.com/pybind/pybind11)
 * [xmake](https://xmake.io/)
+* [spdlog](https://github.com/gabime/spdlog)
 
 
 

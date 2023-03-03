@@ -53,7 +53,7 @@ Pawn* ReplayState::GetPawn(int x, int y)
 	for (auto pawn : this->pawns) {
 		if (pawn->IsCoords(x, y)) return pawn.get();
 	}
-	throw std::runtime_error("No Pawn has been found at these coordinates");
+	return nullptr;
 }
 
 void ReplayState::RemovePawn(int x, int y)
@@ -121,11 +121,18 @@ void ReplayState::InitState()
 void ReplayState::UpdateReplay()
 {
 	sf::Time time = clock.getElapsedTime();
-	if (time.asMilliseconds() >= 1) {
+	if (time.asMilliseconds() >= 50) {
 		if (this->reader.HasNext()) {
 			Action action = this->reader.GetNextAction();
-			Pawn* pawn = ReplayState::GetPawn(action.fromX, action.fromY);
-			pawn->SetCoords(action.toX, action.toY);
+			Pawn *movePawn = ReplayState::GetPawn(action.fromX, action.fromY);
+			if (movePawn == nullptr) {
+				SP_APP_ERROR("Pawn not found !");
+			}
+			Pawn *attackedPawn = ReplayState::GetPawn(action.toX, action.toY);
+			if (attackedPawn != nullptr) {
+				ReplayState::RemovePawn(action.toX, action.toY);
+			}
+			movePawn->SetCoords(action.toX, action.toY); // No error check (Supposed to be valid)
 			this->reader.UpdateBoard();
 		}
 		else {

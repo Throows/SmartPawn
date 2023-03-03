@@ -9,6 +9,13 @@ struct Action
 	int team, fromX, fromY, toX, toY;
 };
 
+inline 
+std::ostream& operator<<(std::ostream& os, const Action& action)
+{
+	os << "Action(Team:" << action.team << ", Fx:" << action.fromX << ", Fy:" << action.fromY << ", Tx:" << action.toX << ", Ty:" << action.toY << ")";
+	return os;
+}
+
 enum class RecordCategory
 {
 	TEAMS = 0,

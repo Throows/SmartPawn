@@ -16,7 +16,7 @@ const std::vector<uint8_t>& GameBoard::GetBoard()
 	return this->board;
 }
 
-bool GameBoard::isEmpty(int x, int y)
+bool GameBoard::IsEmpty(int x, int y)
 {
 	if (x > this->board.size() || y > this->board.size()) return false;
 	else return GetPawn(x, y).value == 0;
@@ -71,9 +71,9 @@ void GameBoard::GetPawnByMove(Pawn& pawn, MoveType moveType)
 		moveType == MoveType::RIGHT_TOP_CORNER) {
 		pawn.x++;
 	}
-	if (pawn.x < 0) pawn.x = this->width - 1;
+	if (pawn.x == UINT_MAX) pawn.x = this->width - 1;
 	if (pawn.x >= this->width) pawn.x = 0;
-	if (pawn.y < 0) pawn.y = this->height - 1;
+	if (pawn.y == UINT_MAX) pawn.y = this->height - 1;
 	if (pawn.y >= this->height) pawn.y = 0;
 }
 
@@ -92,6 +92,7 @@ std::vector<Pawn> GameBoard::GetPawns()
 	}
 	return pawns;
 }
+
 void GameBoard::PopulateBoard(int teamPawnNb)
 {
 	if(teamPawnNb > (this->width * this->height) / 2) {
@@ -115,7 +116,7 @@ void GameBoard::PopulateBoard(int teamPawnNb)
 	}
 }
 
-// TODO Best way to counter the infinite game
+// TODO Find better way to counter the infinite game
 bool GameBoard::IsPawnDied()
 {
 	int remainingPawn = GetRemainingPawn(Teams::NO_TEAM);
@@ -136,6 +137,26 @@ bool GameBoard::CalculateWon()
 {
 	this->ended = (GetRemainingPawn(Teams::TEAM_ONE) == 0 || GetRemainingPawn(Teams::TEAM_TWO) == 0);
 	return this->ended;
+}
+
+bool GameBoard::IsValidMove(Pawn &oldPawn, Pawn &newPawn)
+{
+	Pawn actualOldPawn = GameBoard::GetPawn(oldPawn.x, oldPawn.y);
+	Pawn actualNewPawn = GameBoard::GetPawn(newPawn.x, newPawn.y);
+
+	if (actualOldPawn.value == 0) {
+		std::cout << "You can't play an empty case !" << std::endl;
+		return false;
+	}
+	if (actualOldPawn.value != newPawn.value) {
+		std::cout << "You can't play an ennemy pawn !" << std::endl;
+		return false;
+	}
+	if (actualNewPawn.value != 0 && actualNewPawn.value == newPawn.value) {
+		std::cout << "You can't play your own pawn !" << std::endl;
+		return false;
+	}
+	return true;
 }
 
 char GameBoard::GetPluginChar(Teams team)

@@ -90,8 +90,6 @@ MoveType GamePlugins::PlayRound(uint &x, uint &y)
 		std::cout << "Error: " << e.what() << std::endl;
 	}
 	Coordinates pawn = plugins[activePlayerIndex].plugin.GetPawnCoordinates();
-	std::cout << "Pawn coordinates : " << pawn.x << " " << pawn.y << std::endl;
-	std::cout << "move : " << (int)plugins[activePlayerIndex].plugin.GetPawnMove() << std::endl;
 	x = pawn.x;
 	y = pawn.y;
 	return plugins[activePlayerIndex].plugin.GetPawnMove();

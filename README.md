@@ -58,7 +58,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Photo](https://github.com/Throows/SmartPawn/blob/master/assets/SMHome.jpg?raw=true)
+![Photo](https://raw.githubusercontent.com/Throows/SmartPawn/main/assets/SMHome.jpg)
 
 Start by programming your basic IA, then you can improve it by adding new functions and improving the existing ones. The goal is to play chest like game by programming a IA to play for you. The last pawn remaining is the winner. You can also play against your IA (In the future). \
 Launch the simulation and see how your IA is doing against the other one. One the game is ended you can see the result of the game by reviewing it thanks to the replay mode. \

@@ -1,12 +1,11 @@
-#include <Core/pch.hpp>
 #include "Core/Application.hpp"
 
 #ifdef SP_PLATFORM_WIN
 
 int main(int argc, char** argv) 
 {
-	SPV::Logger::Init();
-	SP_APP_INFO("Logger Initialized successfully !");
+	SP::Logger::Init();
+	SPV_APP_INFO("Logger Initialized successfully !");
 	SPV::Application app{};
 	app.Run();
 }
@@ -15,8 +14,8 @@ int main(int argc, char** argv)
 
 int main(int argc, char** argv) 
 {
-	SPV::Logger::Init();
-	SP_APP_INFO("Logger Initialized successfully !");
+	SP::Logger::Init();
+	SPV_APP_INFO("Logger Initialized successfully !");
 	SPV::Application app{};
 	app.Run();
 }

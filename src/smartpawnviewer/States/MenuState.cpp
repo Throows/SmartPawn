@@ -70,7 +70,7 @@ void MenuState::UpdateListViewButton()
 		}
 	}
 	catch (const std::exception& e) {
-		std::cout << e.what() << std::endl;
+		SPV_APP_ERROR("Could not load the records ! (MenuState) {0}", e.what());
 	}
 }
 
@@ -78,17 +78,17 @@ void MenuState::InitState()
 {
 	this->font = std::make_shared<sf::Font>();
 	if (!this->font->loadFromFile("resources/fonts/neuropol_x_rg.ttf")) {
-		SP_APP_ERROR("Could not load the font ! (SimGameState)");
+		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
 	}
 
 	this->textures.emplace("BUTTON_TEXTURE", std::make_shared<sf::Texture>());
 	if (!this->textures.at("BUTTON_TEXTURE")->loadFromFile("resources/gui/buttons.png")) {
-		SP_APP_ERROR("Could not load texture !");
+		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
 	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("resources/backgrounds/bg1.jpg")) {
-		SP_APP_ERROR("Could not load texture !");
+		SPV_APP_ERROR("Could not load texture !");
 	}
 	
 	this->background = std::make_unique<sf::Sprite>();

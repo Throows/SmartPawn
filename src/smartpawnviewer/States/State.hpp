@@ -17,7 +17,7 @@ public:
 	virtual bool isExitedState() { return this->isExited; }
 	virtual void SetExitedState() { 
 		isExited = true;
-		SP_APP_INFO("State exited : {0}", m_StateName);
+		SPV_APP_INFO("State exited : {0}", m_StateName);
 	}
 	virtual std::string GetName() { return this->m_StateName; }
 

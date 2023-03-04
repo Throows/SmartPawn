@@ -17,15 +17,18 @@ public:
 	bool IsEmpty(int x, int y);
 	int GetRemainingPawn(Teams team);
 	void SetPawn(Pawn Pawn);
- 	Pawn GetPawn(int x, int y); // Return only the pawn value (cuz already have the coord)
+ 	uint GetPawn(int x, int y);
 	void GetPawnByMove(Pawn& pawn, MoveType moveType);
 	std::vector<Pawn> GetPawns();
-	void PopulateBoard(int teamPawnNb);
+	void PopulateBoard(const int& teamPawnNb);
 	bool IsPawnDied();
 	bool IsGameEnded() { return ended; };
 	bool CalculateTie();
 	bool CalculateWon();
-	void SetEnded(bool state) { this->ended = state; };
+	void SetEnded(bool state) { this->ended = state; }
+
+	const int& GetBoardWidth() { return this->width; }
+	const int& GetBoardHeight() { return this->height; }
 
 	bool IsValidMove(Pawn& oldPawn, Pawn& newPawn);
 	

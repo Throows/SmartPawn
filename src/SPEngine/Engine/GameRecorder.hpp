@@ -13,7 +13,9 @@ public:
 	GameRecorder();
 	virtual ~GameRecorder() = default;
 
-	void StartRecording(const std::vector<uint8_t>& board, std::map<std::string, int> teams);
+	void RecordTeams(const std::map<std::string, int>& teams);
+	void RecordBoard(int bWidth, int bHeigth);
+	void RecordInitialPawns(const std::vector<uint8_t>& board, int xCoord, int yCoord);
 	void AddAction(std::string teamName, int oldXcoord, int oldYCoord, int xCoord, int yCoord);
 	void AddWinner(std::string winner);
 	void SaveRecord();

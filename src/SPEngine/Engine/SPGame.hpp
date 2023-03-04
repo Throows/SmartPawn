@@ -13,7 +13,7 @@ namespace SP
 class EXPORT SPGame 
 {
 public:
-	SPGame();
+	SPGame(uint pawnNb, uint boardWidth, uint boardHeight);
 	virtual ~SPGame() = default;
 
 	void InitGame();
@@ -22,14 +22,14 @@ public:
 	void CalculateEnded();
 	void AddActionRecorder(Pawn coords, Pawn newCoords);
 
-	std::shared_ptr<GameBoard> GetData() { return this->board; };
-	std::shared_ptr<GamePlugins> GetPLManager() { return this->plugins; };
+	GameBoard * const GetData() { return this->board.get(); }
+	GamePlugins * const GetPLManager() { return this->plugins.get(); }
 
 private:
-	std::shared_ptr<GamePlugins> plugins;
-	std::shared_ptr<GameBoard> board;
-	std::shared_ptr<GameRecorder> recorder;
-	const unsigned int initalPawnNumber = 5;
+	std::unique_ptr<GamePlugins> plugins;
+	std::unique_ptr<GameBoard> board;
+	std::unique_ptr<GameRecorder> recorder;
+	const uint initalPawnNumber;
 };
 
 } // Namespace SP

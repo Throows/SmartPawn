@@ -85,10 +85,11 @@ MoveType GamePlugins::PlayRound(uint &x, uint &y)
 	try {
 		auto pModule = pybind11::module_::import(plugins[activePlayerIndex].path.c_str());
 		int errCode = pModule.attr("PlayRound")(&(plugins[activePlayerIndex].plugin)).cast<int>();
-		SP_ENGINE_TRACE("Ended {0} program with code : {1}", plugins[activePlayerIndex].name, errCode);
+		if(errCode != 0)
+			throw std::runtime_error(std::to_string(errCode));
 	}
 	catch (const std::exception &e) {
-		SP_ENGINE_ERROR(e.what());
+		SP_ENGINE_TRACE("Ended {0} program with code : {1}", plugins[activePlayerIndex].name, e.what());
 	}
 	Coordinates pawn = plugins[activePlayerIndex].plugin.GetPawnCoordinates();
 	x = pawn.x;

@@ -1,15 +1,9 @@
 #pragma once
 #include <spdlog/spdlog.h>
 
-#ifdef SP_PLATFORM_WIN
-#define EXPORT __declspec(dllexport)
-#elif SP_PLATFORM_DARWIN
-#define EXPORT __attribute__((visibility("default")))
-#endif
-
 namespace SP
 {
-class EXPORT Logger
+class Logger
 {
 public:
 	static void Init();

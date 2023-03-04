@@ -2,18 +2,22 @@
 #include <Engine/GameBoard.hpp>
 #include <Engine/GameRecorder.hpp>
 
-#ifdef SP_PLATFORM_WIN
-#define EXPORT __declspec(dllexport)
+/*#ifdef SP_PLATFORM_WIN
+#	ifdef DDL_EXPORT
+#		define SP_API __declspec(dllexport)
+#	else
+#		define SP_API __declspec(dllimport)
+#	endif	
 #elif SP_PLATFORM_DARWIN
-#define EXPORT __attribute__((visibility("default")))
-#endif
+#	define SP_API __attribute__((visibility("default")))
+#endif*/
 
 namespace SP
 {
-class EXPORT SPGame 
+class SPGame 
 {
 public:
-	SPGame(uint pawnNb, uint boardWidth, uint boardHeight);
+	SPGame(unsigned int pawnNb, unsigned int boardWidth, unsigned int boardHeight);
 	virtual ~SPGame() = default;
 
 	void InitGame();

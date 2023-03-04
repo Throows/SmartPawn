@@ -7,7 +7,7 @@
 namespace SP
 {
 
-SPGame::SPGame(uint pawnNB, uint boardWidth, uint boardHeigth)
+SPGame::SPGame(unsigned int pawnNB, unsigned int boardWidth, unsigned int boardHeigth)
 	: initalPawnNumber(pawnNB)
 {
 	srand((unsigned int)time(NULL));

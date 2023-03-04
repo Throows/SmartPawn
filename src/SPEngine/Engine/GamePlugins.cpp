@@ -12,9 +12,6 @@ void GamePlugins::InitPlugins()
 		SP_ENGINE_WARN("No plugins folder found !");
 		return;
 	}
-
-	pybind11::scoped_interpreter scope{};
-
 	for (const auto& dir : std::filesystem::directory_iterator("Plugins")) {
 		if (IsPluginDir(dir)) {
 			std::string name = dir.path().filename().string();
@@ -23,7 +20,9 @@ void GamePlugins::InitPlugins()
 	}
 
 	for (auto& plugin : plugins) {
+		pybind11::initialize_interpreter();
 		LoadPlugin(plugin);
+		pybind11::finalize_interpreter();
 	}
 }
 

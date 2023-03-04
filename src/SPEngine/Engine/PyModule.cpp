@@ -3,8 +3,6 @@
 
 #include "PluginLib.hpp"
 
-#define PYBIND11_DETAILED_ERROR_MESSAGES 1
-
 PYBIND11_EMBEDDED_MODULE(PyPluginLib, m)
 {
     m.doc() = "A Python API for the PluginLib library to allow users to make their own IA for the game";

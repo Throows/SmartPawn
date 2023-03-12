@@ -1,4 +1,4 @@
-#include <Engine/GamePlugins.hpp>
+#include <SPEngine/GamePlugins.hpp>
 #include "Logger.hpp"
 
 #define NB_MAX_PLAYER 2

@@ -1,4 +1,4 @@
-#include <Engine/SPGame.hpp>
+#include <SPEngine/SPGame.hpp>
 
 #include <iostream>
 

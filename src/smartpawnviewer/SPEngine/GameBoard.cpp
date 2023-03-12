@@ -1,4 +1,4 @@
-#include <Engine/GameBoard.hpp>
+#include <SPEngine/GameBoard.hpp>
 #include "Logger.hpp"
 
 namespace SP

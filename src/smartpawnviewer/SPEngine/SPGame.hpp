@@ -1,6 +1,6 @@
 #pragma once
-#include <Engine/GameBoard.hpp>
-#include <Engine/GameRecorder.hpp>
+#include <SPEngine/GameBoard.hpp>
+#include <SPEngine/GameRecorder.hpp>
 
 /*#ifdef SP_PLATFORM_WIN
 #	ifdef DDL_EXPORT

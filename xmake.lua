@@ -20,15 +20,12 @@ end
 set_project("SmartPawn")
 
 target("SmartPawnViewer")
-    set_version("1.0.0")
+    set_version("1.0.1")
     set_kind("binary")
 
     add_headerfiles("src/smartpawnviewer/**.hpp")
-    add_headerfiles("src/SPEngine/**.hpp")
-    add_includedirs("src/SPEngine", {public = true})
     add_includedirs("src/smartpawnviewer")
     add_files("src/smartpawnviewer/**.cpp")
-    add_files("src/SPEngine/**.cpp")
     set_pcxxheader("src/smartpawnviewer/Core/pch.hpp");
     add_packages("spdlog", "sfml", "pybind11", "python") 
 

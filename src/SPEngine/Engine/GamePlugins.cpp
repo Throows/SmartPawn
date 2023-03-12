@@ -18,11 +18,9 @@ void GamePlugins::InitPlugins()
 			GamePlugins::RegisterPlugin(name);
 		}
 	}
-
+	pybind11::scoped_interpreter guard{};
 	for (auto& plugin : plugins) {
-		pybind11::initialize_interpreter();
 		LoadPlugin(plugin);
-		pybind11::finalize_interpreter();
 	}
 }
 
@@ -79,8 +77,7 @@ void GamePlugins::UpdatePawn(std::vector<Pawn> pawns)
 
 MoveType GamePlugins::PlayRound(uint &x, uint &y)
 {
-	pybind11::scoped_interpreter scope{};
-
+	pybind11::scoped_interpreter guard{};
 	try {
 		auto pModule = pybind11::module_::import(plugins[activePlayerIndex].path.c_str());
 		int errCode = pModule.attr("PlayRound")(&(plugins[activePlayerIndex].plugin)).cast<int>();
@@ -117,6 +114,7 @@ void GamePlugins::RegisterPlugin(std::string& name)
 
 void GamePlugins::LoadPlugin(PluginInfo &plugin)
 {
+	SP_ENGINE_INFO("Plugin {0} is Loading ", plugin.plugin.GetName());
 	try {
 		auto pModule = pybind11::module_::import(plugin.path.c_str());
 		pModule.attr("InitPlugin")(&plugin.plugin);
@@ -124,7 +122,6 @@ void GamePlugins::LoadPlugin(PluginInfo &plugin)
 	catch (const std::exception &e) {
 		SP_ENGINE_ERROR(e.what());
 	}
-	SP_ENGINE_INFO("Plugin {0} loaded successfully ", plugin.plugin.GetName());
 }
 
 bool GamePlugins::IsPluginDir(const std::filesystem::directory_entry &path)

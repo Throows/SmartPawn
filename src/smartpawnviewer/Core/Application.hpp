@@ -12,7 +12,7 @@ public:
 	Application(const unsigned int width = 960, const unsigned int height = 480);
 	virtual ~Application() = default;
 
-	void Run();
+	int Run();
 	void ProcessAppEvents();
 
 protected:

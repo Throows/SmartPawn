@@ -1,4 +1,5 @@
-#include "GamePlugins.hpp"
+#include <SPEngine/GamePlugins.hpp>
+#include "Logger.hpp"
 
 #define NB_MAX_PLAYER 2
 namespace SP
@@ -8,19 +9,16 @@ void GamePlugins::InitPlugins()
 {
 	// Check the folder for plugins
 	if (!std::filesystem::exists("Plugins") || !std::filesystem::is_directory("Plugins")) {
-		std::cout << "No plugins folder found !" << std::endl;
+		SP_ENGINE_WARN("No plugins folder found !");
 		return;
 	}
-
-	pybind11::scoped_interpreter scope{};
-
 	for (const auto& dir : std::filesystem::directory_iterator("Plugins")) {
 		if (IsPluginDir(dir)) {
 			std::string name = dir.path().filename().string();
 			GamePlugins::RegisterPlugin(name);
 		}
 	}
-
+	pybind11::scoped_interpreter guard{};
 	for (auto& plugin : plugins) {
 		LoadPlugin(plugin);
 	}
@@ -79,15 +77,15 @@ void GamePlugins::UpdatePawn(std::vector<Pawn> pawns)
 
 MoveType GamePlugins::PlayRound(uint &x, uint &y)
 {
-	pybind11::scoped_interpreter scope{};
-
+	pybind11::scoped_interpreter guard{};
 	try {
 		auto pModule = pybind11::module_::import(plugins[activePlayerIndex].path.c_str());
 		int errCode = pModule.attr("PlayRound")(&(plugins[activePlayerIndex].plugin)).cast<int>();
-		std::cout << "End program with code : " << errCode << std::endl;
+		if(errCode != 0)
+			throw std::runtime_error(std::to_string(errCode));
 	}
 	catch (const std::exception &e) {
-		std::cout << "Error: " << e.what() << std::endl;
+		SP_ENGINE_TRACE("Ended {0} program with code : {1}", plugins[activePlayerIndex].name, e.what());
 	}
 	Coordinates pawn = plugins[activePlayerIndex].plugin.GetPawnCoordinates();
 	x = pawn.x;
@@ -97,10 +95,10 @@ MoveType GamePlugins::PlayRound(uint &x, uint &y)
 
 void GamePlugins::RegisterPlugin(std::string& name)
 {
-	std::cout << "Making " << name << " Plugin !" << std::endl;
+	SP_ENGINE_INFO("Found {0} plugin", name);
 	Teams team = GamePlugins::GetFreeTeam();
 	if (team == Teams::NO_TEAM) {
-		std::cout << "No team available for " << name << " !" << std::endl;
+		SP_ENGINE_ERROR("No team available for {0}, skipping registation", name);
 		return;
 	}
 
@@ -116,14 +114,14 @@ void GamePlugins::RegisterPlugin(std::string& name)
 
 void GamePlugins::LoadPlugin(PluginInfo &plugin)
 {
+	SP_ENGINE_INFO("Plugin {0} is Loading ", plugin.plugin.GetName());
 	try {
 		auto pModule = pybind11::module_::import(plugin.path.c_str());
 		pModule.attr("InitPlugin")(&plugin.plugin);
 	}
 	catch (const std::exception &e) {
-		std::cout << "Error: " << e.what() << std::endl;
+		SP_ENGINE_ERROR(e.what());
 	}
-	std::cout << "Plugin " << plugin.plugin.GetName() << " loaded !" << std::endl;
 }
 
 bool GamePlugins::IsPluginDir(const std::filesystem::directory_entry &path)

@@ -1,24 +1,33 @@
-#include <Core/pch.hpp>
 #include "Core/Application.hpp"
 
 #ifdef SP_PLATFORM_WIN
+#include <Windows.h>
+#elif SP_PLATFORM_DARWIN
+#include <unistd.h>
+#endif
 
-int main(int argc, char** argv) 
+#ifdef SP_PLATFORM_WIN
+
+#ifdef WIN_START
+int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) 
+#else
+int main(int argc, char** argv)
+#endif
 {
-	SPV::Logger::Init();
-	SP_APP_INFO("Logger Initialized successfully !");
+	SP::Logger::Init();
+	SPV_APP_INFO("Logger Initialized successfully !");
 	SPV::Application app{};
-	app.Run();
+	return app.Run();
 }
 
 #elif SP_PLATFORM_DARWIN
 
 int main(int argc, char** argv) 
 {
-	SPV::Logger::Init();
-	SP_APP_INFO("Logger Initialized successfully !");
+	SP::Logger::Init();
+	SPV_APP_INFO("Logger Initialized successfully !");
 	SPV::Application app{};
-	app.Run();
+	return app.Run();
 }
 
 #endif

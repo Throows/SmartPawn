@@ -1,9 +1,9 @@
-#include "Logger.hpp"
+#include <SPEngine/Logger.hpp>
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
-namespace SPV
+namespace SP
 {
 
 std::shared_ptr<spdlog::logger> Logger::s_EngineLogger;
@@ -28,4 +28,4 @@ void Logger::Init()
 	s_AppLogger->flush_on(spdlog::level::trace);
 }
 
-} // Namespace SPV
+} // Namespace SP

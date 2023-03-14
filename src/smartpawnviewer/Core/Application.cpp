@@ -15,7 +15,7 @@ Application::Application(const unsigned int width, const unsigned int height)
 	this->Init();
 }
 
-void Application::Run()
+int Application::Run()
 {
 	while (m_running) {
 
@@ -43,6 +43,7 @@ void Application::Run()
 		this->window->display();
 	}
 	this->window->close();
+	return 0;
 }
 
 void Application::ProcessAppEvents()

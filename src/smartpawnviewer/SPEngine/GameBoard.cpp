@@ -1,5 +1,5 @@
-#include <Engine/GameBoard.hpp>
-#include "GameBoard.hpp"
+#include <SPEngine/GameBoard.hpp>
+#include "Logger.hpp"
 
 namespace SP
 {
@@ -8,7 +8,7 @@ GameBoard::GameBoard(int width, int height) : 	width(width),
 												height(width)
 {
 	this->board.resize(this->width * this->height, (uint8_t)Teams::NO_TEAM);
-	std::cout << "Data created !" << std::endl;
+	SP_ENGINE_TRACE("GameBoard created with size {0}x{1}", this->width, this->height);
 }
 
 const std::vector<uint8_t>& GameBoard::GetBoard()
@@ -19,7 +19,7 @@ const std::vector<uint8_t>& GameBoard::GetBoard()
 bool GameBoard::IsEmpty(int x, int y)
 {
 	if (x > this->board.size() || y > this->board.size()) return false;
-	else return GetPawn(x, y).value == 0;
+	else return GetPawn(x, y) == 0;
 }
 
 int GameBoard::GetRemainingPawn(Teams team)
@@ -36,14 +36,10 @@ void GameBoard::SetPawn(Pawn pawn)
 	this->board.at(coord) = pawn.value;
 }
 
-Pawn GameBoard::GetPawn(int x, int y)
+uint GameBoard::GetPawn(int x, int y)
 {
 	int coord = GetIndex(x, y);
-	return {
-		static_cast<uint>(x),
-		static_cast<uint>(y),
-		this->board.at(coord)
-	};
+	return this->board.at(coord);
 }
 
 void GameBoard::GetPawnByMove(Pawn& pawn, MoveType moveType)
@@ -93,10 +89,10 @@ std::vector<Pawn> GameBoard::GetPawns()
 	return pawns;
 }
 
-void GameBoard::PopulateBoard(int teamPawnNb)
+void GameBoard::PopulateBoard(const int& teamPawnNb)
 {
 	if(teamPawnNb > (this->width * this->height) / 2) {
-		std::cout << "Too many pawns for the board size !" << std::endl;
+		SP_ENGINE_ERROR("Too many pawns for the board size !");
 		return;
 	}
 
@@ -141,19 +137,19 @@ bool GameBoard::CalculateWon()
 
 bool GameBoard::IsValidMove(Pawn &oldPawn, Pawn &newPawn)
 {
-	Pawn actualOldPawn = GameBoard::GetPawn(oldPawn.x, oldPawn.y);
-	Pawn actualNewPawn = GameBoard::GetPawn(newPawn.x, newPawn.y);
+	uint actualOldPawn = GameBoard::GetPawn(oldPawn.x, oldPawn.y);
+	uint actualNewPawn = GameBoard::GetPawn(newPawn.x, newPawn.y);
 
-	if (actualOldPawn.value == 0) {
-		std::cout << "You can't play an empty case !" << std::endl;
+	if (actualOldPawn == 0) {
+		SP_ENGINE_WARN("You can't play an empty case !");
 		return false;
 	}
-	if (actualOldPawn.value != newPawn.value) {
-		std::cout << "You can't play an ennemy pawn !" << std::endl;
+	if (actualOldPawn != newPawn.value) {
+		SP_ENGINE_WARN("You can't play an ennemy pawn !");
 		return false;
 	}
-	if (actualNewPawn.value != 0 && actualNewPawn.value == newPawn.value) {
-		std::cout << "You can't play your own pawn !" << std::endl;
+	if (actualNewPawn != 0 && actualNewPawn == newPawn.value) {
+		SP_ENGINE_WARN("You can't play your own pawn !");
 		return false;
 	}
 	return true;

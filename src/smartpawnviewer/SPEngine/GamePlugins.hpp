@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/PluginLib.hpp>
+#include "PluginLib.hpp"
 
 #include <iostream>
 #include <vector>
@@ -8,6 +8,8 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/embed.h>
+
+typedef unsigned int uint;
 
 namespace SP
 {

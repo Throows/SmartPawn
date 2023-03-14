@@ -1,10 +1,13 @@
-#include <Engine/GameRecorder.hpp>
+#include <SPEngine/GameRecorder.hpp>
+
 #include <chrono>
 #include <ctime>
 #include <iostream>
 #include <stdio.h>
 #include <filesystem>
 #include <cmath>
+
+#include "Logger.hpp"
 
 namespace SP
 {
@@ -34,28 +37,37 @@ GameRecorder::GameRecorder()
 	file.close();
 }
 
-void GameRecorder::StartRecording(const std::vector<uint8_t>& board, std::map<std::string, int> teams)
+void GameRecorder::RecordTeams(const std::map<std::string, int> &teams)
 {
 	file.open(filePath, std::ios::app);
 	file << "## TEAMS" << std::endl;
 	for (auto& entry : teams) {
 		file << "[" << entry.first << "]{" << entry.second << "}" << std::endl;
 	}
-	int width = std::sqrt(board.size()); // Assume the board is a square
+	file.close();
+}
+
+void GameRecorder::RecordBoard(int bWidth, int bHeigth)
+{
+	file.open(filePath, std::ios::app);
 	file << "## BOARD" << std::endl;
-	file << "{" << width << ";" << width << "}" << std::endl;
+	file << "{" << bWidth << ";" << bHeigth << "}" << std::endl;
+	file.close();
+}
+
+void GameRecorder::RecordInitialPawns(const std::vector<uint8_t> &board, int bWidth, int bHeigth)
+{
+	file.open(filePath, std::ios::app);
 	file << "## PAWNS" << std::endl;
 	int id = 0, x, y;
 	for (const auto& pawn : board) {
 		if (pawn != 0) {
-			x = id % width;
-			y = id / width;
+			x = id % bWidth;
+			y = id / bWidth; // TODO handle non square grid
 			file << "[" << static_cast<int>(pawn) << "]" << "{" << x << ";" << y << "}" << std::endl;
 		}
 		id++;
 	}
-	
-	file << "## STARTING RECORDING" << std::endl;
 	file.close();
 }
 
@@ -73,17 +85,18 @@ void GameRecorder::AddWinner(std::string winner)
 void GameRecorder::SaveRecord()
 {
 	file.open(filePath, std::ios::app);
+	file << "## STARTING RECORDING" << std::endl;
 	if (file.is_open()) {
 		for (std::vector<std::string>::iterator it = this->lines.begin(); it != this->lines.end(); ++it) {
 			file << it->c_str() << std::endl;
 		}
 	}
 	else {
-		std::cout << "Error at file " << this->filePath << " : " << strerror(errno) << std::endl;
+		SP_ENGINE_ERROR("At file {0} : {1}", this->filePath, strerror(errno));
 	}
 	file << "## WINNER" << std::endl;
 	file << "[" << this->winner << "]" << std::endl;
-	std::cout << "Record saved ! Writed " << this->lines.size() << " lines !!" << std::endl;
+	SP_ENGINE_TRACE("Record saved ! Writed {0} lines", this->lines.size());
 	this->file.close();
 }
 

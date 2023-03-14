@@ -24,7 +24,6 @@ void ReplayState::OnUpdate()
 		UpdateReplay();
 	}
 	if (!isReplay && oldState) {
-		std::cout << this->reader.GetWinner() << std::endl;
 		this->title.setString("Gagnant : " + this->reader.GetWinner());
 	}
 }
@@ -73,22 +72,22 @@ void ReplayState::InitState()
 {
 	this->font = std::make_shared<sf::Font>();
 	if (!this->font->loadFromFile("resources/fonts/neuropol_x_rg.ttf")) {
-		SP_APP_ERROR("Could not load the font ! (SimGameState)");
+		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
 	}
 
 	this->textures.emplace("PAWN_TEXTURE", std::make_shared<sf::Texture>());
 	if (!this->textures.at("PAWN_TEXTURE")->loadFromFile("resources/gui/pawns.png")) {
-		SP_APP_ERROR("Could not load texture !");
+		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("GRID_TEXTURE", std::make_shared<sf::Texture>());
 	if (!this->textures.at("GRID_TEXTURE")->loadFromFile("resources/backgrounds/grid_bg.png")) {
-		SP_APP_ERROR("Could not load texture !");
+		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
 	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("resources/backgrounds/bg1.jpg")) {
-		SP_APP_ERROR("Could not load texture !");
+		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->background = std::make_unique<sf::Sprite>();
@@ -126,7 +125,7 @@ void ReplayState::UpdateReplay()
 			Action action = this->reader.GetNextAction();
 			Pawn *movePawn = ReplayState::GetPawn(action.fromX, action.fromY);
 			if (movePawn == nullptr) {
-				SP_APP_ERROR("Pawn not found !");
+				SPV_APP_ERROR("Pawn not found !");
 			}
 			Pawn *attackedPawn = ReplayState::GetPawn(action.toX, action.toY);
 			if (attackedPawn != nullptr) {

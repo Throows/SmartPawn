@@ -13,7 +13,7 @@
   <h3 align="center">Smart Pawn</h3>
 
   <p align="center">
-    Smart pawn is a two person game where the goal is to play chest by programming a IA to win for you. The last pawn remaining is the winner. (Version 1.0.0)
+    Smart pawn is a two person game where the goal is to play chest by programming a IA to win for you. The last pawn remaining is the winner. (Version 1.0.1)
     <br />
     <a href="https://github.com/Throows/SmartPawn"><strong>Explore the docs »</strong></a>
     <br />
@@ -58,9 +58,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Photo](https://github.com/Throows/SmartPawn/blob/master/assets/SMHome.jpg?raw=true)
+![Photo](https://raw.githubusercontent.com/Throows/SmartPawn/main/assets/SMHome.jpg)
 
-Start by programming your basic IA, then you can improve it by adding new functions and improving the existing ones. The goal is to play chest like game by programming a IA to play for you. The last pawn remaining is the winner. You can also play against your IA (In the future). \
+Start by programming your basic IA, then you can improve it by adding new functions or modifying the existing ones. The goal is to play chest like game by programming a IA to play for you. The last pawn remaining is the winner. You can also play against your IA (In the future). \
 Launch the simulation and see how your IA is doing against the other one. One the game is ended you can see the result of the game by reviewing it thanks to the replay mode. \
 Don't Stop improving your IA. You can also share your IA with your friends and see who is the best.
 
@@ -81,17 +81,23 @@ To build the project you need to install xmake and you will require SFML and PyB
 
 ### Prerequisites
 
+| Platform    | Compiler   | Status             |
+|-------------|------------|--------------------|
+| MacOS_arm64 | Clang 14   | :white_check_mark: |
+| Windows_x64 | MSVC 19.34 | :white_check_mark: |
+| Linux       | Not Tested | :red_circle:       |
+
 - MacOS
 
 1. Install xmake
    ```sh
    brew install xmake
    ```
-2. Install SFML
+2. Install SFML (optionnal)
    ```sh
     brew install sfml
     ```
-3. Install PyBind11
+3. Install PyBind11 (optionnal)
     ```sh
     brew install pybind11
     ```
@@ -99,13 +105,20 @@ To build the project you need to install xmake and you will require SFML and PyB
     ```sh
     xmake build
     ```
-5. Run the project
+5. Run the Game
 
-    Just start the project and have fun ! There is "by-defaul" IA that you can use to try and understand the games.
+    Just start the project and have fun ! There is "by-default" IA that you can use to try and understand the games.
     
-- Linux & Windows (Not tested)
+- Windows
 
-The game hasn't been tested on windows and linux yet. If you want to try it, you will need to install SFML and PyBind11 and then build the project with xmake. Create an issue if you have any problem.
+1. Install xmake from the [website](https://xmake.io/#/home)
+
+2. Build the project
+    ```sh
+    xmake build
+    ```
+3. Run the Game
+
 
 ### Installation
 
@@ -127,6 +140,14 @@ _For more examples, please refer to the [Documentation](https://github.com/Throo
 
 See the [open issues](https://github.com/Throows/SmartPawn/issues) for a list of proposed features (and known issues).
 
+- feature/plugin-optimization
+This feature aims to optimize the plugin, and add a lots of API methods to create your IA. And to add Plugin customization and unique contexte (mby) \
+
+- feature/settings-and-lang
+This feature aims to add a settings menu (Board size, etc) and a language selector. \
+
+- feature/upgraded-ui
+This feature aims to improve a new UI by adding effet (when new event happen in both reader and simulation mode). \
 
 <!-- CONTRIBUTING -->
 ## Contributing

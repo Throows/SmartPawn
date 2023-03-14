@@ -24,7 +24,7 @@ void RecordReader::ReadSimulate()
 {
 	std::ifstream file(this->filePath);
 	if (!file.is_open()) {
-		std::cout << "Error at file " << this->filePath << " : " << strerror(errno) << std::endl;
+		SPV_APP_ERROR("At file {0} : {1}", this->filePath, strerror(errno));
 	}
 
 	std::string line;
@@ -65,10 +65,10 @@ void RecordReader::UpdateBoard()
 
 int RecordReader::GetTeam(std::string& teamName)
 {
-	 std::map<std::string, int>::iterator team = this->teams.find(teamName);
-	 // prevent last team (default value)
-	 if (team->first == teamName) return team->second;
-	 throw std::runtime_error("Could not find team ! ");
+	std::map<std::string, int>::iterator team = this->teams.find(teamName);
+	// prevent last team (default value)
+	if (team->first == teamName) return team->second;
+	throw std::runtime_error("Could not find team ! ");
 }
 
 RecordCategory RecordReader::GetStateFromString(const std::string& str)
@@ -92,8 +92,7 @@ bool RecordReader::ReadTeams(std::string& line)
 {
 	std::smatch result;
 	if (!std::regex_match(line, result, std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\})"))) {
-		std::cout << "Error line : " << line << std::endl;
-		std::cout << "Regex does not match !\n";
+		SPV_APP_ERROR("Regex Error ReadTeams : {0}", line);
 		return false;
 	}
 	if (result.size() == 3) {
@@ -107,8 +106,7 @@ bool RecordReader::ReadBoard(std::string& line)
 {
 	std::smatch result;
 	if (!std::regex_match(line, result, std::regex(R"(\{([0-9]*)\;([0-9]*)\})"))) {
-		std::cout << "Error line : " << line << std::endl;
-		std::cout << "Regex does not match !\n";
+		SPV_APP_ERROR("Regex Error ReadBoard : {0}", line);
 		return false;
 	}
 	if (result.size() == 3) {
@@ -125,8 +123,7 @@ bool RecordReader::ReadPawns(std::string& line)
 {
 	std::smatch result;
 	if (!std::regex_match(line, result, std::regex(R"(\[([0-9]*)\]\{([0-9]*)\;([0-9]*)\})"))) {
-		std::cout << "Error line : " << line << std::endl;
-		std::cout << "Regex does not match !\n";
+		SPV_APP_ERROR("Regex Error ReadPawns : {0}", line);
 		return false;
 	}
 	if (result.size() == 4) {
@@ -142,8 +139,7 @@ bool RecordReader::ReadRecord(std::string& line)
 {
 	std::smatch result;
 	if (!std::regex_match(line, result, std::regex(R"(\[([A-Za-z\s_]*)\]\{([0-9]*)\;([0-9]*)\}\:\{([0-9]*)\;([0-9]*)\})"))) {
-		std::cout << "Error line : " << line << std::endl;
-		std::cout << "Regex does not match !\n";
+		SPV_APP_ERROR("Regex Error ReadRecord : {0}", line);
 		return false;
 	}
 	if (result.size() == 6) {
@@ -163,7 +159,7 @@ bool RecordReader::ReadRecord(std::string& line)
 
 bool RecordReader::ReadError(std::string& line)
 {
-	std::cout << "Error at line : " << line << std::endl;
+	SPV_APP_ERROR("No Regex available for : {0}", line);
 	return true;
 }
 
@@ -171,13 +167,12 @@ bool RecordReader::ReadWinner(std::string& line)
 {
 	std::smatch result;
 	if (!std::regex_match(line, result, std::regex(R"(\[([A-Za-z\s_]*)\])"))) {
-		std::cout << "Error line : " << line << std::endl;
-		std::cout << "Regex does not match !\n";
+		SPV_APP_ERROR("Regex Error ReadWinner : {0}", line);
 		return false;
 	}
 	if (result.size() == 2) {
 		std::string team = result[1].str();
-		this->winnerTeam = (team == "NO WINNER") ?  "EQUALITÉ" : team;
+		this->winnerTeam = (team == "NO WINNER") ?  "EQUALITE" : team;
 		return true;
 	}
 	return false;

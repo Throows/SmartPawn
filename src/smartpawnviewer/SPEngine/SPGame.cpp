@@ -1,25 +1,29 @@
-#include <Engine/SPGame.hpp>
+#include <SPEngine/SPGame.hpp>
 
 #include <iostream>
+
+#include "Logger.hpp"
 
 namespace SP
 {
 
-SPGame::SPGame()
+SPGame::SPGame(unsigned int pawnNB, unsigned int boardWidth, unsigned int boardHeigth)
+	: initalPawnNumber(pawnNB)
 {
 	srand((unsigned int)time(NULL));
-	this->plugins = std::make_shared<GamePlugins>();
-	this->board = std::make_shared <GameBoard>(10, 10);
-	this->recorder = std::make_shared<GameRecorder>();
+	this->plugins = std::make_unique<GamePlugins>();
+	this->board = std::make_unique<GameBoard>(boardWidth, boardHeigth);
+	this->recorder = std::make_unique<GameRecorder>();
 }
 
 void SPGame::InitGame()
 {
 	this->plugins->InitPlugins();
 	this->board->PopulateBoard(this->initalPawnNumber);
-	this->recorder->StartRecording(this->board->GetBoard(), this->plugins->GetTeamsName());
-	std::cout << "SPGame initialized !\n";
-	std::cout << "Starting with board : " << std::endl;
+	this->recorder->RecordTeams(this->plugins->GetTeamsName());
+	this->recorder->RecordBoard(this->board->GetBoardWidth(), this->board->GetBoardHeight());
+	this->recorder->RecordInitialPawns(this->board->GetBoard(), this->board->GetBoardWidth(), this->board->GetBoardHeight());
+	SP_ENGINE_TRACE("SPGame initialized !");
 	this->board->ShowBoard();
 }
 
@@ -45,9 +49,8 @@ void SPGame::PlayNextTurn()
 		SPGame::AddActionRecorder(oldPawn, newPawn);
 	}
 	else {
-		std::cout << "Move Skipped !" << std::endl;
+		SP_ENGINE_WARN("Move Skipped because invalid");
 	}
-	this->board->ShowBoard();
 	SPGame::CalculateEnded();
 }
 
@@ -63,7 +66,7 @@ float SPGame::GetPercentageEnded()
 void SPGame::CalculateEnded()
 {
 	if (this->board->CalculateTie()) {
-		std::cout << "Sim ended by Equality" << std::endl;
+		SP_ENGINE_INFO("Sim ended by Equality");
 		this->recorder->AddWinner("NO WINNER");
 	}
 	else if (this->board->CalculateWon()) {
@@ -71,7 +74,7 @@ void SPGame::CalculateEnded()
 								? this->plugins->GetActivePlayer().name 
 								: this->plugins->GetWaitingPlayer().name;
 		this->recorder->AddWinner(winner);
-		std::cout << "Player : " << winner << " has won ! " << std::endl;
+		SP_ENGINE_INFO("Player : {0} has won !", winner);
 	}
 	else return;
 	this->board->ShowBoard();

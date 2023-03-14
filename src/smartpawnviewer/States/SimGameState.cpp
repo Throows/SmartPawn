@@ -31,6 +31,7 @@ void SimGameState::OnRender()
 }
 void SimGameState::ProcessEvents(sf::Event& event)
 {
+	(void)event;
 }
 
 void SimGameState::SetExitedState()

@@ -40,6 +40,7 @@ void ReplayState::OnRender()
 
 void ReplayState::ProcessEvents(sf::Event& event)
 {
+	(void)event;
 }
 
 bool ReplayState::ExistPawn(int x, int y)

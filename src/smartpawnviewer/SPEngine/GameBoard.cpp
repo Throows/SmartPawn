@@ -4,8 +4,8 @@
 namespace SP
 {
 
-GameBoard::GameBoard(int width, int height) : 	width(width),
-												height(width)
+GameBoard::GameBoard(unsigned int width, unsigned int height) : width(width),
+																height(height)
 {
 	this->board.resize(this->width * this->height, (uint8_t)Teams::NO_TEAM);
 	SP_ENGINE_TRACE("GameBoard created with size {0}x{1}", this->width, this->height);
@@ -18,8 +18,9 @@ const std::vector<uint8_t>& GameBoard::GetBoard()
 
 bool GameBoard::IsEmpty(int x, int y)
 {
-	if (x > this->board.size() || y > this->board.size()) return false;
-	else return GetPawn(x, y) == 0;
+	unsigned int coord = GetIndex(x, y);
+	if (coord >= this->board.size()) return false;
+	else return this->board.at(coord) == 0;
 }
 
 int GameBoard::GetRemainingPawn(Teams team)
@@ -67,9 +68,9 @@ void GameBoard::GetPawnByMove(Pawn& pawn, MoveType moveType)
 		moveType == MoveType::RIGHT_TOP_CORNER) {
 		pawn.x++;
 	}
-	if (pawn.x == UINT_MAX) pawn.x = this->width - 1;
+	if (pawn.x == static_cast<unsigned int>(UINT_MAX)) pawn.x = this->width - 1;
 	if (pawn.x >= this->width) pawn.x = 0;
-	if (pawn.y == UINT_MAX) pawn.y = this->height - 1;
+	if (pawn.y == static_cast<unsigned int>(UINT_MAX)) pawn.y = this->height - 1;
 	if (pawn.y >= this->height) pawn.y = 0;
 }
 
@@ -89,14 +90,14 @@ std::vector<Pawn> GameBoard::GetPawns()
 	return pawns;
 }
 
-void GameBoard::PopulateBoard(const int& teamPawnNb)
+void GameBoard::PopulateBoard(const unsigned int& teamPawnNb)
 {
 	if(teamPawnNb > (this->width * this->height) / 2) {
 		SP_ENGINE_ERROR("Too many pawns for the board size !");
 		return;
 	}
 
-	int pawnA = 0, pawnB = 0;
+	unsigned int pawnA = 0, pawnB = 0;
 	while (pawnA < teamPawnNb || pawnB < teamPawnNb) {
 		int coord = GetRandom(0, this->width * this->height);
 		if (this->board.at(coord) == static_cast<uint8_t>(Teams::NO_TEAM)) {

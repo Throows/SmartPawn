@@ -9,7 +9,7 @@ class State
 {
 public:
 	State(const std::string& name);
-	~State();
+	virtual ~State();
 
 	virtual void OnUpdate() = 0;
 	virtual void OnRender() = 0;

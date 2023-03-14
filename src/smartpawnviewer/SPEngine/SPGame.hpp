@@ -26,8 +26,8 @@ public:
 	void CalculateEnded();
 	void AddActionRecorder(Pawn coords, Pawn newCoords);
 
-	GameBoard * const GetData() { return this->board.get(); }
-	GamePlugins * const GetPLManager() { return this->plugins.get(); }
+	GameBoard* GetData() const { return this->board.get(); }
+	GamePlugins* GetPLManager() const { return this->plugins.get(); }
 
 private:
 	std::unique_ptr<GamePlugins> plugins;

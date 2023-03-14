@@ -24,6 +24,7 @@ int main(int argc, char** argv)
 
 int main(int argc, char** argv) 
 {
+	(void)argc, (void)argv;
 	SP::Logger::Init();
 	SPV_APP_INFO("Logger Initialized successfully !");
 	SPV::Application app{};

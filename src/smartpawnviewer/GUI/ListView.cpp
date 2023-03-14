@@ -63,6 +63,7 @@ void ListView::OnRender(sf::RenderWindow& window)
 
 void ListView::ProcessEvents(sf::Event& event)
 {
+	(void)event;
 }
 
 ListViewButton::ListViewButton(sf::Vector2f pos, sf::Vector2f size, const sf::Font& font, const std::string title)

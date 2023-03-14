@@ -63,7 +63,7 @@ void GameRecorder::RecordInitialPawns(const std::vector<uint8_t> &board, int bWi
 	for (const auto& pawn : board) {
 		if (pawn != 0) {
 			x = id % bWidth;
-			y = id / bWidth; // TODO handle non square grid
+			y = id / bHeigth;
 			file << "[" << static_cast<int>(pawn) << "]" << "{" << x << ";" << y << "}" << std::endl;
 		}
 		id++;

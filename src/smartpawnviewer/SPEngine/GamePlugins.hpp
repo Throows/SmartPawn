@@ -44,9 +44,8 @@ public:
 	GamePlugins() = default;
 	~GamePlugins() = default;
 	void InitPlugins();
-	const PluginInfo &GetActivePlayer() { return plugins[activePlayerIndex]; };
-	[[deprecated("Undefined behavior (if more than 2 players)")]] 
-	const PluginInfo& GetWaitingPlayer();
+	const PluginInfo &GetActivePlayer() { return plugins[activePlayerIndex]; }
+	const PluginInfo& GetLastPlayer();
 	const PluginInfo& GetPluginByTeam(Teams team);
 	std::map<std::string, int> GetTeamsName();
 	void SwapTurn();
@@ -55,7 +54,7 @@ public:
 
 private:
 	std::vector<PluginInfo> plugins;
-	int activePlayerIndex;
+	unsigned int activePlayerIndex;
 
 	void RegisterPlugin(std::string& name);
 	void LoadPlugin(PluginInfo& plugin);

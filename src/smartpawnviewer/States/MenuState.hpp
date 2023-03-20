@@ -16,8 +16,6 @@ public:
 	void OnRender() override;
 	void ProcessEvents(sf::Event& event) override;
 	void UpdateListViewButton();
-
-protected:
 	void InitState() override;
 
 private:

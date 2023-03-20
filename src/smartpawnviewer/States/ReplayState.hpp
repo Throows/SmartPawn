@@ -19,7 +19,6 @@ public:
 	Pawn* GetPawn(int x, int y);
 	void RemovePawn(int x, int y);
 
-protected:
 	void InitState() override;
 	
 private:

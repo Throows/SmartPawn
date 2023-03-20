@@ -10,7 +10,7 @@ namespace SP
 class GameBoard
 {
 public:
-	GameBoard(int width, int height);
+	GameBoard(unsigned int width, unsigned int height);
 	virtual ~GameBoard() = default;
 	const std::vector<uint8_t>& GetBoard();
 	void ShowBoard();
@@ -20,15 +20,15 @@ public:
  	uint GetPawn(int x, int y);
 	void GetPawnByMove(Pawn& pawn, MoveType moveType);
 	std::vector<Pawn> GetPawns();
-	void PopulateBoard(const int& teamPawnNb);
+	void PopulateBoard(const unsigned int& teamPawnNb);
 	bool IsPawnDied();
 	bool IsGameEnded() { return ended; };
 	bool CalculateTie();
 	bool CalculateWon();
 	void SetEnded(bool state) { this->ended = state; }
 
-	const int& GetBoardWidth() { return this->width; }
-	const int& GetBoardHeight() { return this->height; }
+	const unsigned int& GetBoardWidth() { return this->width; }
+	const unsigned int& GetBoardHeight() { return this->height; }
 
 	bool IsValidMove(Pawn& oldPawn, Pawn& newPawn);
 	
@@ -37,8 +37,8 @@ private:
 	bool ended = false;
 	int tieMove = 0;
 	int pawnNumber = 0;
-	const int width;
-	const int height;
+	const unsigned int width;
+	const unsigned int height;
 
 	char GetPluginChar(Teams team);
 	int GetIndex(int x, int y) { return x + (y * this->width); };

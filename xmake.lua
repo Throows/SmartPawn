@@ -42,11 +42,13 @@ target("SmartPawnViewer")
         end
     elseif is_plat("macosx") then
         add_frameworks("CoreFoundation", "CoreGraphics", "CoreText", "CoreServices")
+        add_rules("xcode.application")
+        add_files("Resources/*.xcassets")
         add_defines("SP_PLATFORM_DARWIN")
     end
 
     after_build(function (target) 
-        os.cp("$(projectdir)/resources/*", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/resources/")
+        os.cp("$(projectdir)/Resources/*", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/Resources/")
         os.cp("$(projectdir)/src/Plugins/*", "$(projectdir)/bin/$(os)_$(arch)_$(mode)/Plugins/")
         os.rm("$(projectdir)/bin/$(os)_$(arch)_$(mode)/Records/*")
     end)

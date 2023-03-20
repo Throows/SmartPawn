@@ -9,7 +9,6 @@ ReplayState::ReplayState(StatesPtr states, WindowPtr window, const std::string& 
 {
 	this->states = states;
 	this->window = window;
-	InitState();
 }
 
 ReplayState::~ReplayState()
@@ -19,6 +18,7 @@ ReplayState::~ReplayState()
 
 void ReplayState::OnUpdate()
 {
+	if (this->IsExitedState() || !this->IsInitializedState()) return;
 	bool oldState = isReplay;
 	if (isReplay) {
 		UpdateReplay();
@@ -30,6 +30,7 @@ void ReplayState::OnUpdate()
 
 void ReplayState::OnRender()
 {
+	if (this->IsExitedState() || !this->IsInitializedState()) return;
 	this->window->draw(*this->background);
 	this->window->draw(*this->grid);
 	for (auto& pawn : this->pawns) {
@@ -40,6 +41,7 @@ void ReplayState::OnRender()
 
 void ReplayState::ProcessEvents(sf::Event& event)
 {
+	(void)event;
 }
 
 bool ReplayState::ExistPawn(int x, int y)
@@ -71,22 +73,22 @@ void ReplayState::RemovePawn(int x, int y)
 void ReplayState::InitState()
 {
 	this->font = std::make_shared<sf::Font>();
-	if (!this->font->loadFromFile("resources/fonts/neuropol_x_rg.ttf")) {
+	if (!this->font->loadFromFile("Resources/Fonts/neuropol_x_rg.ttf")) {
 		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
 	}
 
 	this->textures.emplace("PAWN_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("PAWN_TEXTURE")->loadFromFile("resources/gui/pawns.png")) {
+	if (!this->textures.at("PAWN_TEXTURE")->loadFromFile("Resources/GUI/pawns.png")) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("GRID_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("GRID_TEXTURE")->loadFromFile("resources/backgrounds/grid_bg.png")) {
+	if (!this->textures.at("GRID_TEXTURE")->loadFromFile("Resources/Backgrounds/grid_bg.png")) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("resources/backgrounds/bg1.jpg")) {
+	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("Resources/Backgrounds/bg1.jpg")) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
@@ -115,6 +117,7 @@ void ReplayState::InitState()
 	this->title.setFillColor(sf::Color::Black);
 	this->title.setOutlineColor(sf::Color::White);
 	this->title.setOutlineThickness(1.5f);
+	State::InitState();
 }
 
 void ReplayState::UpdateReplay()

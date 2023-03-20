@@ -24,7 +24,7 @@ void GamePlugins::InitPlugins()
 	}
 }
 
-const PluginInfo& GamePlugins::GetWaitingPlayer()
+const PluginInfo& GamePlugins::GetLastPlayer()
 {
 	int lastPlayerIndex = activePlayerIndex - 1;
 	if (lastPlayerIndex < 0)

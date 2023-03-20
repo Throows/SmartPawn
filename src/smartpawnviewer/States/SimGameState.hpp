@@ -17,7 +17,6 @@ public:
 	void ProcessEvents(sf::Event& event) override;
 	void SetExitedState() override;
 
-protected:
 	void InitState() override;
 	
 private:

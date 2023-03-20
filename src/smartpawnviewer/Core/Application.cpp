@@ -22,8 +22,12 @@ int Application::Run()
 		std::vector<std::shared_ptr<State>>::const_iterator it = this->states->begin();
 
 		while (it != this->states->end()) {
-			if ((*it)->isExitedState()) {
+			if ((*it)->IsExitedState()) {
 				it = this->states->erase(it);
+			}
+			else if (!(*it)->IsInitializedState()){
+				(*it)->InitState();
+				it++;
 			}
 			else {
 				it++;

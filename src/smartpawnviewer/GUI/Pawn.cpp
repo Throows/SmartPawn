@@ -20,6 +20,7 @@ Pawn::Pawn() : coordX(-1), coordY(-1)
 
 void Pawn::OnUpdate(sf::RenderWindow& window)
 {
+	(void)window;
 }
 
 void Pawn::OnRender(sf::RenderWindow& window)

@@ -72,7 +72,7 @@ void SPGame::CalculateEnded()
 	else if (this->board->CalculateWon()) {
 		std::string winner = (this->plugins->GetActivePlayer().pawnRemaining == 0) 
 								? this->plugins->GetActivePlayer().name 
-								: this->plugins->GetWaitingPlayer().name;
+								: this->plugins->GetLastPlayer().name;
 		this->recorder->AddWinner(winner);
 		SP_ENGINE_INFO("Player : {0} has won !", winner);
 	}

@@ -15,6 +15,7 @@ ProgressBar::ProgressBar(sf::Vector2f pos, sf::Vector2i size, sf::Texture& bgTex
 
 void ProgressBar::OnUpdate(sf::RenderWindow& window)
 {
+	(void)window;
 	sf::IntRect rect(0, 0, 280*this->progression, 40);
 	if (this->progression >= 1.0f)
 		this->barSprite->setColor(sf::Color::Green);

@@ -8,10 +8,10 @@ Application::Application(const unsigned int width, const unsigned int height)
 	this->m_width = width;
 	this->m_height = height;
 
-	this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), "SmartPawn - Le jeux de l'IA", sf::Style::Default);
+	this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), "Application", sf::Style::Default);
 	this->states = std::make_shared<std::vector<std::shared_ptr<State>>>();
 	AddState(std::make_shared<MenuState>(this->states, this->window));
-
+	this->locale = std::make_shared<SPV::LocaleText>(SPV::Locale::en_US);
 	this->Init();
 }
 
@@ -20,13 +20,12 @@ int Application::Run()
 	while (m_running) {
 
 		std::vector<std::shared_ptr<State>>::const_iterator it = this->states->begin();
-
 		while (it != this->states->end()) {
 			if ((*it)->IsExitedState()) {
 				it = this->states->erase(it);
 			}
 			else if (!(*it)->IsInitializedState()){
-				(*it)->InitState();
+				(*it)->InitState(this->locale);
 				it++;
 			}
 			else {
@@ -68,7 +67,11 @@ void Application::ProcessAppEvents()
 
 void Application::Init()
 {
+	this->locale->SetLocale(SPV::Locale::fr_FR); // TODO: Get settings there
+	this->locale->SetupLocale();
 	this->window->setFramerateLimit(60);
+
+	this->window->setTitle(this->locale->GetText("title") + " - " + this->locale->GetText("description"));
 }
 
 void Application::RegisterCallbacks()

@@ -1,7 +1,6 @@
 #pragma once
 #include <Core/pch.hpp>
-
-#include <States/SimGameState.hpp>
+#include <Core/LocaleText.hpp>
 #include <States/MenuState.hpp>
 
 namespace SPV
@@ -16,7 +15,7 @@ public:
 	void ProcessAppEvents();
 
 protected:
-	void AddState(std::shared_ptr<State> state) { states->push_back(state); } 
+	void AddState(std::shared_ptr<SPV::State> state) { states->push_back(state); } 
 
 private:
 	unsigned int m_width;
@@ -24,7 +23,9 @@ private:
 	bool m_running = true;
 
 	std::shared_ptr<sf::RenderWindow> window;
-	std::shared_ptr<std::vector<std::shared_ptr<State>>> states;
+	StatesPtr states;
+	std::shared_ptr<SPV::LocaleText> locale;
+
 
 	void Init();
 	void RegisterCallbacks();

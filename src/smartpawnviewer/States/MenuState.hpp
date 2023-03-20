@@ -16,7 +16,7 @@ public:
 	void OnRender() override;
 	void ProcessEvents(sf::Event& event) override;
 	void UpdateListViewButton();
-	void InitState() override;
+	void InitState(std::shared_ptr<SPV::LocaleText> locale) override;
 
 private:
 	std::vector<Button> buttons;

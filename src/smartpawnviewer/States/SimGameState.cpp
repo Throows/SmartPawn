@@ -40,8 +40,9 @@ void SimGameState::SetExitedState()
 	this->engine->GetData()->SetEnded(true);
 }
 
-void SimGameState::InitState()
+void SimGameState::InitState(std::shared_ptr<SPV::LocaleText> locale)
 {
+	this->m_locale = locale;
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
 	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("Resources/Backgrounds/bg2.jpg")) {
 		SPV_APP_ERROR("Could not load texture !");
@@ -60,7 +61,7 @@ void SimGameState::InitState()
 	this->background->setScale(sf::Vector2f(2.0f, 2.0f));
 	this->engine = std::make_shared<SP::SPGame>(5, 10, 10);
 	this->engine->InitGame();
-	State::InitState();
+	this->isInitialized = true;
 }
 
 } // Namespace SPV

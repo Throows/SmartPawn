@@ -1,0 +1,11 @@
+{
+    "lang": "fr_FR",
+    "grid": {
+        "x": 10,
+        "y": 10
+    },
+    "plugin": {
+        "number": 2
+    },
+    "tie" : 100 
+}

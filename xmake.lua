@@ -1,6 +1,6 @@
 add_rules("mode.debug", "mode.release")
 add_rules("plugin.vsxmake.autoupdate")
-add_requires("spdlog", "sfml", "pybind11", "python")
+add_requires("spdlog", "sfml", "pybind11", "python", "nlohmann_json")
 set_languages("c89", "cxx20")
 set_rundir("./bin/$(os)_$(arch)_$(mode)")
 set_targetdir("./bin/$(os)_$(arch)_$(mode)")
@@ -27,7 +27,7 @@ target("SmartPawnViewer")
     add_includedirs("src/smartpawnviewer")
     add_files("src/smartpawnviewer/**.cpp")
     set_pcxxheader("src/smartpawnviewer/Core/pch.hpp");
-    add_packages("spdlog", "sfml", "pybind11", "python") 
+    add_packages("spdlog", "sfml", "pybind11", "python", "nlohmann_json") 
 
     if is_plat("windows") then
         add_syslinks("opengl32")

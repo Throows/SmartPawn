@@ -1,10 +1,13 @@
 #pragma once
 #include <Core/pch.hpp>
-
-typedef std::shared_ptr<sf::RenderWindow> WindowPtr;
+#include <Core/LocaleText.hpp>
 
 namespace SPV
 {
+
+class State;
+typedef std::shared_ptr<sf::RenderWindow> WindowPtr;
+typedef std::shared_ptr<std::vector<std::shared_ptr<State>>> StatesPtr;
 class State
 {
 public:
@@ -19,19 +22,18 @@ public:
 		isExited = true;
 		SPV_APP_INFO("State exited : {0}", m_StateName);
 	}
-	virtual std::string GetName() { return this->m_StateName; }
+	const std::string& GetName() { return this->m_StateName; }
 
 	virtual bool IsInitializedState() { return this->isInitialized; }
-	virtual void InitState() { this->isInitialized = true; }
+	virtual void InitState(std::shared_ptr<SPV::LocaleText>) = 0;
 
 protected:
 	std::string m_StateName;
 	bool isExited = false;
 	bool isInitialized = false;
 	WindowPtr window;
-	std::shared_ptr<std::vector<std::shared_ptr<SPV::State>>> states;
+	StatesPtr states;
+	std::shared_ptr<SPV::LocaleText> m_locale;
 };
-
-typedef std::shared_ptr<std::vector<std::shared_ptr<SPV::State>>> StatesPtr;
 
 } // Namespace SPV

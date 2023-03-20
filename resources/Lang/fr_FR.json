@@ -1,0 +1,6 @@
+{
+    "title": "Smart Pawn",
+    "description": "Le jeu de l'IA",
+    "launch": "Lancer la simulation",
+    "winner": "Le gagnant est {}"
+}

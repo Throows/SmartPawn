@@ -6,3 +6,4 @@ bin
 .vscode
 *.DS_Store
 resources_raw
+*.code-workspace

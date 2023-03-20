@@ -3,13 +3,14 @@
 
 #include <States/SimGameState.hpp>
 #include <States/MenuState.hpp>
+#include "Core/ResourceAllocator.hpp"
 
 namespace SPV
 {
 class Application
 {
 public:
-	Application(const unsigned int width = 960, const unsigned int height = 480);
+	Application(std::shared_ptr<ResourceAllocator> allocator, const unsigned int width = 960, const unsigned int height = 480);
 	virtual ~Application() = default;
 
 	int Run();
@@ -25,6 +26,7 @@ private:
 
 	std::shared_ptr<sf::RenderWindow> window;
 	std::shared_ptr<std::vector<std::shared_ptr<State>>> states;
+	std::shared_ptr<ResourceAllocator> allocator;
 
 	void Init();
 	void RegisterCallbacks();

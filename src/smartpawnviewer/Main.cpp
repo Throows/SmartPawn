@@ -27,7 +27,9 @@ int main(int argc, char** argv)
 	(void)argc, (void)argv;
 	SP::Logger::Init();
 	SPV_APP_INFO("Logger Initialized successfully !");
-	SPV::Application app{};
+	std::string path = argv[0];
+	std::shared_ptr<ResourceAllocator> allocator = std::make_shared<ResourceAllocator>(path);
+	SPV::Application app(allocator);
 	return app.Run();
 }
 

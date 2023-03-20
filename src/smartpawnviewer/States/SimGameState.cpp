@@ -7,12 +7,11 @@ SimGameState::SimGameState(StatesPtr states, WindowPtr window) : State("SimGameS
 {
 	this->states = states;
 	this->window = window;
-	InitState();
 }
 
 void SimGameState::OnUpdate()
 {
-	if (this->isExitedState()) return;
+	if (this->IsExitedState() || !this->IsInitializedState()) return;
 	sf::Time time = clock.getElapsedTime();
 	if (time.asMilliseconds() >= 10) {
 		if (!this->engine->GetData()->IsGameEnded()) {
@@ -26,6 +25,7 @@ void SimGameState::OnUpdate()
 
 void SimGameState::OnRender()
 {
+	if (this->IsExitedState() || !this->IsInitializedState()) return;
 	this->window->draw(*this->background);
 	progressBar->OnRender(*this->window);
 }
@@ -40,18 +40,19 @@ void SimGameState::SetExitedState()
 	this->engine->GetData()->SetEnded(true);
 }
 
-void SimGameState::InitState()
+void SimGameState::InitState(ResourceAllocator* allocator)
 {
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("resources/backgrounds/bg2.jpg")) {
+	SPV_APP_INFO("Loading background texture ... {0}", allocator->GetBackgroundPath("bg2.jpg"));
+	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile(allocator->GetBackgroundPath("bg2.jpg"))) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 	this->textures.emplace("PBB_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("PBB_TEXTURE")->loadFromFile("resources/gui/progress_bar_bg.png")) {
+	if (!this->textures.at("PBB_TEXTURE")->loadFromFile(allocator->GetGUITexturePath("progress_bar_bg.png"))) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 	this->textures.emplace("PB_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("PB_TEXTURE")->loadFromFile("resources/gui/progressbar.png")) {
+	if (!this->textures.at("PB_TEXTURE")->loadFromFile(allocator->GetGUITexturePath("progressbar.png"))) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 	this->progressBar = std::make_shared<ProgressBar>(sf::Vector2f(330.0f, 150.0f), sf::Vector2i(300.0f, 60.0f), *this->textures.at("PBB_TEXTURE"), *this->textures.at("PB_TEXTURE"));
@@ -60,6 +61,7 @@ void SimGameState::InitState()
 	this->background->setScale(sf::Vector2f(2.0f, 2.0f));
 	this->engine = std::make_shared<SP::SPGame>(5, 10, 10);
 	this->engine->InitGame();
+	State::InitState(allocator);
 }
 
 } // Namespace SPV

@@ -42,6 +42,7 @@ target("SmartPawnViewer")
         end
     elseif is_plat("macosx") then
         add_frameworks("CoreFoundation", "CoreGraphics", "CoreText", "CoreServices")
+        add_rules("xcode.application")
         add_defines("SP_PLATFORM_DARWIN")
     end
 

@@ -10,7 +10,6 @@ MenuState::MenuState(StatesPtr states, WindowPtr window) : State("MenuState")
 {
 	this->states = states;
 	this->window = window;
-	InitState();
 }
 
 MenuState::~MenuState()
@@ -20,6 +19,7 @@ MenuState::~MenuState()
 
 void MenuState::OnUpdate()
 {
+	if (this->IsExitedState() || !this->IsInitializedState()) return;
 	if (!isFocused) {
 		UpdateListViewButton();
 		isFocused = true;
@@ -44,6 +44,7 @@ void MenuState::OnUpdate()
 
 void MenuState::OnRender()
 {
+	if (this->IsExitedState() || !this->IsInitializedState()) return;
 	this->window->draw(*this->background);
 	this->window->draw(this->title);
 	for (auto button : this->buttons) {
@@ -74,20 +75,20 @@ void MenuState::UpdateListViewButton()
 	}
 }
 
-void MenuState::InitState()
+void MenuState::InitState(ResourceAllocator* allocator)
 {
 	this->font = std::make_shared<sf::Font>();
-	if (!this->font->loadFromFile("resources/fonts/neuropol_x_rg.ttf")) {
+	if (!this->font->loadFromFile(allocator->GetFontPath("neuropol_x_rg.ttf"))) {
 		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
 	}
 
 	this->textures.emplace("BUTTON_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("BUTTON_TEXTURE")->loadFromFile("resources/gui/buttons.png")) {
+	if (!this->textures.at("BUTTON_TEXTURE")->loadFromFile(allocator->GetGUITexturePath("buttons.png"))) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("resources/backgrounds/bg1.jpg")) {
+	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile(allocator->GetBackgroundPath("bg1.jpg"))) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 	
@@ -106,6 +107,7 @@ void MenuState::InitState()
 	UpdateListViewButton();
 
 	this->isFocused = true;
+	State::InitState(allocator);
 }
 
 } // Namespace SPV

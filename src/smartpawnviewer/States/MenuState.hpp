@@ -16,9 +16,7 @@ public:
 	void OnRender() override;
 	void ProcessEvents(sf::Event& event) override;
 	void UpdateListViewButton();
-
-protected:
-	void InitState() override;
+	void InitState(ResourceAllocator* allocator) override;
 
 private:
 	std::vector<Button> buttons;

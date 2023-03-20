@@ -17,8 +17,7 @@ public:
 	void ProcessEvents(sf::Event& event) override;
 	void SetExitedState() override;
 
-protected:
-	void InitState() override;
+	void InitState(ResourceAllocator* allocator) override;
 	
 private:
 	std::shared_ptr<ProgressBar> progressBar;

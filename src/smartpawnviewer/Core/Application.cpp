@@ -3,9 +3,8 @@
 namespace SPV
 {
 
-Application::Application(std::shared_ptr<ResourceAllocator> allocator, const unsigned int width, const unsigned int height)
+Application::Application(const unsigned int width, const unsigned int height)
 {
-	this->allocator = std::move(allocator);
 	this->m_width = width;
 	this->m_height = height;
 
@@ -27,7 +26,7 @@ int Application::Run()
 				it = this->states->erase(it);
 			}
 			else if (!(*it)->IsInitializedState()){
-				(*it)->InitState(this->allocator.get());
+				(*it)->InitState();
 				it++;
 			}
 			else {

@@ -70,25 +70,25 @@ void ReplayState::RemovePawn(int x, int y)
 	}
 }
 
-void ReplayState::InitState(ResourceAllocator* allocator)
+void ReplayState::InitState()
 {
 	this->font = std::make_shared<sf::Font>();
-	if (!this->font->loadFromFile(allocator->GetFontPath("neuropol_x_rg.ttf"))) {
+	if (!this->font->loadFromFile("Resources/Fonts/neuropol_x_rg.ttf")) {
 		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
 	}
 
 	this->textures.emplace("PAWN_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("PAWN_TEXTURE")->loadFromFile(allocator->GetGUITexturePath("pawns.png"))) {
+	if (!this->textures.at("PAWN_TEXTURE")->loadFromFile("Resources/GUI/pawns.png")) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("GRID_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("GRID_TEXTURE")->loadFromFile(allocator->GetBackgroundPath("grid_bg.png"))) {
+	if (!this->textures.at("GRID_TEXTURE")->loadFromFile("Resources/Backgrounds/grid_bg.png")) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile(allocator->GetBackgroundPath("bg1.jpg"))) {
+	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("Resources/Backgrounds/bg1.jpg")) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
@@ -117,7 +117,7 @@ void ReplayState::InitState(ResourceAllocator* allocator)
 	this->title.setFillColor(sf::Color::Black);
 	this->title.setOutlineColor(sf::Color::White);
 	this->title.setOutlineThickness(1.5f);
-	State::InitState(allocator);
+	State::InitState();
 }
 
 void ReplayState::UpdateReplay()

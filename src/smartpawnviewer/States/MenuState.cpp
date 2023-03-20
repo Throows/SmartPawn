@@ -75,20 +75,20 @@ void MenuState::UpdateListViewButton()
 	}
 }
 
-void MenuState::InitState(ResourceAllocator* allocator)
+void MenuState::InitState()
 {
 	this->font = std::make_shared<sf::Font>();
-	if (!this->font->loadFromFile(allocator->GetFontPath("neuropol_x_rg.ttf"))) {
+	if (!this->font->loadFromFile("Resources/Fonts/neuropol_x_rg.ttf")) {
 		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
 	}
 
 	this->textures.emplace("BUTTON_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("BUTTON_TEXTURE")->loadFromFile(allocator->GetGUITexturePath("buttons.png"))) {
+	if (!this->textures.at("BUTTON_TEXTURE")->loadFromFile("Resources/GUI/buttons.png")) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
-	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile(allocator->GetBackgroundPath("bg1.jpg"))) {
+	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("Resources/Backgrounds/bg1.jpg")) {
 		SPV_APP_ERROR("Could not load texture !");
 	}
 	
@@ -107,7 +107,7 @@ void MenuState::InitState(ResourceAllocator* allocator)
 	UpdateListViewButton();
 
 	this->isFocused = true;
-	State::InitState(allocator);
+	State::InitState();
 }
 
 } // Namespace SPV

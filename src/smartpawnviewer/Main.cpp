@@ -25,11 +25,11 @@ int main(int argc, char** argv)
 int main(int argc, char** argv) 
 {
 	(void)argc, (void)argv;
+	std::filesystem::path exePath = argv[0];
+	std::filesystem::current_path(exePath.parent_path());
 	SP::Logger::Init();
 	SPV_APP_INFO("Logger Initialized successfully !");
-	std::string path = argv[0];
-	std::shared_ptr<ResourceAllocator> allocator = std::make_shared<ResourceAllocator>(path);
-	SPV::Application app(allocator);
+	SPV::Application app{};
 	return app.Run();
 }
 

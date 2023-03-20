@@ -1,6 +1,5 @@
 #pragma once
 #include <Core/pch.hpp>
-#include "Core/ResourceAllocator.hpp"
 
 typedef std::shared_ptr<sf::RenderWindow> WindowPtr;
 
@@ -23,7 +22,7 @@ public:
 	virtual std::string GetName() { return this->m_StateName; }
 
 	virtual bool IsInitializedState() { return this->isInitialized; }
-	virtual void InitState(ResourceAllocator* allocator) { (void)allocator; this->isInitialized = true; }
+	virtual void InitState() { this->isInitialized = true; }
 
 protected:
 	std::string m_StateName;

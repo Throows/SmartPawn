@@ -19,7 +19,7 @@ public:
 	Pawn* GetPawn(int x, int y);
 	void RemovePawn(int x, int y);
 
-	void InitState(ResourceAllocator* allocator) override;
+	void InitState() override;
 	
 private:
 	void UpdateReplay();

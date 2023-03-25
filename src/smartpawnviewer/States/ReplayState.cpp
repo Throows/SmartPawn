@@ -24,7 +24,7 @@ void ReplayState::OnUpdate()
 		UpdateReplay();
 	}
 	if (!isReplay && oldState) {
-		this->title.setString(this->m_locale->GetFormatedText("winner", this->reader.GetWinner()));
+		this->title.setString(this->m_config->GetFormatedText("winner", this->reader.GetWinner()));
 	}
 }
 
@@ -70,9 +70,9 @@ void ReplayState::RemovePawn(int x, int y)
 	}
 }
 
-void ReplayState::InitState(std::shared_ptr<SPV::LocaleText> locale)
+void ReplayState::InitState(std::shared_ptr<SPV::Configuration> config)
 {
-	this->m_locale = locale;
+	this->m_config = config;
 	this->font = std::make_shared<sf::Font>();
 	if (!this->font->loadFromFile("Resources/Fonts/neuropol_x_rg.ttf")) {
 		SPV_APP_ERROR("Could not load the font ! (SimGameState)");

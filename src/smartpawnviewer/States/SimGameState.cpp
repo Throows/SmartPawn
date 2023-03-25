@@ -40,9 +40,9 @@ void SimGameState::SetExitedState()
 	this->engine->GetData()->SetEnded(true);
 }
 
-void SimGameState::InitState(std::shared_ptr<SPV::LocaleText> locale)
+void SimGameState::InitState(std::shared_ptr<SPV::Configuration> config)
 {
-	this->m_locale = locale;
+	this->m_config = config;
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
 	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("Resources/Backgrounds/bg2.jpg")) {
 		SPV_APP_ERROR("Could not load texture !");

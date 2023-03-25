@@ -19,7 +19,7 @@ public:
 	Pawn* GetPawn(int x, int y);
 	void RemovePawn(int x, int y);
 
-	void InitState(std::shared_ptr<SPV::LocaleText> locale) override;
+	void InitState(std::shared_ptr<SPV::Configuration> config) override;
 	
 private:
 	void UpdateReplay();

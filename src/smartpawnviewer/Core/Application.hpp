@@ -1,6 +1,6 @@
 #pragma once
 #include <Core/pch.hpp>
-#include <Core/LocaleText.hpp>
+#include <Core/Configuration.hpp>
 #include <States/MenuState.hpp>
 
 namespace SPV
@@ -24,7 +24,7 @@ private:
 
 	std::shared_ptr<sf::RenderWindow> window;
 	StatesPtr states;
-	std::shared_ptr<SPV::LocaleText> locale;
+	std::shared_ptr<SPV::Configuration> m_config;
 
 
 	void Init();

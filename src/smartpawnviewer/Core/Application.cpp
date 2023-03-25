@@ -11,7 +11,7 @@ Application::Application(const unsigned int width, const unsigned int height)
 	this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), "Application", sf::Style::Default);
 	this->states = std::make_shared<std::vector<std::shared_ptr<State>>>();
 	AddState(std::make_shared<MenuState>(this->states, this->window));
-	this->locale = std::make_shared<SPV::LocaleText>(SPV::Locale::en_US);
+	this->m_config = std::make_shared<SPV::Configuration>();
 	this->Init();
 }
 
@@ -25,7 +25,7 @@ int Application::Run()
 				it = this->states->erase(it);
 			}
 			else if (!(*it)->IsInitializedState()){
-				(*it)->InitState(this->locale);
+				(*it)->InitState(this->m_config);
 				it++;
 			}
 			else {
@@ -67,11 +67,10 @@ void Application::ProcessAppEvents()
 
 void Application::Init()
 {
-	this->locale->SetLocale(SPV::Locale::fr_FR); // TODO: Get settings there
-	this->locale->SetupLocale();
+	this->m_config->LoadConfiguration();
 	this->window->setFramerateLimit(60);
 
-	this->window->setTitle(this->locale->GetText("title") + " - " + this->locale->GetText("description"));
+	this->window->setTitle(this->m_config->GetText("title") + " - " + this->m_config->GetText("description"));
 }
 
 void Application::RegisterCallbacks()

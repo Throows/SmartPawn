@@ -75,9 +75,9 @@ void MenuState::UpdateListViewButton()
 	}
 }
 
-void MenuState::InitState(std::shared_ptr<SPV::LocaleText> locale)
+void MenuState::InitState(std::shared_ptr<SPV::Configuration> config)
 {
-	this->m_locale = locale;
+	this->m_config = config;
 	this->font = std::make_shared<sf::Font>();
 	if (!this->font->loadFromFile("Resources/Fonts/neuropol_x_rg.ttf")) {
 		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
@@ -96,14 +96,14 @@ void MenuState::InitState(std::shared_ptr<SPV::LocaleText> locale)
 	this->background = std::make_unique<sf::Sprite>();
 	this->background->setTexture(*this->textures.at("BACKGROUND_TEXTURE"));
 	this->background->setTextureRect(static_cast<sf::IntRect>(this->window->getViewport(this->window->getView())));
-	auto titleText = this->m_locale->GetText("title") + "\n" + this->m_locale->GetText("description");
+	auto titleText = this->m_config->GetText("title") + "\n" + this->m_config->GetText("description");
 	this->title = sf::Text(titleText, *this->font, 50);
 	this->title.setPosition(sf::Vector2f(50.0f, 50.0f));
 	this->title.setStyle(sf::Text::Style::Bold);
 	this->title.setFillColor(sf::Color::Black);
 	this->title.setOutlineColor(sf::Color::White);
 	this->title.setOutlineThickness(2.0f);
-	Button startSimButton(sf::Vector2f(50.0f, 300.0f), sf::Vector2i(512, 128), this->m_locale->GetText("launch"), *this->font, *this->textures.at("BUTTON_TEXTURE"), sf::Vector2i(0, 0), sf::Vector2i(0, 128), sf::Vector2i(0, 256));
+	Button startSimButton(sf::Vector2f(50.0f, 300.0f), sf::Vector2i(512, 128), this->m_config->GetText("launch"), *this->font, *this->textures.at("BUTTON_TEXTURE"), sf::Vector2i(0, 0), sf::Vector2i(0, 128), sf::Vector2i(0, 256));
 	this->buttons.push_back(startSimButton);
 	this->recordListView = std::make_shared<ListView>(sf::Vector2f(600.0f, 50.0f), sf::Vector2f(300.0f, 400.0f));
 	UpdateListViewButton();

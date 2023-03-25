@@ -17,7 +17,7 @@ public:
 	void ProcessEvents(sf::Event& event) override;
 	void SetExitedState() override;
 
-	void InitState(std::shared_ptr<SPV::LocaleText> locale) override;
+	void InitState(std::shared_ptr<SPV::Configuration> config) override;
 	
 private:
 	std::shared_ptr<ProgressBar> progressBar;

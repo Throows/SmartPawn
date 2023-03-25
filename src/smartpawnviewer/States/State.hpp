@@ -1,6 +1,6 @@
 #pragma once
 #include <Core/pch.hpp>
-#include <Core/LocaleText.hpp>
+#include <Core/Configuration.hpp>
 
 namespace SPV
 {
@@ -25,7 +25,7 @@ public:
 	const std::string& GetName() { return this->m_StateName; }
 
 	virtual bool IsInitializedState() { return this->isInitialized; }
-	virtual void InitState(std::shared_ptr<SPV::LocaleText>) = 0;
+	virtual void InitState(std::shared_ptr<SPV::Configuration> config) = 0;
 
 protected:
 	std::string m_StateName;
@@ -33,7 +33,7 @@ protected:
 	bool isInitialized = false;
 	WindowPtr window;
 	StatesPtr states;
-	std::shared_ptr<SPV::LocaleText> m_locale;
+	std::shared_ptr<SPV::Configuration> m_config;
 };
 
 } // Namespace SPV

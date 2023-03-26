@@ -15,11 +15,12 @@ Locale StringToLocale(const std::string& str);
 
 
 struct Settings {
-    Locale locale;
-    unsigned int gridWidth;
-    unsigned int gridHeight;
-    unsigned int pluginNumber;
-    unsigned int tieMoveNumber;
+    Locale locale               = Locale::en_US;
+    unsigned int gridWidth      = 10;
+    unsigned int gridHeight     = 10;    
+    unsigned int pluginNumber   = 2;
+    unsigned int initialPawnNB  = 5;
+    unsigned int tieMoveNumber  = 100;
 };
 
 void from_json(const nlohmann::json& j, Settings& s);
@@ -28,7 +29,7 @@ void to_json(nlohmann::json& j, const Settings& s);
 class Configuration
 {
 public:
-    Configuration();
+    Configuration() = default;
     ~Configuration() = default;
 
     void LoadConfiguration();

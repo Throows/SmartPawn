@@ -30,6 +30,7 @@ void from_json(const nlohmann::json &j, Settings &s)
     j.at("grid").at("x").get_to(s.gridWidth);
     j.at("grid").at("y").get_to(s.gridHeight);
     j.at("plugin").at("number").get_to(s.pluginNumber);
+    j.at("plugin").at("initialPawnNB").get_to(s.initialPawnNB);
     j.at("tie").get_to(s.tieMoveNumber);
 }
 
@@ -38,19 +39,8 @@ void to_json(nlohmann::json &j, const Settings &s)
     j = nlohmann::json{
         { "lang", LocaleToString(s.locale) },
         { "grid", { { "x", s.gridWidth }, { "y", s.gridHeight } } },
-        { "plugin", { { "number", s.pluginNumber } } },
+        { "plugin", { { "number", s.pluginNumber }, { "initialPawnNB", s.initialPawnNB} } },
         { "tie", s.tieMoveNumber },
-    };
-}
-
-Configuration::Configuration()
-{
-    this->m_settings = {
-        .locale = Locale::en_US,
-        .gridWidth = 10,
-        .gridHeight = 10,
-        .pluginNumber = 2,
-        .tieMoveNumber = 100,
     };
 }
 
@@ -62,6 +52,13 @@ void Configuration::LoadConfiguration()
         std::ifstream settingsFile(settingsPath);
         nlohmann::json settingsJson = nlohmann::json::parse(settingsFile);
         this->m_settings = settingsJson.get<Settings>();
+    }
+    else {
+        SPV_APP_INFO("Settings file not found, creating default settings");
+        std::ofstream settingsFile(settingsPath);
+        nlohmann::json settingsJson = this->m_settings;
+        settingsFile << settingsJson.dump(4) << std::endl;
+        settingsFile.close();
     }
 
     auto langPath = "Resources/Lang/" + localName[(int)this->m_settings.locale] + ".json";

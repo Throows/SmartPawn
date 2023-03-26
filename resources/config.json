@@ -5,7 +5,8 @@
         "y": 10
     },
     "plugin": {
-        "number": 2
+        "number": 2,
+        "initialPawnNB": 5
     },
     "tie" : 100 
 }

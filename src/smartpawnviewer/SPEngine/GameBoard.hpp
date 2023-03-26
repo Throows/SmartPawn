@@ -10,7 +10,7 @@ namespace SP
 class GameBoard
 {
 public:
-	GameBoard(unsigned int width, unsigned int height);
+	GameBoard(unsigned int width, unsigned int height, unsigned int tieMoveMax);
 	virtual ~GameBoard() = default;
 	const std::vector<uint8_t>& GetBoard();
 	void ShowBoard();
@@ -35,10 +35,11 @@ public:
 private:
 	std::vector<uint8_t> board;
 	bool ended = false;
-	int tieMove = 0;
+	unsigned int tieMove = 0;
 	int pawnNumber = 0;
 	const unsigned int width;
 	const unsigned int height;
+	const unsigned int tieMoveMax;
 
 	char GetPluginChar(Teams team);
 	int GetIndex(int x, int y) { return x + (y * this->width); };

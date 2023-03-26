@@ -2,5 +2,6 @@
     "title": "Smart Pawn",
     "description": "Le jeu de l'IA",
     "launch": "Lancer la simulation",
-    "winner": "Le gagnant est {}"
+    "winner": "Le gagnant est :\n {}",
+    "tieEnd": "Match nul"
 }

@@ -22,7 +22,13 @@ void ReplayState::OnUpdate()
 		UpdateReplay();
 	}
 	if (!isReplay && oldState) {
-		this->title.setString(this->m_stateArgs->config->GetFormatedText("winner", this->reader.GetWinner()));
+		auto winnerName = this->reader.GetWinner();
+		if (winnerName == "NO WINNER") {
+			this->title.setString(this->m_stateArgs->config->GetFormatedText("tieEnd"));
+		}
+		else {
+			this->title.setString(this->m_stateArgs->config->GetFormatedText("winner", this->reader.GetWinner()));
+		}
 	}
 }
 

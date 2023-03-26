@@ -50,7 +50,7 @@ public:
 	bool ExistPawn(int x, int y) { return this->board.at(RecordReader::GetIndex(x, y)) != 0; }
 	void UpdateBoard();
 	int GetTeam(std::string& teamName);
-	std::string GetWinner() { return this->winnerTeam; }
+	const std::string& GetWinner() { return this->winnerTeam; }
 	std::vector<uint8_t>& GetBoard() { return this->board; }
 	const int& GetWidth() { return this->width; }
 

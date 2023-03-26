@@ -9,7 +9,7 @@ namespace SPV
 class SimGameState : public State
 {
 public:
-	SimGameState(StatesPtr states, WindowPtr window);
+	SimGameState(StateArgs* args);
 	virtual ~SimGameState() = default;
 
 	void OnUpdate() override;
@@ -17,7 +17,7 @@ public:
 	void ProcessEvents(sf::Event& event) override;
 	void SetExitedState() override;
 
-	void InitState(std::shared_ptr<SPV::Configuration> config) override;
+	void InitState() override;
 	
 private:
 	std::shared_ptr<ProgressBar> progressBar;

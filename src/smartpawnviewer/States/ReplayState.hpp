@@ -10,7 +10,7 @@ namespace SPV
 class ReplayState : public State
 {
 public:
-	ReplayState(StatesPtr states, WindowPtr window, const std::string& recordFile);
+	ReplayState(StateArgs* args, const std::string& recordFile);
 	~ReplayState();
 	void OnUpdate() override;
 	void OnRender() override;
@@ -19,7 +19,7 @@ public:
 	Pawn* GetPawn(int x, int y);
 	void RemovePawn(int x, int y);
 
-	void InitState(std::shared_ptr<SPV::Configuration> config) override;
+	void InitState() override;
 	
 private:
 	void UpdateReplay();

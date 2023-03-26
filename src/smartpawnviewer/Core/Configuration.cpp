@@ -1,8 +1,9 @@
-#include "Core/Configuration.hpp"
+#include <Core/pch.hpp>
+#include <Core/Configuration.hpp>
 #include <fstream>
 #include <format>
 
-static std::string localName[] = {
+static const std::string localName[] = {
     "en_US",
     "fr_FR",
 };
@@ -10,7 +11,7 @@ static std::string localName[] = {
 namespace SPV
 {
 
-std::string& LocaleToString(Locale locale)
+const std::string& LocaleToString(Locale locale)
 {
     return localName[(int)locale];
 }
@@ -30,7 +31,6 @@ void from_json(const nlohmann::json &j, Settings &s)
     j.at("grid").at("y").get_to(s.gridHeight);
     j.at("plugin").at("number").get_to(s.pluginNumber);
     j.at("tie").get_to(s.tieMoveNumber);
-    
 }
 
 void to_json(nlohmann::json &j, const Settings &s)
@@ -58,7 +58,7 @@ void Configuration::LoadConfiguration()
 {
     std::filesystem::path settingsPath = "Resources/config.json";
     if (std::filesystem::is_regular_file(settingsPath)) {
-        SPV_APP_INFO("Loading settings from file");
+        SPV_APP_INFO("Loading settings from file {}", settingsPath.string());
         std::ifstream settingsFile(settingsPath);
         nlohmann::json settingsJson = nlohmann::json::parse(settingsFile);
         this->m_settings = settingsJson.get<Settings>();

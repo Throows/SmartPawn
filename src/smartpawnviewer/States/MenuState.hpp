@@ -10,13 +10,13 @@ namespace SPV
 class MenuState : public State
 {
 public:
-	MenuState(StatesPtr states, WindowPtr window);
+	MenuState(StateArgs* args);
 	~MenuState();
 	void OnUpdate() override;
 	void OnRender() override;
 	void ProcessEvents(sf::Event& event) override;
 	void UpdateListViewButton();
-	void InitState(std::shared_ptr<SPV::Configuration> config) override;
+	void InitState() override;
 
 private:
 	std::vector<Button> buttons;

@@ -10,7 +10,7 @@ enum Locale {
     fr_FR,
 };
 
-std::string& LocaleToString(Locale locale);
+const std::string& LocaleToString(Locale locale);
 Locale StringToLocale(const std::string& str);
 
 

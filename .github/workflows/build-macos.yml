@@ -23,9 +23,6 @@ jobs:
         with:
           xmake-version: latest
           actions-cache-folder: '.xmake-cache'
-      
-      - name: Configure xmake and install dependencies
-        run: sudo xmake
 
       - name: Build SmartPawn
         run: xmake

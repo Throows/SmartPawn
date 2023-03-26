@@ -6,31 +6,26 @@
 #include <unistd.h>
 #endif
 
-#ifdef SP_PLATFORM_WIN
+#if defined(SP_PLATFORM_WIN) && defined(WIN_START)
 
-#ifdef WIN_START
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) 
-#else
-int main(int argc, char** argv)
-#endif
 {
+	(void)hInstance, (void)hPrevInstance, (void)lpCmdLine, (void)nCmdShow;
 	SP::Logger::Init();
-	SPV_APP_INFO("Logger Initialized successfully !");
 	SPV::Application app{};
 	return app.Run();
 }
+#else
 
-#elif SP_PLATFORM_DARWIN
-
-int main(int argc, char** argv) 
+int main(int argc, char** argv)
 {
 	(void)argc, (void)argv;
+#ifdef SP_PLATFORM_DARWIN
 	std::filesystem::path exePath = argv[0];
 	std::filesystem::current_path(exePath.parent_path());
+#endif
 	SP::Logger::Init();
-	SPV_APP_INFO("Logger Initialized successfully !");
 	SPV::Application app{};
 	return app.Run();
 }
-
 #endif

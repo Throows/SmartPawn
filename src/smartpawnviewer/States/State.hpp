@@ -1,14 +1,29 @@
 #pragma once
 #include <Core/pch.hpp>
-
-typedef std::shared_ptr<sf::RenderWindow> WindowPtr;
+#include <Core/Configuration.hpp>
 
 namespace SPV
 {
+
+class State;
+typedef std::unique_ptr<sf::RenderWindow> WindowPtr;
+typedef std::unique_ptr<SPV::Configuration> ConfigPtr;
+typedef std::unique_ptr<std::vector<std::unique_ptr<SPV::State>>> StatesPtr;
+
+struct StateArgs {
+	StateArgs()
+		: window(nullptr)
+		, config(nullptr)
+		, states(nullptr) 
+	{}
+	WindowPtr window;
+	ConfigPtr config;
+	StatesPtr states;
+};
 class State
 {
 public:
-	State(const std::string& name);
+	State(StateArgs* args, const std::string& name);
 	virtual ~State();
 
 	virtual void OnUpdate() = 0;
@@ -19,19 +34,16 @@ public:
 		isExited = true;
 		SPV_APP_INFO("State exited : {0}", m_StateName);
 	}
-	virtual std::string GetName() { return this->m_StateName; }
+	const std::string& GetName() { return this->m_StateName; }
 
 	virtual bool IsInitializedState() { return this->isInitialized; }
-	virtual void InitState() { this->isInitialized = true; }
+	virtual void InitState() = 0;
 
 protected:
+	StateArgs* m_stateArgs;
 	std::string m_StateName;
 	bool isExited = false;
 	bool isInitialized = false;
-	WindowPtr window;
-	std::shared_ptr<std::vector<std::shared_ptr<SPV::State>>> states;
 };
-
-typedef std::shared_ptr<std::vector<std::shared_ptr<SPV::State>>> StatesPtr;
 
 } // Namespace SPV

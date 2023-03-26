@@ -3,12 +3,10 @@
 namespace SPV
 {
 
-ReplayState::ReplayState(StatesPtr states, WindowPtr window, const std::string& recordFile) 
-	: State("ReplayState")
+ReplayState::ReplayState(StateArgs* args, const std::string& recordFile) 
+	: State(args, "ReplayState")
 	, reader(recordFile)
 {
-	this->states = states;
-	this->window = window;
 }
 
 ReplayState::~ReplayState()
@@ -24,19 +22,25 @@ void ReplayState::OnUpdate()
 		UpdateReplay();
 	}
 	if (!isReplay && oldState) {
-		this->title.setString("Gagnant : " + this->reader.GetWinner());
+		auto winnerName = this->reader.GetWinner();
+		if (winnerName == "NO WINNER") {
+			this->title.setString(this->m_stateArgs->config->GetFormatedText("tieEnd"));
+		}
+		else {
+			this->title.setString(this->m_stateArgs->config->GetFormatedText("winner", this->reader.GetWinner()));
+		}
 	}
 }
 
 void ReplayState::OnRender()
 {
 	if (this->IsExitedState() || !this->IsInitializedState()) return;
-	this->window->draw(*this->background);
-	this->window->draw(*this->grid);
+	this->m_stateArgs->window->draw(*this->background);
+	this->m_stateArgs->window->draw(*this->grid);
 	for (auto& pawn : this->pawns) {
-		pawn->OnRender(*this->window);
+		pawn->OnRender(*this->m_stateArgs->window);
 	}
-	this->window->draw(this->title);
+	this->m_stateArgs->window->draw(this->title);
 }
 
 void ReplayState::ProcessEvents(sf::Event& event)
@@ -94,7 +98,7 @@ void ReplayState::InitState()
 
 	this->background = std::make_unique<sf::Sprite>();
 	this->background->setTexture(*this->textures.at("BACKGROUND_TEXTURE"));
-	this->background->setTextureRect(static_cast<sf::IntRect>(this->window->getViewport(this->window->getView())));
+	this->background->setTextureRect(static_cast<sf::IntRect>(this->m_stateArgs->window->getViewport(this->m_stateArgs->window->getView())));
 	this->grid = std::make_unique<sf::Sprite>();
 	this->grid->setPosition(sf::Vector2f(50.0f, 40.0f));
 	this->grid->setTexture(*this->textures.at("GRID_TEXTURE"));
@@ -117,7 +121,7 @@ void ReplayState::InitState()
 	this->title.setFillColor(sf::Color::Black);
 	this->title.setOutlineColor(sf::Color::White);
 	this->title.setOutlineThickness(1.5f);
-	State::InitState();
+	this->isInitialized = true;
 }
 
 void ReplayState::UpdateReplay()

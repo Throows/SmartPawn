@@ -10,7 +10,7 @@ namespace SPV
 class MenuState : public State
 {
 public:
-	MenuState(StatesPtr states, WindowPtr window);
+	MenuState(StateArgs* args);
 	~MenuState();
 	void OnUpdate() override;
 	void OnRender() override;

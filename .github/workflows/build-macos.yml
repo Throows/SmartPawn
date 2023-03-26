@@ -25,7 +25,7 @@ jobs:
           actions-cache-folder: '.xmake-cache'
 
       - name: Build SmartPawn
-        run: xmake
+        run: xmake --yes --verbose
       
       - uses: actions/upload-artifact@v3
         with:

@@ -15,7 +15,7 @@ jobs:
       - name: Install sfml
         run: |
           brew update
-          brew install pybind11 sfml
+          brew install python pybind11 sfml
           brew upgrade
 
       - name: Install xmake

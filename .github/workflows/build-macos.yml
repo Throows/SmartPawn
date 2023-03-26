@@ -1,0 +1,30 @@
+name : Build MacOS
+
+on :
+  pull_request :
+  push:
+    branches :
+      - main
+
+jobs :
+  build :
+    runs-on :  macos-latest
+    steps :
+      - uses :  actions/checkout@v3
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+          with:
+            xmake-version: latest
+            actions-cache-folder: '.xmake-cache'
+      
+      - name: Configure xmake and install dependencies
+        run: xmake config --arch=arm64 --mode=release --yes --verbose
+
+      - name: Build SmartPawn
+        run: xmake
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: SmartPawn-macOS-arm64
+            path: bin/macos-arm64

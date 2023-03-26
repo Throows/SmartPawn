@@ -1,16 +1,16 @@
-name : Build-Windows
+name: Build-Windows
 
 on :
-  pull_request :
+  pull_request:
   push:
-    branches :
-      - experiemental
+    branches:
+      - main
 
-jobs :
-  build :
-    runs-on :  windows-latest
-    steps :
-      - uses :  actions/checkout@v3
+jobs:
+  build:
+    runs-on:  windows-latest
+    steps:
+      - uses:  actions/checkout@v3
 
       - name: Install xmake
         uses: xmake-io/github-action-setup-xmake@v1

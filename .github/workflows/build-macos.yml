@@ -14,9 +14,9 @@ jobs :
 
       - name: Install xmake
         uses: xmake-io/github-action-setup-xmake@v1
-          with:
-            xmake-version: latest
-            actions-cache-folder: '.xmake-cache'
+        with:
+          xmake-version: latest
+          actions-cache-folder: '.xmake-cache'
       
       - name: Configure xmake and install dependencies
         run: xmake config --arch=arm64 --mode=release --yes --verbose
@@ -27,4 +27,4 @@ jobs :
       - uses: actions/upload-artifact@v3
         with:
           name: SmartPawn-macOS-arm64
-            path: bin/macos-arm64
+          path: bin/macos-arm64

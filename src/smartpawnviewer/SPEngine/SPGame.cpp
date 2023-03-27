@@ -7,12 +7,12 @@
 namespace SP
 {
 
-SPGame::SPGame(unsigned int pawnNB, unsigned int boardWidth, unsigned int boardHeigth)
+SPGame::SPGame(unsigned int pawnNB, unsigned int boardWidth, unsigned int boardHeigth, unsigned int tieMoveMax)
 	: initalPawnNumber(pawnNB)
 {
 	srand((unsigned int)time(NULL));
 	this->plugins = std::make_unique<GamePlugins>();
-	this->board = std::make_unique<GameBoard>(boardWidth, boardHeigth);
+	this->board = std::make_unique<GameBoard>(boardWidth, boardHeigth, tieMoveMax);
 	this->recorder = std::make_unique<GameRecorder>();
 }
 

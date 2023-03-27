@@ -8,10 +8,11 @@ Application::Application(const unsigned int width, const unsigned int height)
 	this->m_width = width;
 	this->m_height = height;
 
-	this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), "SmartPawn - Le jeux de l'IA", sf::Style::Default);
-	this->states = std::make_shared<std::vector<std::shared_ptr<State>>>();
-	AddState(std::make_shared<MenuState>(this->states, this->window));
-
+	this->m_stateArgs.window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), "Application", sf::Style::Default);
+	this->m_stateArgs.states = std::make_unique<std::vector<std::unique_ptr<SPV::State>>>();
+	this->m_stateArgs.config = std::make_unique<SPV::Configuration>();
+	
+	this->m_stateArgs.states->push_back(std::make_unique<MenuState>(&this->m_stateArgs));
 	this->Init();
 }
 
@@ -19,11 +20,10 @@ int Application::Run()
 {
 	while (m_running) {
 
-		std::vector<std::shared_ptr<State>>::const_iterator it = this->states->begin();
-
-		while (it != this->states->end()) {
+		std::vector<std::unique_ptr<State>>::const_iterator it = this->m_stateArgs.states->begin();
+		while (it != this->m_stateArgs.states->end()) {
 			if ((*it)->IsExitedState()) {
-				it = this->states->erase(it);
+				it = this->m_stateArgs.states->erase(it);
 			}
 			else if (!(*it)->IsInitializedState()){
 				(*it)->InitState();
@@ -36,39 +36,42 @@ int Application::Run()
 
 		ProcessAppEvents();
 
-		this->window->clear();
-		if (!this->states->empty()) {
-			this->states->back()->OnUpdate();
-			this->states->back()->OnRender();
+		this->m_stateArgs.window->clear();
+		if (!this->m_stateArgs.states->empty()) {
+			this->m_stateArgs.states->back()->OnUpdate();
+			this->m_stateArgs.states->back()->OnRender();
 		}
 		else {
 			m_running = false;
 		}
-		this->window->display();
+		this->m_stateArgs.window->display();
 	}
-	this->window->close();
+	this->m_stateArgs.window->close();
 	return 0;
 }
 
 void Application::ProcessAppEvents()
 {
 	sf::Event event;
-	while (this->window->pollEvent(event)) {
+	while (this->m_stateArgs.window->pollEvent(event)) {
 		if (event.type == sf::Event::Closed)
 			m_running = false;
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-			this->states->back()->SetExitedState();
+			this->m_stateArgs.states->back()->SetExitedState();
 	}
 
-	if (!this->states->empty()) {
-		this->states->back()->ProcessEvents(event);
+	if (!this->m_stateArgs.states->empty()) {
+		this->m_stateArgs.states->back()->ProcessEvents(event);
 	}
 }
 
 void Application::Init()
 {
-	this->window->setFramerateLimit(60);
+	this->m_stateArgs.config->LoadConfiguration();
+	this->m_stateArgs.window->setFramerateLimit(60);
+
+	this->m_stateArgs.window->setTitle(this->m_stateArgs.config->GetText("title") + " - " + this->m_stateArgs.config->GetText("description"));
 }
 
 void Application::RegisterCallbacks()

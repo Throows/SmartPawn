@@ -6,10 +6,9 @@
 namespace SPV
 {
 	
-MenuState::MenuState(StatesPtr states, WindowPtr window) : State("MenuState")
+MenuState::MenuState(StateArgs* args) 
+	: State(args, "MenuState")
 {
-	this->states = states;
-	this->window = window;
 }
 
 MenuState::~MenuState()
@@ -24,19 +23,19 @@ void MenuState::OnUpdate()
 		UpdateListViewButton();
 		isFocused = true;
 	}
-	sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*this->window.get()));
+	sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*this->m_stateArgs->window.get()));
 	for (auto button : this->buttons) {
 		button.Update(mousePos);
 		if (button.IsClicked()) {
-			this->states->push_back(std::make_shared<SimGameState>(states, this->window));
+			this->m_stateArgs->states->push_back(std::make_unique<SimGameState>(this->m_stateArgs));
 			this->isFocused = false;
 			//this->SetExitedState();
 		}
 	}
-	this->recordListView->OnUpdate(*this->window);
+	this->recordListView->OnUpdate(*this->m_stateArgs->window);
 	if (this->recordListView->hasClickedButton) {
 		std::string clickedButton = this->recordListView->GetClickedButton();
-		this->states->push_back(std::make_shared<ReplayState>(states, this->window, clickedButton));
+		this->m_stateArgs->states->push_back(std::make_unique<ReplayState>(this->m_stateArgs, clickedButton));
 		this->isFocused = false;
 		//this->SetExitedState();
 	}
@@ -45,12 +44,12 @@ void MenuState::OnUpdate()
 void MenuState::OnRender()
 {
 	if (this->IsExitedState() || !this->IsInitializedState()) return;
-	this->window->draw(*this->background);
-	this->window->draw(this->title);
+	this->m_stateArgs->window->draw(*this->background);
+	this->m_stateArgs->window->draw(this->title);
 	for (auto button : this->buttons) {
-		button.Render(*this->window);
+		button.Render(*this->m_stateArgs->window);
 	}
-	this->recordListView->OnRender(*this->window);
+	this->recordListView->OnRender(*this->m_stateArgs->window);
 }
 
 void MenuState::ProcessEvents(sf::Event& event)
@@ -94,20 +93,21 @@ void MenuState::InitState()
 	
 	this->background = std::make_unique<sf::Sprite>();
 	this->background->setTexture(*this->textures.at("BACKGROUND_TEXTURE"));
-	this->background->setTextureRect(static_cast<sf::IntRect>(this->window->getViewport(this->window->getView())));
-	this->title = sf::Text("SmartPawn\n The Game", *this->font, 50);
+	this->background->setTextureRect(static_cast<sf::IntRect>(this->m_stateArgs->window->getViewport(this->m_stateArgs->window->getView())));
+	auto titleText = this->m_stateArgs->config->GetText("title") + "\n" + this->m_stateArgs->config->GetText("description");
+	this->title = sf::Text(titleText, *this->font, 50);
 	this->title.setPosition(sf::Vector2f(50.0f, 50.0f));
 	this->title.setStyle(sf::Text::Style::Bold);
 	this->title.setFillColor(sf::Color::Black);
 	this->title.setOutlineColor(sf::Color::White);
 	this->title.setOutlineThickness(2.0f);
-	Button startSimButton(sf::Vector2f(50.0f, 300.0f), sf::Vector2i(512, 128), std::string("Lancer la simulation"), *this->font, *this->textures.at("BUTTON_TEXTURE"), sf::Vector2i(0, 0), sf::Vector2i(0, 128), sf::Vector2i(0, 256));
+	Button startSimButton(sf::Vector2f(50.0f, 300.0f), sf::Vector2i(512, 128), this->m_stateArgs->config->GetText("launch"), *this->font, *this->textures.at("BUTTON_TEXTURE"), sf::Vector2i(0, 0), sf::Vector2i(0, 128), sf::Vector2i(0, 256));
 	this->buttons.push_back(startSimButton);
 	this->recordListView = std::make_shared<ListView>(sf::Vector2f(600.0f, 50.0f), sf::Vector2f(300.0f, 400.0f));
 	UpdateListViewButton();
 
 	this->isFocused = true;
-	State::InitState();
+	this->isInitialized = true;
 }
 
 } // Namespace SPV

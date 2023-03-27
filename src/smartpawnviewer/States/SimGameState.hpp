@@ -9,7 +9,7 @@ namespace SPV
 class SimGameState : public State
 {
 public:
-	SimGameState(StatesPtr states, WindowPtr window);
+	SimGameState(StateArgs* args);
 	virtual ~SimGameState() = default;
 
 	void OnUpdate() override;

@@ -10,7 +10,7 @@ namespace SPV
 class ReplayState : public State
 {
 public:
-	ReplayState(StatesPtr states, WindowPtr window, const std::string& recordFile);
+	ReplayState(StateArgs* args, const std::string& recordFile);
 	~ReplayState();
 	void OnUpdate() override;
 	void OnRender() override;

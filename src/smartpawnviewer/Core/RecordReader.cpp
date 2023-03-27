@@ -171,8 +171,7 @@ bool RecordReader::ReadWinner(std::string& line)
 		return false;
 	}
 	if (result.size() == 2) {
-		std::string team = result[1].str();
-		this->winnerTeam = (team == "NO WINNER") ?  "EQUALITE" : team;
+		this->winnerTeam = result[1].str();
 		return true;
 	}
 	return false;

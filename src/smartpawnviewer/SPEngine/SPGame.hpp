@@ -17,7 +17,7 @@ namespace SP
 class SPGame 
 {
 public:
-	SPGame(unsigned int pawnNb, unsigned int boardWidth, unsigned int boardHeight);
+	SPGame(unsigned int pawnNb, unsigned int boardWidth, unsigned int boardHeight, unsigned int tieMoveMax);
 	virtual ~SPGame() = default;
 
 	void InitGame();

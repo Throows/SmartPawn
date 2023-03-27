@@ -4,8 +4,10 @@
 namespace SP
 {
 
-GameBoard::GameBoard(unsigned int width, unsigned int height) : width(width),
-																height(height)
+GameBoard::GameBoard(unsigned int width, unsigned int height, unsigned int tieMoveMax) 
+	: width(width)
+	, height(height)
+	, tieMoveMax(tieMoveMax)
 {
 	this->board.resize(this->width * this->height, (uint8_t)Teams::NO_TEAM);
 	SP_ENGINE_TRACE("GameBoard created with size {0}x{1}", this->width, this->height);
@@ -126,7 +128,7 @@ bool GameBoard::CalculateTie()
 {
 	if (!IsPawnDied()) tieMove++;
 	else tieMove = 0;
-	if (this->tieMove >= 100) this->ended = true;
+	if (this->tieMove >= this->tieMoveMax) this->ended = true;
 	return this->ended;
 }
 

@@ -39,7 +39,7 @@ public:
 
     std::string GetText(const char* key) const;
     template <typename... Args>
-    std::string GetFormatedText(const char* key, Args&&... args) { return std::vformat(GetText(key), std::make_format_args(std::forward<Args>(args)...)); }
+    std::string GetFormatedText(const char* key, Args&&... args) { return fmt::vformat(GetText(key), fmt::make_format_args(std::forward<Args>(args)...)); }
 
 private:
     Settings m_settings;

@@ -1,0 +1,38 @@
+name: Build-MacOS
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on:  macos-latest
+    steps:
+      - uses:  actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10 
+
+      - name: Install Pybind11 SFML
+        run: |
+          brew update
+          brew install pybind11 sfml
+          brew upgrade
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+          actions-cache-folder: '.xmake-cache'
+
+      - name: Build SmartPawn
+        run: xmake --yes --verbose
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: SmartPawn-macOS-arm64
+          path: bin/macos-arm64

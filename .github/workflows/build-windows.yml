@@ -1,0 +1,30 @@
+name: Build-Windows
+
+on :
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses:  actions/checkout@v3
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+          actions-cache-folder: '.xmake-cache'
+      
+      - name: Configure xmake and install dependencies
+        run: xmake.exe config --arch=x64 --mode=release --yes --verbose
+
+      - name: Build SmartPawn
+        run: xmake.exe
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: SmartPawn-windows-arm64
+          path: bin/windows-x64

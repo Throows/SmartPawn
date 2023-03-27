@@ -22,7 +22,7 @@ jobs:
         run: xmake.exe config --arch=x64 --mode=release --yes --verbose
 
       - name: Build SmartPawn
-        run: xmake
+        run: xmake.exe
       
       - uses: actions/upload-artifact@v3
         with:

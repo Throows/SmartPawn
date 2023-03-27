@@ -26,5 +26,5 @@ jobs:
       
       - uses: actions/upload-artifact@v3
         with:
-          name: SmartPawn-windows-arm64
-          path: bin/windows-x64
+          name: windows_x64_release
+          path: bin

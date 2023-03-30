@@ -77,7 +77,7 @@ void ReplayState::RemovePawn(int x, int y)
 void ReplayState::InitState()
 {
 	this->font = std::make_shared<sf::Font>();
-	if (!this->font->loadFromFile("Resources/Fonts/neuropol_x_rg.ttf")) {
+	if (!this->font->loadFromFile("Resources/Fonts/Alkatra/Alkatra-VariableFont_wght.ttf")) {
 		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
 	}
 

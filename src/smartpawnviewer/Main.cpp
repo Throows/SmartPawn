@@ -19,7 +19,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 
 int main(int argc, char** argv)
 {
-	(void)argc, (void)argv;
+	(void)argc;
 #ifdef SP_PLATFORM_DARWIN
 	std::filesystem::path exePath = argv[0];
 	std::filesystem::current_path(exePath.parent_path());

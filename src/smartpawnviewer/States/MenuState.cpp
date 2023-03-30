@@ -77,7 +77,7 @@ void MenuState::UpdateListViewButton()
 void MenuState::InitState()
 {
 	this->font = std::make_shared<sf::Font>();
-	if (!this->font->loadFromFile("Resources/Fonts/neuropol_x_rg.ttf")) {
+	if (!this->font->loadFromFile("Resources/Fonts/Alkatra/Alkatra-VariableFont_wght.ttf")) {
 		SPV_APP_ERROR("Could not load the font ! (SimGameState)");
 	}
 
@@ -101,7 +101,7 @@ void MenuState::InitState()
 	this->title.setFillColor(sf::Color::Black);
 	this->title.setOutlineColor(sf::Color::White);
 	this->title.setOutlineThickness(2.0f);
-	Button startSimButton(sf::Vector2f(50.0f, 300.0f), sf::Vector2i(512, 128), this->m_stateArgs->config->GetText("launch"), *this->font, *this->textures.at("BUTTON_TEXTURE"), sf::Vector2i(0, 0), sf::Vector2i(0, 128), sf::Vector2i(0, 256));
+	Button startSimButton(sf::Vector2f(50.0f, 300.0f), sf::Vector2i(256, 128), this->m_stateArgs->config->GetText("launch"), *this->font, *this->textures.at("BUTTON_TEXTURE"), sf::Vector2i(0, 0), sf::Vector2i(0, 128), sf::Vector2i(0, 256));
 	this->buttons.push_back(startSimButton);
 	this->recordListView = std::make_shared<ListView>(sf::Vector2f(600.0f, 50.0f), sf::Vector2f(300.0f, 400.0f));
 	UpdateListViewButton();

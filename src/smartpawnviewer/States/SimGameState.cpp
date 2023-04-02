@@ -8,7 +8,7 @@ SimGameState::SimGameState(StateArgs* args)
 {
 }
 
-void SimGameState::OnUpdate()
+void SimGameState::OnUpdate(const int& dt)
 {
 	if (this->IsExitedState() || !this->IsInitializedState()) return;
 	sf::Time time = clock.getElapsedTime();

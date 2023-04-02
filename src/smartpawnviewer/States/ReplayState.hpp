@@ -12,7 +12,7 @@ class ReplayState : public State
 public:
 	ReplayState(StateArgs* args, const std::string& recordFile);
 	~ReplayState();
-	void OnUpdate() override;
+	void OnUpdate(const int& dt) override;
 	void OnRender() override;
 	void ProcessEvents(sf::Event& event) override;
 	bool ExistPawn(int x, int y);

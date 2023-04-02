@@ -19,7 +19,6 @@ Application::Application(const unsigned int width, const unsigned int height)
 int Application::Run()
 {
 	while (m_running) {
-
 		std::vector<std::unique_ptr<State>>::const_iterator it = this->m_stateArgs.states->begin();
 		while (it != this->m_stateArgs.states->end()) {
 			if ((*it)->IsExitedState()) {
@@ -27,6 +26,7 @@ int Application::Run()
 			}
 			else if (!(*it)->IsInitializedState()){
 				(*it)->InitState();
+				this->m_clock.restart();
 				it++;
 			}
 			else {
@@ -34,11 +34,12 @@ int Application::Run()
 			}
 		}
 
+		int dt = this->m_clock.restart().asMilliseconds();
 		ProcessAppEvents();
 
 		this->m_stateArgs.window->clear();
 		if (!this->m_stateArgs.states->empty()) {
-			this->m_stateArgs.states->back()->OnUpdate();
+			this->m_stateArgs.states->back()->OnUpdate(dt);
 			this->m_stateArgs.states->back()->OnRender();
 		}
 		else {

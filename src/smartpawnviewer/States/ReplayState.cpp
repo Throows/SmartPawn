@@ -14,7 +14,7 @@ ReplayState::~ReplayState()
 	this->textures.clear();
 }
 
-void ReplayState::OnUpdate()
+void ReplayState::OnUpdate(const int& dt)
 {
 	if (this->IsExitedState() || !this->IsInitializedState()) return;
 	bool oldState = isReplay;

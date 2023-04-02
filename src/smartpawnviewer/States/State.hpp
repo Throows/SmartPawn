@@ -26,7 +26,7 @@ public:
 	State(StateArgs* args, const std::string& name);
 	virtual ~State();
 
-	virtual void OnUpdate() = 0;
+	virtual void OnUpdate(const int& dt) = 0;
 	virtual void OnRender() = 0;
 	virtual void ProcessEvents(sf::Event& event) = 0;
 	virtual bool IsExitedState() { return this->isExited; }

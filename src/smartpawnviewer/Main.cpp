@@ -11,6 +11,7 @@
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) 
 {
 	(void)hInstance, (void)hPrevInstance, (void)lpCmdLine, (void)nCmdShow;
+	std::srand(std::time(nullptr));
 	SP::Logger::Init();
 	SPV::Application app{};
 	return app.Run();
@@ -20,6 +21,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 int main(int argc, char** argv)
 {
 	(void)argc;
+	std::srand(std::time(nullptr));
 #ifdef SP_PLATFORM_DARWIN
 	std::filesystem::path exePath = argv[0];
 	std::filesystem::current_path(exePath.parent_path());

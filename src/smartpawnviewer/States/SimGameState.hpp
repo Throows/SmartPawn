@@ -12,7 +12,7 @@ public:
 	SimGameState(StateArgs* args);
 	virtual ~SimGameState() = default;
 
-	void OnUpdate() override;
+	void OnUpdate(const int& dt) override;
 	void OnRender() override;
 	void ProcessEvents(sf::Event& event) override;
 	void SetExitedState() override;

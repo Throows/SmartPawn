@@ -19,6 +19,7 @@ private:
 	unsigned int m_height;
 	bool m_running = true;
 	StateArgs m_stateArgs;
+	sf::Clock m_clock;
 
 	void Init();
 	void RegisterCallbacks();

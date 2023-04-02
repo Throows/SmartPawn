@@ -178,3 +178,7 @@ Project Link: [https://github.com/Throows/SmartPawn](https://github.com/Throows/
 ## Acknowledgements
 
 Will add in the future I HOPE
+
+## Knonw Issues
+
+  - [ ] OpenSSL@3.1 is not working (compiling but not executing on macos arm64) [Link Issue](https://stackoverflow.com/questions/74059978/why-is-lldb-generating-exc-bad-instruction-with-user-compiled-library-on-macos)

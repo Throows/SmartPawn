@@ -1,9 +1,10 @@
-[![Releases](https://img.shields.io/github/v/release/Throows/SmartPawn)](https://github.com/Throows/Throows)
+[![Releases](https://img.shields.io/github/v/release/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/releases)
 [![Forks](https://img.shields.io/github/forks/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/fork)
 [![Stargazers](https://img.shields.io/github/stars/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/stargazers)
 [![Issues](https://img.shields.io/github/issues-raw/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/issues)
-[![License](https://img.shields.io/github/license/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/blob/master/LICENSE)
-
+[![License](https://img.shields.io/github/license/Throows/SmartPawn)](https://github.com/Throows/SmartPawn/blob/master/LICENSE)\
+[![Build-MacOS](https://github.com/Throows/SmartPawn/actions/workflows/build-macos.yml/badge.svg?branch=main)](https://github.com/Throows/SmartPawn/actions/workflows/build-macos.yml)
+[![Build-Windows](https://github.com/Throows/SmartPawn/actions/workflows/build-windows.yml/badge.svg?branch=main)](https://github.com/Throows/SmartPawn/actions/workflows/build-windows.yml)
 <br/>
 <!-- <p align="center">
   <a href="https://github.com/Throows/SmartPawn">
@@ -130,8 +131,8 @@ To build the project you need to install xmake and you will require SFML and PyB
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Create your IA by editing the `BluePlugin.py` or `RedPlugin.py`files in the `Plugin` Folder. \
-You can also review the game by adding the game log file in the `Record` folder. \
+Create your IA by editing the `BluePlugin.py` or `RedPlugin.py`files in the `Plugin` Folder.\
+You can also review the game by adding the game log file in the `Record` folder.
 
 _For more examples, please refer to the [Documentation](https://github.com/Throows/SmartPawn/wiki)_
 
@@ -141,13 +142,11 @@ _For more examples, please refer to the [Documentation](https://github.com/Throo
 See the [open issues](https://github.com/Throows/SmartPawn/issues) for a list of proposed features (and known issues).
 
 - feature/plugin-optimization
-This feature aims to optimize the plugin, and add a lots of API methods to create your IA. And to add Plugin customization and unique contexte (mby) \
-
+This feature aims to optimize the plugin, and add a lots of API methods to create your IA. And to add Plugin customization and unique contexte (mby)
 - feature/settings-and-lang
-This feature aims to add a settings menu (Board size, etc) and a language selector. \
-
+This feature aims to add a settings menu (Board size, etc) and a language selector.
 - feature/upgraded-ui
-This feature aims to improve a new UI by adding effet (when new event happen in both reader and simulation mode). \
+This feature aims to improve a new UI by adding effet (when new event happen in both reader and simulation mode).
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -160,7 +159,7 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-If you want to share your IA with the community, you can create a pull request and add your IA in the `ExempleIA` folder. \
+If you want to share your IA with the community, you can create a pull request and add your IA in the `ExempleIA` folder.
 
 <!-- LICENSE -->
 ## License

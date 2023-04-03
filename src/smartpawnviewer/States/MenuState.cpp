@@ -88,6 +88,11 @@ void MenuState::InitState()
 		SPV_APP_ERROR("Could not load texture !");
 	}
 
+	this->textures.emplace("TRACE_TEXTURE", std::make_shared<sf::Texture>());
+	if (!this->textures.at("TRACE_TEXTURE")->loadFromFile("Resources/GUI/trace.png")) {
+		SPV_APP_ERROR("Could not load texture !");
+	}
+
 	this->textures.emplace("BACKGROUND_TEXTURE", std::make_shared<sf::Texture>());
 	if (!this->textures.at("BACKGROUND_TEXTURE")->loadFromFile("Resources/Backgrounds/bg1.jpg")) {
 		SPV_APP_ERROR("Could not load texture !");
@@ -104,7 +109,7 @@ void MenuState::InitState()
 	this->buttons.push_back(startSimButton);
 	this->recordListView = std::make_shared<ListView>(sf::Vector2f(600.0f, 50.0f), sf::Vector2f(300.0f, 400.0f));
 	this->CreateListButtons();
-	this->traceTest.Init(nullptr, Direction::UP);
+	this->traceTest.Init(*this->textures.at("TRACE_TEXTURE"), Direction::UP);
 	this->isInitialized = true;
 }
 

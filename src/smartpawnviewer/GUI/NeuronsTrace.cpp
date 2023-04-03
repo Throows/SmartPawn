@@ -55,7 +55,7 @@ std::ostream &operator<<(std::ostream &stream, const Direction &dir)
 
 std::ostream& operator<<(std::ostream &stream, const Trace &trace)
 {
-    stream << "Trace: {MSize:" << trace.maxSize << "}, " << trace.direction << ", {sizeX: " << trace.traceShape.getSize().x << "}, {sizeY: " << trace.traceShape.getSize().y << "}, {Junction:" << trace.isJunction << "}" << std::endl;
+    stream << "Trace: {MSize:" << trace.maxSize << "}, " << trace.direction << ", {sizeX: " << trace.traceShape.getGlobalBounds().width << "}, {sizeY: " << trace.traceShape.getGlobalBounds().height << "}, {Junction:" << trace.isJunction << "}" << std::endl;
     return stream;
 }
 
@@ -76,32 +76,31 @@ NeuronsTrace::~NeuronsTrace()
 {
 }
 
-void NeuronsTrace::Init(std::shared_ptr<sf::Texture> texture, Direction startDir)
+void NeuronsTrace::Init(sf::Texture& texture, Direction startDir)
 {
     (void)texture;
     unsigned char nextTraceID = 0;
     Direction dir = startDir;
     Direction nextDir = nextDirection(dir);
-    sf::Vector2f position = {500, 400};
+    sf::Vector2f position = {500, 480};
     
     for(; nextTraceID < this->m_turns * 2; nextTraceID+=2) {
         Trace trace = {
-            .traceShape = sf::RectangleShape(sf::Vector2f(0, 0)),
+            .traceShape = sf::RectangleShape(),
             .maxSize = static_cast<unsigned int>(std::rand() % 150 + 50),
             .direction = dir,
             .isJunction = false,
         };
-        trace.Init(position);
+        trace.Init(position, texture);
         trace.GetEndPosition(position);
-        SPV_APP_TRACE("Position: {}, {}", position.x, position.y);
         this->traces.emplace(nextTraceID, trace);
         Trace junction = {
-            .traceShape = sf::RectangleShape(sf::Vector2f(0, 0)),
+            .traceShape = sf::RectangleShape(),
             .maxSize = 20,
             .direction = nextDir,
             .isJunction = true,
         };
-        junction.Init(position);
+        junction.Init(position, texture);
         junction.GetEndPosition(position);
         this->traces.emplace(1+nextTraceID, junction);
         dir = nextDir;

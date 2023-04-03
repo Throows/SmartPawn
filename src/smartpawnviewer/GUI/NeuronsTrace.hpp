@@ -25,19 +25,16 @@ struct Trace
     bool hasGrown = false;
     bool isJunction;
 
-    void Init(sf::Vector2f position) {
+    void Init(sf::Vector2f position, sf::Texture& texture) {
         int rotation = 270;
         if (direction == Direction::DOWN) rotation = 90;
         else if (direction == Direction::LEFT) rotation = 180;
         else if (direction == Direction::RIGHT) rotation = 0;
         traceShape.setRotation(rotation);
         traceShape.setPosition(position);
-        if (isJunction)
-            traceShape.setFillColor(sf::Color::Magenta);
-        else if (direction == Direction::UP || direction == Direction::DOWN)
-            traceShape.setFillColor(sf::Color::Green);
-        else
-            traceShape.setFillColor(sf::Color::Blue);
+        traceShape.setTexture(&texture);
+        if (isJunction) traceShape.setTextureRect(sf::IntRect(20, 0, 19, 19));
+        else            traceShape.setTextureRect(sf::IntRect(0, 0, 19, 19));
     }
 
     void GetEndPosition(sf::Vector2f& position) {
@@ -66,7 +63,7 @@ public:
     NeuronsTrace(sf::Vector2i maxBounds);
     ~NeuronsTrace();
 
-    void Init(std::shared_ptr<sf::Texture> texture, Direction startDir);
+    void Init(sf::Texture& texture, Direction startDir);
     void Update(const int& dt);
     void Render(sf::RenderWindow& window);
 

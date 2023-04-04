@@ -5,57 +5,43 @@
 namespace SPV
 {
 
-enum class Direction : unsigned char
+enum Direction
 {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+    RIGHT = 0,
+    DOWN = 90,
+    LEFT = 180,
+    UP = 270,
 };
 
-Direction nextDirection(Direction& dir);
 std::ostream& operator<<(std::ostream& stream, const Direction& dir);
+Direction nextDirection(Direction& dir);
+Direction previousDirection(Direction& dir);
 
-
-struct Trace
+class Trace
 {
-    sf::RectangleShape traceShape;
-    unsigned int maxSize;
-    Direction direction;
-    bool hasGrown = false;
+
+public:
+    Trace(Direction direction, unsigned int maxSize, sf::Vector2f position);
+    ~Trace() = default;
+
+    void Init(sf::Texture& texture, bool isJunction);
+
+    bool Update(int growSize);
+    const sf::RectangleShape& GetDrawable() const { return m_traceShape; }
+
+    void GetEndPosition(sf::Vector2f& position);
+
+    friend std::ostream& operator<<(std::ostream& stream, const Trace& trace);
+    inline std::string to_string();
+
+    bool HasGrown() const { return hasGrown; }
+
+private:
+    sf::RectangleShape m_traceShape;
+    const unsigned int m_size;
     bool isJunction;
-
-    void Init(sf::Vector2f position, sf::Texture& texture) {
-        int rotation = 270;
-        if (direction == Direction::DOWN) rotation = 90;
-        else if (direction == Direction::LEFT) rotation = 180;
-        else if (direction == Direction::RIGHT) rotation = 0;
-        traceShape.setRotation(rotation);
-        traceShape.setPosition(position);
-        traceShape.setTexture(&texture);
-        if (isJunction) traceShape.setTextureRect(sf::IntRect(20, 0, 19, 19));
-        else            traceShape.setTextureRect(sf::IntRect(0, 0, 19, 19));
-    }
-
-    void GetEndPosition(sf::Vector2f& position) {
-        if (direction == Direction::UP) position.y -= maxSize;
-        else if (direction == Direction::DOWN) position.y += maxSize;
-        else if (direction == Direction::LEFT) position.x -= maxSize;
-        else if (direction == Direction::RIGHT) position.x += maxSize;
-    }
-
-    unsigned int GetGrowingSize() {
-        return traceShape.getSize().x;
-    };
-
-    void Grow(int size){
-        int growSize = GetGrowingSize() + size;
-        traceShape.setSize(sf::Vector2f(growSize, 20));
-    }
+    bool hasGrown = false;
 };
-
-std::ostream& operator<<(std::ostream& stream, const Trace& trace);
-inline std::string to_string(const Trace& trace);
 
 class NeuronsTrace
 {
@@ -63,15 +49,21 @@ public:
     NeuronsTrace(sf::Vector2i maxBounds);
     ~NeuronsTrace();
 
-    void Init(sf::Texture& texture, Direction startDir);
+    void Init(std::shared_ptr<sf::Texture> texture);
+    void MakeTrace();
     void Update(const int& dt);
     void Render(sf::RenderWindow& window);
 
+    void Restart();
+
 private:
     sf::Vector2i m_maxBounds;
+    Direction traceDir = Direction::UP;
     const unsigned int m_turns = 3;
+    std::map<unsigned char, std::unique_ptr<Trace>> traces;  
+    std::shared_ptr<sf::Texture> traceTexture;
 
-    std::map<unsigned char, Trace> traces;
+    sf::Vector2f CalculateStartPosition();
 }; 
  
 } // namespace SPV

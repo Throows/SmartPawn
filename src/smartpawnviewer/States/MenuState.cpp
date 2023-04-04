@@ -109,7 +109,7 @@ void MenuState::InitState()
 	this->buttons.push_back(startSimButton);
 	this->recordListView = std::make_shared<ListView>(sf::Vector2f(600.0f, 50.0f), sf::Vector2f(300.0f, 400.0f));
 	this->CreateListButtons();
-	this->traceTest.Init(*this->textures.at("TRACE_TEXTURE"), Direction::UP);
+	this->traceTest.Init(this->textures.at("TRACE_TEXTURE"));
 	this->isInitialized = true;
 }
 

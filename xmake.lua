@@ -1,6 +1,7 @@
 add_rules("mode.debug", "mode.release")
 add_rules("plugin.vsxmake.autoupdate")
-add_requires("spdlog", "sfml", "pybind11", "python", "nlohmann_json")
+add_requires("spdlog", "pybind11", "python", "nlohmann_json")
+add_requires("sfml", {system = false})
 set_languages("c89", "cxx20")
 set_rundir("./bin/$(os)_$(arch)_$(mode)")
 set_targetdir("./bin/$(os)_$(arch)_$(mode)")

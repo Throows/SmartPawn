@@ -60,6 +60,9 @@ void MenuState::ProcessEvents(sf::Event& event)
 void MenuState::UpdateListViewButton()
 {
 	this->recordListView->ResetButtons();
+	if (!std::filesystem::exists("Records/")) {
+		std::filesystem::create_directory("Records/");
+	}
 	try {
 		int buttonOffset = 60.0f;
 		for (const auto& entry : std::filesystem::directory_iterator("Records/")) {

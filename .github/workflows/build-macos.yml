@@ -17,10 +17,10 @@ jobs:
         with:
           python-version: '3.10' 
 
-      - name: Install Pybind11 SFML
+      - name: Install Pybind11
         run: |
           brew update
-          brew install pybind11 sfml
+          brew install pybind11
           brew upgrade
 
       - name: Install xmake
